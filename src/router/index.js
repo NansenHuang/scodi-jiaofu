@@ -5,6 +5,8 @@ import VueRouter from 'vue-router';
 import Cookies from 'js-cookie';
 import {routers, otherRouter, appRouter} from './router';
 
+import Services from 'src/services';
+
 Vue.use(VueRouter);
 
 // 路由配置
@@ -18,7 +20,9 @@ export const router = new VueRouter(RouterConfig);
 router.beforeEach((to, from, next) => {
     iView.LoadingBar.start();
     Util.title(to.meta.title);
-    if (Cookies.get('locking') === '1' && to.name !== 'locking') { // 判断当前是否是锁定状态
+    if (to.name === 'init') {
+        next();
+    } else if (Cookies.get('locking') === '1' && to.name !== 'locking') { // 判断当前是否是锁定状态
         next({
             replace: true,
             name: 'locking'
@@ -53,8 +57,21 @@ router.beforeEach((to, from, next) => {
     }
 });
 
-router.afterEach((to) => {
+router.afterEach((to, from) => {
     Util.openNewPage(router.app, to.name, to.params, to.query);
     iView.LoadingBar.finish();
     window.scrollTo(0, 0);
+    if (to.name !== 'init' && to.name !== 'login') {
+        Services.Account.status().then((resp) => {
+            if (!resp['isLogin']) {
+                Cookies.remove('user');
+                Cookies.remove('password');
+                Cookies.remove('hasGreet');
+                Cookies.remove('access');
+                router.replace({
+                    name: 'login'
+                });
+            };
+        });
+    };
 });

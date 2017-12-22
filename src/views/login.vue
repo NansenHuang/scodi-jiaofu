@@ -8,7 +8,7 @@
             <Card :bordered="false">
                 <p slot="title">
                     <Icon type="log-in"></Icon>
-                    欢迎登录
+                    欢迎登录BIM交付系统
                 </p>
                 <div class="form-con">
                     <Form ref="loginForm" :model="form" :rules="rules">
@@ -30,7 +30,7 @@
                             <Button @click="handleSubmit" type="primary" long>登录</Button>
                         </FormItem>
                     </Form>
-                    <p class="login-tip">输入任意用户名和密码即可</p>
+                    <div style="text-align:right;"><a style="color:#aaa;font-size:12px;text-decoration:underline;" @click="initFunc">前往初始化页面</a></div>
                 </div>
             </Card>
         </div>
@@ -39,11 +39,18 @@
 
 <script>
 import Cookies from 'js-cookie';
+import Services from 'src/services';
+import forge from 'node-forge';
+import Encrypt from 'src/config/encrypt';
+
+forge.options.usePureJavaScript = true;
+const pkey = forge.pki.publicKeyFromPem(Encrypt.PublicKey);
+
 export default {
     data () {
         return {
             form: {
-                userName: 'iview_admin',
+                userName: '',
                 password: ''
             },
             rules: {
@@ -57,23 +64,30 @@ export default {
         };
     },
     methods: {
-        handleSubmit () {
-            this.$refs.loginForm.validate((valid) => {
+        handleSubmit: async function () {
+            this.$refs.loginForm.validate(async (valid) => {
                 if (valid) {
-                    Cookies.set('user', this.form.userName);
-                    Cookies.set('password', this.form.password);
-                    this.$store.commit('setAvator', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg');
-                    if (this.form.userName === 'iview_admin') {
+                    let resp = await Services.Account.logon(this.form.userName, forge.util.encode64(pkey.encrypt(this.form.password)));
+                    if (resp['user']) {
+                        Cookies.set('user', resp.user.username);
+                        Cookies.set('password', this.form.password.substring(this.form.password.substring(this.form.password.length - 2)));
+                        // TODO set access according to resp.user.permissions
                         Cookies.set('access', 0);
-                    } else {
-                        Cookies.set('access', 1);
+                        this.$store.commit('setAvator', 'https://ss1.bdstatic.com/70cFvXSh_Q1YnxGkpoWK1HF6hhy/it/u=3448484253,3685836170&fm=27&gp=0.jpg');
+                        this.$router.push({
+                            name: 'console'
+                        });
+                    } else if (resp['code'] && resp['message']) {
+                        this.$Message.error(resp['message']);
                     }
-                    this.$router.push({
-                        name: 'home_index'
-                    });
                 }
             });
-        }
+        },
+        initFunc: function () {
+            this.$router.push({
+                name: 'init'
+            });
+        },
     }
 };
 </script>

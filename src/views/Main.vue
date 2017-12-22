@@ -30,6 +30,11 @@
                     </div>
                 </div>
                 <div class="header-avator-con">
+                    <div @click="returnToConsole" class="return-console-btn-con">
+                        <Tooltip content="回到项目控制台" placement="bottom">
+                            <Icon type="home" :size="20"></Icon>
+                        </Tooltip>
+                    </div>
                     <full-screen v-model="isFullScreen" @on-change="fullscreenChange"></full-screen>
                     <lock-screen></lock-screen>
                     <message-tip v-model="mesCount"></message-tip>
@@ -75,6 +80,7 @@
     import themeSwitch from './main-components/theme-switch/theme-switch.vue';
     import Cookies from 'js-cookie';
     import util from '@/libs/util.js';
+    import ActionType from 'src/config/action-type';
     
     export default {
         components: {
@@ -88,6 +94,7 @@
         },
         data () {
             return {
+                usedMessageCount: 0,                
                 shrink: false,
                 userName: '',
                 isFullScreen: false,
@@ -95,6 +102,9 @@
             };
         },
         computed: {
+            globalMessage () {
+                return this.$store.state['highway']['globalMessage'];
+            },
             menuList () {
                 return this.$store.state.app.menuList;
             },
@@ -133,6 +143,11 @@
                 this.checkTag(this.$route.name);
                 this.$store.commit('setMessageCount', 3);
             },
+            returnToConsole () {
+                this.$router.push({
+                    name: 'console'
+                });
+            },            
             toggleClick () {
                 this.shrink = !this.shrink;
             },
@@ -177,6 +192,12 @@
             }
         },
         watch: {
+            globalMessage: function (val) {
+                for (let i = this.usedMessageCount; i < val.length; i++) {
+                    this.$Notice[val[i].type](val[i].config);
+                }
+                this.usedMessageCount = val.length;
+            },
             '$route' (to) {
                 this.$store.commit('setCurrentPageName', to.name);
                 let pathArr = util.setCurrentPath(this, to.name);
@@ -196,6 +217,14 @@
         created () {
             // 显示打开的页面的列表
             this.$store.commit('setOpenedList');
+            // 加载所有必需的基础数据
+            this.$store.dispatch(ActionType.LoadAlignment);
+            this.$store.dispatch(ActionType.LoadBlignment);
+            this.$store.dispatch(ActionType.LoadChain);
+            this.$store.dispatch(ActionType.LoadInterchange);
+            this.$store.dispatch(ActionType.LoadParkinglot);
+            this.$store.dispatch(ActionType.LoadServicearea);
+            this.$store.dispatch(ActionType.LoadConstructionSection);
         }
     };
 </script>

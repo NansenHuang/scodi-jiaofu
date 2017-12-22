@@ -2,7 +2,7 @@
     "extends": "standard",
     "root": true,
     "parserOptions": {
-        "ecmaVersion": 6,
+        "ecmaVersion": 2017,
         "sourceType": "module"
     },
     "env": {
@@ -11,6 +11,7 @@
     },
     "plugins": [ "html", "standard" ],
     "rules": {
+        "comma-dangle": ["error", "only-multiline"],
         "indent": ["error", 4, { "SwitchCase": 1 }],
         "quotes": ["error", "single"],
         "semi": ["error", "always"],

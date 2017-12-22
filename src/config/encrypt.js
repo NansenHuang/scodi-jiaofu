@@ -1,0 +1,12 @@
+const Encrypt = {
+    PublicKey: `
+-----BEGIN PUBLIC KEY-----
+MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDmia/q2I4NH3rtoe9nQLj7E1wG
+fReDqXi/y14FoA7vmn7087XLaGgXn8OVPuSF8uNvPvp6x1Uqf3gMBYDsnCI6WK4L
+Z7FmrRCQ/TOZQSoO+uX69augE/VQHhcHXLB/t4/1Zinyb5NXDogdZ9zJdrz6rQPA
+tufKZ7EsyNLJN8EuCwIDAQAB
+-----END PUBLIC KEY-----
+`
+};
+
+export default Encrypt;
