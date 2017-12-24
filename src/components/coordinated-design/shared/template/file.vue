@@ -3,7 +3,7 @@
 
 <template>
     <div>
-        <Upload :before-upload="handleUpload" action="">
+        <Upload multiple :before-upload="handleUpload" action="">
             <Button type="ghost" icon="ios-cloud-upload-outline">浏览文件...</Button>
         </Upload>
         <div v-if="files.length">
@@ -49,7 +49,17 @@ export default {
     watch: {
         uploadedFiles: function () {
             if (this.uploadedFiles.length && this.active) {
-                this.$emit('input', this.uploadedFiles.join(','));
+                let obj = {
+                    type: this.params.fileType,
+                    files: this.uploadedFiles.map((item) => {
+                        return {
+                            name: item,
+                            time: '',
+                            desc: '',
+                        };
+                    }),
+                };
+                this.$emit('input', JSON.stringify(obj));
             };
         },
         active: function (val) {

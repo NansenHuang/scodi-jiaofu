@@ -92,14 +92,14 @@ export default {
                                 to: Field.Blignment.StationMark,
                             },
                             // for quicker input
-                            {
-                                from: Field.Alignment.StartStation,
-                                to: Field.Blignment.StartStation,
-                            },
-                            {
-                                from: Field.Alignment.EndStation,
-                                to: Field.Blignment.EndStation,
-                            },
+                            // {
+                            //     from: Field.Alignment.StartStation,
+                            //     to: Field.Blignment.StartStation,
+                            // },
+                            // {
+                            //     from: Field.Alignment.EndStation,
+                            //     to: Field.Blignment.EndStation,
+                            // },
                         ],
                     },
                 },

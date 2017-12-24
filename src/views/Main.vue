@@ -94,7 +94,7 @@
         },
         data () {
             return {
-                usedMessageCount: 0,                
+                usedMessageCount: 0,
                 shrink: false,
                 userName: '',
                 isFullScreen: false,
@@ -147,7 +147,7 @@
                 this.$router.push({
                     name: 'console'
                 });
-            },            
+            },
             toggleClick () {
                 this.shrink = !this.shrink;
             },

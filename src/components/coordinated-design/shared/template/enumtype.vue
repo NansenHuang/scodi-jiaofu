@@ -72,9 +72,11 @@ export default {
             if (val) {
                 this.dataSource.map((dataItem) => {
                     let match = true;
-                    this.params['map'].map((mapItem) => {
-                        match = match && this.backdoor[mapItem['to']] === dataItem[mapItem['from']];
-                    });
+                    let mapItem = this.params['map'][0];
+                    match = match && this.backdoor[mapItem['to']] === dataItem[mapItem['from']];
+                    // this.params['map'].map((mapItem) => {
+                    //     match = match && this.backdoor[mapItem['to']] === dataItem[mapItem['from']];
+                    // });
                     if (match) {
                         this.selected = dataItem['id'];
                         return;
