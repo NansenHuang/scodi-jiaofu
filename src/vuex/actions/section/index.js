@@ -35,9 +35,9 @@ function getRequestFunc (commit, queryFunc, query = {}, recursive = false, idFie
                 // TODO 例外情况未处理：hits的结果中，sort为null??
                 // console.log(`第${index}次递归调用的result: `, JSON.stringify(ids, null, 4));
                 let result = await request(sortArray, index + 1);
-                return Promise.resolve([ids].concat(result));
+                return Promise.resolve(data.concat(result));
             } else {
-                return Promise.resolve([ids]);
+                return Promise.resolve(data);
             };
         } else {
             return Promise.resolve([]);
