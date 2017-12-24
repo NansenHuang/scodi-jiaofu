@@ -71,7 +71,7 @@ const actions = {
     [ActionType.LoadBlignment]: function ({commit}, payload = {}) {
         let queryFunc = Services.Alignment.Blignment.query;
         let queryParams = payload.query;
-        let recursive = payload.recursive; // TODO true?
+        let recursive = true; // TODO true?
         let idField = Field.Blignment.id;
         let storePath = ['highway', 'alignment', 'blignment'];
 
