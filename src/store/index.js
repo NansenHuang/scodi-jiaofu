@@ -4,7 +4,7 @@ import Vuex from 'vuex';
 import app from './modules/app';
 import user from './modules/user';
 
-import { state as highwayState, mutations as highwayMutations, actions as highwayActions } from './vuex/store.js';
+import { state as highwayState, mutations as highwayMutations, actions as highwayActions } from '../vuex/store.js';
 
 Vue.use(Vuex);
 

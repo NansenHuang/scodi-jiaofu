@@ -3,7 +3,7 @@ import Locales from './locale';
 import zhLocale from 'iview/src/locale/lang/zh-CN';
 import enLocale from 'iview/src/locale/lang/en-US';
 import zhTLocale from 'iview/src/locale/lang/zh-TW';
-import ProjectLocales from './project-locale';
+import ProjectLocales from '../project-locale';
 
 // 自动设置语言
 const navLang = navigator.language;

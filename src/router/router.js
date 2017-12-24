@@ -55,7 +55,7 @@ export const consoleRouter = {
     meta: {
         title: '项目控制台'
     },
-    component: resolve => { require(['./components/console'], resolve); }
+    component: resolve => { require(['../components/console'], resolve); }
 };
 
 export const initRouter = {
@@ -64,7 +64,7 @@ export const initRouter = {
     meta: {
         title: '系统初始化',
     },
-    component: resolve => { require(['./components/console/init.vue'], resolve); }
+    component: resolve => { require(['../components/console/init.vue'], resolve); }
 };
 
 // 作为Main组件的子页面展示但是不在左侧菜单显示的路由写在otherRouter里
@@ -97,21 +97,21 @@ export const appRouter = [
                 icon: 'pound',
                 name: 'design-section',
                 title: '区段',
-                component: resolve => { require(['./components/coordinated-design/section'], resolve); }
+                component: resolve => { require(['../components/coordinated-design/section'], resolve); }
             },
             {
                 path: 'alignment',
                 icon: 'pound',
                 name: 'design-alignment',
                 title: '路线',
-                component: resolve => { require(['./components/coordinated-design/alignment'], resolve); }
+                component: resolve => { require(['../components/coordinated-design/alignment'], resolve); }
             },
             {
                 path: 'structure',
                 icon: 'pound',
                 name: 'design-structure',
                 title: '结构物',
-                component: resolve => { require(['./components/coordinated-design/structure'], resolve); }
+                component: resolve => { require(['../components/coordinated-design/structure'], resolve); }
             },
             {
                 path: 'imagery',
@@ -132,14 +132,14 @@ export const appRouter = [
                 icon: 'share',
                 name: 'table-export',
                 title: '表格导出',
-                component: resolve => { require(['./components/others/export'], resolve); }
+                component: resolve => { require(['../components/others/export'], resolve); }
             },
             {
                 path: 'publish',
                 icon: 'upload',
                 name: 'publish-data',
                 title: '数据发布',
-                component: resolve => { require(['./components/others/publish'], resolve); }
+                component: resolve => { require(['../components/others/publish'], resolve); }
             },
         ],
     },
