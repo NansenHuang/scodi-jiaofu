@@ -79,6 +79,12 @@ export default {
                     editable: true,
                 },
                 {
+                    title: '偏移量',
+                    key: Field.Tunnel.Posture,
+                    align: 'center',
+                    editable: true,
+                },
+                {
                     title: '左',
                     key: Field.Tunnel.LeftPart,
                     align: 'center',

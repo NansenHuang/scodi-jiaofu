@@ -18,7 +18,7 @@
 
 <script>
 import TemplateAdd from 'src/components/coordinated-design/shared/template-add.vue';
-import Field from 'src/config/field';
+import Field, { SubField } from 'src/config/field';
 import FieldType from 'src/config/field-type';
 import ActionType from 'src/config/action-type.js';
 import Cookies from 'js-cookie';
@@ -106,6 +106,42 @@ export default {
                                 to: Field.Culvert.SectionID,
                             },
                         ],
+                    },
+                },
+                {
+                    label: '偏移量X',
+                    key: Field.Culvert.Posture,
+                    vueKey: Field.Culvert.Posture + '_X',
+                    type: FieldType.JSON,
+                    params: {
+                        name: SubField.Culvert.Posture.x,
+                    },
+                },
+                {
+                    label: '偏移量Y',
+                    key: Field.Culvert.Posture,
+                    vueKey: Field.Culvert.Posture + '_Y',
+                    type: FieldType.JSON,
+                    params: {
+                        name: SubField.Culvert.Posture.y,
+                    },
+                },
+                {
+                    label: '偏移量Z',
+                    key: Field.Culvert.Posture,
+                    vueKey: Field.Culvert.Posture + '_Z',
+                    type: FieldType.JSON,
+                    params: {
+                        name: SubField.Culvert.Posture.z,
+                    },
+                },
+                {
+                    label: '角度',
+                    key: Field.Culvert.Posture,
+                    vueKey: Field.Culvert.Posture + '_Alpha',
+                    type: FieldType.JSON,
+                    params: {
+                        name: SubField.Culvert.Posture.alpha,
                     },
                 },
                 {

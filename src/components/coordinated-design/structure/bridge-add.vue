@@ -18,7 +18,7 @@
 
 <script>
 import TemplateAdd from 'src/components/coordinated-design/shared/template-add.vue';
-import Field from 'src/config/field';
+import Field, { SubField } from 'src/config/field';
 import FieldType from 'src/config/field-type';
 import ActionType from 'src/config/action-type.js';
 import Cookies from 'js-cookie';
@@ -101,6 +101,42 @@ export default {
                                 to: Field.Bridge.SectionID,
                             },
                         ],
+                    },
+                },
+                {
+                    label: '偏移量X',
+                    key: Field.Bridge.Posture,
+                    vueKey: Field.Bridge.Posture + '_X',
+                    type: FieldType.JSON,
+                    params: {
+                        name: SubField.Bridge.Posture.x,
+                    },
+                },
+                {
+                    label: '偏移量Y',
+                    key: Field.Bridge.Posture,
+                    vueKey: Field.Bridge.Posture + '_Y',
+                    type: FieldType.JSON,
+                    params: {
+                        name: SubField.Bridge.Posture.y,
+                    },
+                },
+                {
+                    label: '偏移量Z',
+                    key: Field.Bridge.Posture,
+                    vueKey: Field.Bridge.Posture + '_Z',
+                    type: FieldType.JSON,
+                    params: {
+                        name: SubField.Bridge.Posture.z,
+                    },
+                },
+                {
+                    label: '角度',
+                    key: Field.Bridge.Posture,
+                    vueKey: Field.Bridge.Posture + '_Alpha',
+                    type: FieldType.JSON,
+                    params: {
+                        name: SubField.Bridge.Posture.alpha,
                     },
                 },
                 {

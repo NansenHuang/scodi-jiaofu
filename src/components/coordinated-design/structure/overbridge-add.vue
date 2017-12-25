@@ -18,7 +18,7 @@
 
 <script>
 import TemplateAdd from 'src/components/coordinated-design/shared/template-add.vue';
-import Field from 'src/config/field';
+import Field, { SubField } from 'src/config/field';
 import FieldType from 'src/config/field-type';
 import ActionType from 'src/config/action-type.js';
 import Cookies from 'js-cookie';
@@ -105,6 +105,42 @@ export default {
                                 to: Field.Overbridge.SectionID,
                             },
                         ],
+                    },
+                },
+                {
+                    label: '偏移量X',
+                    key: Field.Overbridge.Posture,
+                    vueKey: Field.Overbridge.Posture + '_X',
+                    type: FieldType.JSON,
+                    params: {
+                        name: SubField.Overbridge.Posture.x,
+                    },
+                },
+                {
+                    label: '偏移量Y',
+                    key: Field.Overbridge.Posture,
+                    vueKey: Field.Overbridge.Posture + '_Y',
+                    type: FieldType.JSON,
+                    params: {
+                        name: SubField.Overbridge.Posture.y,
+                    },
+                },
+                {
+                    label: '偏移量Z',
+                    key: Field.Overbridge.Posture,
+                    vueKey: Field.Overbridge.Posture + '_Z',
+                    type: FieldType.JSON,
+                    params: {
+                        name: SubField.Overbridge.Posture.z,
+                    },
+                },
+                {
+                    label: '角度',
+                    key: Field.Overbridge.Posture,
+                    vueKey: Field.Overbridge.Posture + '_Alpha',
+                    type: FieldType.JSON,
+                    params: {
+                        name: SubField.Overbridge.Posture.alpha,
                     },
                 },
                 {
