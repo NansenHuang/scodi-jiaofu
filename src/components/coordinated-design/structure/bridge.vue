@@ -91,6 +91,12 @@ export default {
                     editable: true,
                 },
                 {
+                    title: '设计文件',
+                    key: Field.Bridge.BimFiles,
+                    align: 'center',
+                    editable: true,
+                },
+                {
                     title: '描述',
                     key: Field.Bridge.Desc,
                     align: 'center',

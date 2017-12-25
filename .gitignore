@@ -2,6 +2,7 @@ npm-debug.log
 node_modules
 .project
 .vscode
+.idea
 .history
 .DS_Store
 \.settings/
