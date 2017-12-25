@@ -169,6 +169,58 @@ const NodeField = {
             'value': 'alignmentFiles',
             'enable': true
         },
+        // {
+        //     'label': 'corridorFiles',
+        //     'value': 'corridorFiles',
+        //     'enable': true
+        // },
+        {
+            'label': 'tableType',
+            'value': 'tableType',
+            'enable': true
+        }
+    ],
+    'Clignment': [
+        {
+            'label': 'project',
+            'value': 'project',
+            'enable': false
+        },
+        {
+            'label': 'id',
+            'value': 'id',
+            'enable': true
+        },
+        {
+            'label': 'alignmentID',
+            'value': 'alignmentID',
+            'enable': true
+        },
+        {
+            'label': 'alignmentCnName',
+            'value': 'alignmentCnName',
+            'enable': true
+        },
+        // {
+        //     'label': 'region',
+        //     'value': 'region',
+        //     'enable': true
+        // },
+        {
+            'label': 'stationMark',
+            'value': 'stationMark',
+            'enable': true
+        },
+        {
+            'label': 'startStation',
+            'value': 'startStation',
+            'enable': true
+        },
+        {
+            'label': 'endStation',
+            'value': 'endStation',
+            'enable': true
+        },
         {
             'label': 'corridorFiles',
             'value': 'corridorFiles',

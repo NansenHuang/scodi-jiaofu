@@ -34,6 +34,12 @@ const Tree = [
                         action: Actions.LoadBlignment,
                     },
                     {
+                        title: '道路',
+                        key: 'Clignment',
+                        fileName: 'Clignment',
+                        action: Actions.LoadClignment,
+                    },
+                    {
                         title: '断链',
                         key: 'Chain',
                         fileName: 'Chain',
