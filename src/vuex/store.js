@@ -26,6 +26,7 @@ const initStateString = JSON.stringify({
         alignment: {
             alignment: [],
             blignment: [],
+            clignment: [],
             chain: [],
             interchange: [],
             servicearea: [],
