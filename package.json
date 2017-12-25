@@ -6,6 +6,7 @@
   "scripts": {
     "init": "webpack --progress --config build/webpack.dev.config.js",
     "dev": "webpack-dev-server --content-base ./ --inline --hot --compress --history-api-fallback --config build/webpack.dev.config.js",
+    "push": "sh build/deploy.sh",
     "build": "webpack --progress --hide-modules --config build/webpack.prod.config.js",
     "lint": "eslint --fix --ext .js,.vue src",
     "test": "npm run lint"
