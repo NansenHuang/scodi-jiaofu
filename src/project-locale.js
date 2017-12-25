@@ -10,6 +10,7 @@ export default {
         Guardwall: '挡墙',
         Chain: '断链',
         Blignment: '区间路线',
+        Clignment: '道路',
         ContructionSection: '施工区段',
         Tunnel: '隧道',
         Overbridge: '天桥',

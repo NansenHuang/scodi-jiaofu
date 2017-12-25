@@ -1,5 +1,6 @@
 const FileType = {
     Blignment: 'blignments',
+    Clignment: 'clignments',
     Bridge: 'bridges',
     Culvert: 'culverts',
     Overbridge: 'overbridges',

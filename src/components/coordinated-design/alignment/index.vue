@@ -36,6 +36,8 @@ import Alignment from './alignment.vue';
 import AlignmentItem from './alignment-add';
 import Blignment from './blignment.vue';
 import BlignmentItem from './blignment-add';
+import Clignment from './clignment';
+import ClignmentItem from './clignment-add';
 import SideBlindDrain from './sideblinddrain.vue';
 import SideBlindDrainItem from './sideblinddrain-add';
 import CrossBlindDrain from './crossblinddrain.vue';
@@ -78,6 +80,12 @@ export default {
                     key: Blignment.name,
                     type: Blignment,
                     newItemComponent: BlignmentItem,
+                },
+                {
+                    label: '道路',
+                    key: Clignment.name,
+                    type: Clignment,
+                    newItemComponent: ClignmentItem,
                 },
                 {
                     label: '断链',

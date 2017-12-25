@@ -37,6 +37,16 @@ const Field = {
         AlignmentFiles: 'alignmentFiles',
         CorridorFiles: 'corridorFiles',
     },
+    Clignment: {
+        Project: 'project',
+        id: 'id',
+        AlignmentID: 'alignmentID',
+        AlignmentCnName: 'alignmentCnName',
+        StationMark: 'stationMark',
+        StartStation: 'startStation',
+        EndStation: 'endStation',
+        CorridorFiles: 'corridorFiles',
+    },
     //
     Chain: {
         Project: 'project',
