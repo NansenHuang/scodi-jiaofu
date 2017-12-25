@@ -85,6 +85,12 @@ export default {
                     editable: true,
                 },
                 {
+                    title: '方向',
+                    key: Field.Alignment.Direction,
+                    align: 'center',
+                    editable: true,
+                },
+                {
                     title: '起点桩号',
                     key: Field.Alignment.StartStation,
                     align: 'center',
