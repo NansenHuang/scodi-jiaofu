@@ -11,6 +11,15 @@ const ActionType = {
     // Query: 'Query',
     // Delete: 'Delete',
     //
+    // Load basic data
+    //
+    LoadBasicData_ConstructionSection: 'load_basic_data_construction_section',
+    LoadBasicData_Alignment: 'load_basic_data_alignment',
+    LoadBasicData_Chain: 'load_basic_data_chain',
+    LoadBasicData_Interchange: 'load_basic_data_interchange',
+    LoadBasicData_Parkinglot: 'load_basic_data_parkinglot',
+    LoadBasicData_Servicearea: 'load_basic_data_servicearea',
+    //
     // Load
     //
     LoadConstructionSection: 'load_construction',

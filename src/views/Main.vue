@@ -218,13 +218,12 @@
             // 显示打开的页面的列表
             this.$store.commit('setOpenedList');
             // 加载所有必需的基础数据
-            this.$store.dispatch(ActionType.LoadAlignment);
-            this.$store.dispatch(ActionType.LoadBlignment);
-            this.$store.dispatch(ActionType.LoadChain);
-            this.$store.dispatch(ActionType.LoadInterchange);
-            this.$store.dispatch(ActionType.LoadParkinglot);
-            this.$store.dispatch(ActionType.LoadServicearea);
-            this.$store.dispatch(ActionType.LoadConstructionSection);
+            this.$store.dispatch(ActionType.LoadBasicData_Alignment);
+            this.$store.dispatch(ActionType.LoadBasicData_Chain);
+            this.$store.dispatch(ActionType.LoadBasicData_Interchange);
+            this.$store.dispatch(ActionType.LoadBasicData_Parkinglot);
+            this.$store.dispatch(ActionType.LoadBasicData_Servicearea);
+            this.$store.dispatch(ActionType.LoadBasicData_ConstructionSection);
         }
     };
 </script>
