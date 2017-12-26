@@ -86,6 +86,28 @@ const ActionType = {
     UpdateOverbridge: 'update_overbridge',
     UpdateTunnel: 'update_tunnel',
     //
+    // Delete
+    //
+    DeleteConstructionSection: 'delete_construction',
+    //
+    DeleteAlignment: 'delete_alignment',
+    DeleteBlignment: 'delete_blignment',
+    DeleteClignment: 'delete_clignment',
+    DeleteSideBlinddrain: 'delete_sideblinddrain',
+    DeleteCrossBlinddrain: 'delete_crossblinddrain',
+    DeleteChain: 'delete_chain',
+    DeleteGuardwall: 'delete_guardwall',
+    DeleteInterchange: 'delete_interchange',
+    DeleteParkinglot: 'delete_parkinglot',
+    DeleteServicearea: 'delete_servicearea',
+    DeleteSoftbase: 'delete_softbase',
+    //
+    DeleteBridge: 'delete_bridge',
+    DeleteCulvert: 'delete_culvert',
+    DeleteGeology: 'delete_geology',
+    DeleteOverbridge: 'delete_overbridge',
+    DeleteTunnel: 'delete_tunnel',
+    //
     // interval tree
     //
     BuildChainIntervalTree: 'build_chain_interval_tree',

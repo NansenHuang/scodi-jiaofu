@@ -29,6 +29,9 @@ export default {
                 return {};
             },
         },
+        tabActive: {
+            type: Boolean,
+        },
         setActiveTabFunc: {
             type: Function,
             default: () => {},

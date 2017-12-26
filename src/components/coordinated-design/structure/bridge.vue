@@ -10,17 +10,16 @@
         :filters="filters"
         @update:filters="val => this.$emit('update:filters',val)"
         @showItemModal="showItemModal"
-        :loadData="loadData"
         :setActiveTabFunc="setActiveTabFunc"
-        :deleteItem="deleteItem"
-        :editItem="editItem"
+        :loadDataAction="ActionType.LoadBridge"
+        :deleteItemAction="ActionType.DeleteBridge"
+        :tabActive="tabActive"
     ></template-table>
 </template>
 
 <script>
 import TemplateTable from 'src/components/coordinated-design/shared/template.vue';
 import Field from 'src/config/field';
-import Services from 'src/services';
 import ActionType from 'src/config/action-type';
 
 export default {
@@ -35,6 +34,9 @@ export default {
                 return {};
             },
         },
+        tabActive: {
+            type: Boolean,
+        },
         setActiveTabFunc: {
             type: Function,
             default: () => {},
@@ -45,24 +47,10 @@ export default {
         showItemModal () {
             this.$emit('showItemModal', this.$options.name, ...arguments);
         },
-        loadData: async function () {
-            this.$store.dispatch(ActionType.LoadBridge);
-        },
-        deleteItem: async function (fieldData) {
-            await Services.Structure.Bridge.delete(fieldData);
-            setTimeout(() => {
-                this.loadData();
-            }, 1500);
-        },
-        editItem: async function (fieldData) {
-            await Services.Structure.Bridge.update(fieldData);
-            setTimeout(() => {
-                this.loadData();
-            }, 1500);
-        },
     },
     data () {
         return {
+            ActionType,
             filterField: Field.Bridge.CnName,
             filterFieldName: '名称',
             columnsList: [

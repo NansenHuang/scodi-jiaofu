@@ -20,6 +20,9 @@ export const actions = {
     [ActionType.UpdateConstructionSection]: function ({commit}, payload) {
         return Services.Section.Construction.update(payload);
     },
+    [ActionType.DeleteConstructionSection]: function ({commit}, payload) {
+        return Services.Section.Construction.delete(payload);
+    },
 };
 
 export const mutations = {};

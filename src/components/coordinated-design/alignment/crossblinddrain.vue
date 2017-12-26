@@ -11,16 +11,15 @@
         @update:filters="val => this.$emit('update:filters',val)"
         @showItemModal="showItemModal"
         :setActiveTabFunc="setActiveTabFunc"
-        :loadData="loadData"
-        :deleteItem="deleteItem"
-        :editItem="editItem"
+        :loadDataAction="ActionType.LoadCrossBlinddrain"
+        :deleteItemAction="ActionType.DeleteCrossBlinddrain"
+        :tabActive="tabActive"
     ></template-table>
 </template>
 
 <script>
 import TemplateTable from 'src/components/coordinated-design/shared/template.vue';
 import Field from 'src/config/field';
-import Services from 'src/services';
 import ActionType from 'src/config/action-type';
 
 export default {
@@ -35,6 +34,9 @@ export default {
                 return {};
             },
         },
+        tabActive: {
+            type: Boolean,
+        },
         setActiveTabFunc: {
             type: Function,
             default: () => {},
@@ -45,24 +47,10 @@ export default {
         showItemModal () {
             this.$emit('showItemModal', this.$options.name, ...arguments);
         },
-        loadData () {
-            this.$store.dispatch(ActionType.LoadCrossBlinddrain);
-        },
-        deleteItem: async function (fieldData) {
-            await Services.Alignment.CrossBlinddrain.delete(fieldData);
-            setTimeout(() => {
-                this.loadData();
-            }, 1500);
-        },
-        editItem: async function (fieldData) {
-            await Services.Alignment.CrossBlinddrain.update(fieldData);
-            setTimeout(() => {
-                this.loadData();
-            }, 1500);
-        },
     },
     data () {
         return {
+            ActionType,
             filterField: Field.CrossBlinddrain.AlignmentCnName,
             filterFieldName: '路线名称',
             columnsList: [

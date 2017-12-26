@@ -87,6 +87,22 @@ export const actions = {
     [ActionType.UpdateTunnel]: function ({commit}, payload) {
         return Services.Structure.Tunnel.update(payload);
     },
+    // delete actions
+    [ActionType.DeleteBridge]: function ({commit}, payload) {
+        return Services.Structure.Bridge.delete(payload);
+    },
+    [ActionType.DeleteCulvert]: function ({commit}, payload) {
+        return Services.Structure.Culvert.delete(payload);
+    },
+    [ActionType.DeleteGeology]: function ({commit}, payload) {
+        return Services.Structure.Geology.delete(payload);
+    },
+    [ActionType.DeleteOverbridge]: function ({commit}, payload) {
+        return Services.Structure.Overbridge.delete(payload);
+    },
+    [ActionType.DeleteTunnel]: function ({commit}, payload) {
+        return Services.Structure.Tunnel.delete(payload);
+    },
 };
 
 export const mutations = {};

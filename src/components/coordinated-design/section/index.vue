@@ -7,6 +7,7 @@
             slot="content"
             slot-scope="props"
             :is="props.isType"
+            :tabActive="props.tabActive"
             @showItemModal="showItemModal"
             :setActiveTabFunc="setActiveTab"
             :filters.sync="filters">
@@ -45,7 +46,7 @@ export default {
             modalVisible: false,
             currentData: null,
             update: false,
-            activeTab: '',
+            activeTab: '施工区段',
             filters: {},
             newItem: null,
             items: [

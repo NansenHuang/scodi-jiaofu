@@ -224,7 +224,40 @@ export const actions = {
     [ActionType.UpdateSoftbase]: function ({commit}, payload) {
         return Services.Alignment.Softbase.update(payload);
     },
-
+    // delete actions
+    [ActionType.DeleteAlignment]: function ({commit}, payload) {
+        return Services.Alignment.Alignment.delete(payload);
+    },
+    [ActionType.DeleteBlignment]: function ({commit}, payload) {
+        return Services.Alignment.Blignment.delete(payload);
+    },
+    [ActionType.DeleteClignment]: function ({commit}, payload) {
+        return Services.Alignment.Clignment.delete(payload);
+    },
+    [ActionType.DeleteSideBlinddrain]: function ({commit}, payload) {
+        return Services.Alignment.Blinddrain.delete(payload);
+    },
+    [ActionType.DeleteCrossBlinddrain]: function ({commit}, payload) {
+        return Services.Alignment.Blinddrain.delete(payload);
+    },
+    [ActionType.DeleteChain]: function ({commit}, payload) {
+        return Services.Alignment.Chain.delete(payload);
+    },
+    [ActionType.DeleteGuardwall]: function ({commit}, payload) {
+        return Services.Alignment.Guardwall.delete(payload);
+    },
+    [ActionType.DeleteInterchange]: function ({commit}, payload) {
+        return Services.Alignment.Interchange.delete(payload);
+    },
+    [ActionType.DeleteParkinglot]: function ({commit}, payload) {
+        return Services.Alignment.Parkinglot.delete(payload);
+    },
+    [ActionType.DeleteServicearea]: function ({commit}, payload) {
+        return Services.Alignment.Servicearea.delete(payload);
+    },
+    [ActionType.DeleteSoftbase]: function ({commit}, payload) {
+        return Services.Alignment.Softbase.delete(payload);
+    },
 };
 
 export const mutations = {};

@@ -11,16 +11,15 @@
         @update:filters="val => this.$emit('update:filters',val)"
         @showItemModal="showItemModal"
         :setActiveTabFunc="setActiveTabFunc"
-        :loadData="loadData"
-        :deleteItem="deleteItem"
-        :editItem="editItem"
+        :loadDataAction="ActionType.LoadParkinglot"
+        :deleteItemAction="ActionType.DeleteParkinglot"
+        :tabActive="tabActive"
     ></template-table>
 </template>
 
 <script>
 import TemplateTable from 'src/components/coordinated-design/shared/template.vue';
 import Field from 'src/config/field';
-import Services from 'src/services';
 import ActionType from 'src/config/action-type';
 
 export default {
@@ -35,6 +34,9 @@ export default {
                 return {};
             },
         },
+        tabActive: {
+            type: Boolean,
+        },
         setActiveTabFunc: {
             type: Function,
             default: () => {},
@@ -45,24 +47,10 @@ export default {
         showItemModal () {
             this.$emit('showItemModal', this.$options.name, ...arguments);
         },
-        loadData: async function () {
-            this.$store.dispatch(ActionType.LoadParkinglot);
-        },
-        deleteItem: async function (fieldData) {
-            await Services.Alignment.Parkinglot.delete(fieldData);
-            setTimeout(() => {
-                this.loadData();
-            }, 1500);
-        },
-        editItem: async function (fieldData) {
-            await Services.Alignment.Parkinglot.update(fieldData);
-            setTimeout(() => {
-                this.loadData();
-            }, 1500);
-        },
     },
     data () {
         return {
+            ActionType,
             filterField: Field.Parkinglot.CnName,
             filterFieldName: '停车区名称',
             columnsList: [
