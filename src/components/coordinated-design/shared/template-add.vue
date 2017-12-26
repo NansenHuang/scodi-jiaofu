@@ -5,7 +5,7 @@
 <template>
   <div>
       <Form :label-width="100" style="padding: 0 20px;">
-          <FormItem v-for="f in fields" :key="f.key" :label="f.label">
+          <FormItem v-for="f in fields" :key="f.vueKey || f.key" :label="f.label">
               <component
                 :is="f.component || getComponent(f.type)"
                 :itemData="data"

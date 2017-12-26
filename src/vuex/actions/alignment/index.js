@@ -78,6 +78,16 @@ const actions = {
         let request = getRequestFunc(commit, queryFunc, queryParams, recursive, idField, storePath);
         return delayRequest(request, payload.delay);
     },
+    [ActionType.LoadClignment]: function ({commit}, payload = {}) {
+        let queryFunc = Services.Alignment.Clignment.query;
+        let queryParams = payload.query;
+        let recursive = true; // TODO true?
+        let idField = Field.Clignment.id;
+        let storePath = ['highway', 'alignment', 'clignment'];
+
+        let request = getRequestFunc(commit, queryFunc, queryParams, recursive, idField, storePath);
+        return delayRequest(request, payload.delay);
+    },
     [ActionType.LoadSideBlinddrain]: function ({commit}, payload = {}) {
         let queryBody = {
             'query': {
@@ -207,6 +217,9 @@ const actions = {
     [ActionType.AddBlignment]: function ({commit}, payload) {
         return Services.Alignment.Blignment.add(payload);
     },
+    [ActionType.AddClignment]: function ({commit}, payload) {
+        return Services.Alignment.Clignment.add(payload);
+    },
     [ActionType.AddSideBlinddrain]: function ({commit}, payload) {
         return Services.Alignment.Blinddrain.add(payload);
     },
@@ -237,6 +250,9 @@ const actions = {
     },
     [ActionType.UpdateBlignment]: function ({commit}, payload) {
         return Services.Alignment.Blignment.update(payload);
+    },
+    [ActionType.UpdateClignment]: function ({commit}, payload) {
+        return Services.Alignment.Clignment.update(payload);
     },
     [ActionType.UpdateSideBlinddrain]: function ({commit}, payload) {
         return Services.Alignment.Blinddrain.update(payload);

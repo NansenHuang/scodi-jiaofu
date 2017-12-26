@@ -17,6 +17,7 @@ const ActionType = {
     //
     LoadAlignment: 'load_alignment',
     LoadBlignment: 'load_blignment',
+    LoadClignment: 'load_clignment',
     LoadSideBlinddrain: 'load_sideblinddrain',
     LoadCrossBlinddrain: 'load_crossblinddrain',
     LoadChain: 'load_chain',
@@ -38,6 +39,7 @@ const ActionType = {
     //
     AddAlignment: 'add_alignment',
     AddBlignment: 'add_blignment',
+    AddClignment: 'add_clignment',
     AddSideBlinddrain: 'add_sideblinddrain',
     AddCrossBlinddrain: 'add_crossblinddrain',
     AddChain: 'add_chain',
@@ -59,6 +61,7 @@ const ActionType = {
     //
     UpdateAlignment: 'update_alignment',
     UpdateBlignment: 'update_blignment',
+    UpdateClignment: 'update_clignment',
     UpdateSideBlinddrain: 'update_sideblinddrain',
     UpdateCrossBlinddrain: 'update_crossblinddrain',
     UpdateChain: 'update_chain',

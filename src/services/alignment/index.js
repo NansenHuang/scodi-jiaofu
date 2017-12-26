@@ -1,5 +1,6 @@
 import Alignment from './alignment';
 import Blignment from './blignment';
+import Clignment from './clignment';
 import Chain from './chain';
 import Guardwall from './guardwall';
 import Interchange from './interchange';
@@ -11,6 +12,7 @@ import Blinddrain from './blinddrain';
 export default {
     Alignment,
     Blignment,
+    Clignment,
     Chain,
     Guardwall,
     Interchange,

@@ -21,8 +21,6 @@ const Field = {
         StationMark: 'stationMark',
         StartStation: 'startStation',
         EndStation: 'endStation',
-        // in future
-        // Attachments: 'Attachments',
     },
     //
     Blignment: {
@@ -30,11 +28,21 @@ const Field = {
         id: 'id',
         AlignmentID: 'alignmentID',
         AlignmentCnName: 'alignmentCnName',
-        Region: 'region',
+        CnName: 'blignmentCnName',
         StationMark: 'stationMark',
         StartStation: 'startStation',
         EndStation: 'endStation',
         AlignmentFiles: 'alignmentFiles',
+        CorridorFiles: 'corridorFiles',
+    },
+    Clignment: {
+        Project: 'project',
+        id: 'id',
+        AlignmentID: 'alignmentID',
+        AlignmentCnName: 'alignmentCnName',
+        StationMark: 'stationMark',
+        StartStation: 'startStation',
+        EndStation: 'endStation',
         CorridorFiles: 'corridorFiles',
     },
     //
@@ -95,6 +103,7 @@ const Field = {
         StationMark: 'stationMark',
         Station: 'station',
         StationChain: 'stationChain',
+        Posture: 'posture',
         Desc: 'desc',
         BimFiles: 'bimFiles',
         //
@@ -109,6 +118,7 @@ const Field = {
         StationMark: 'stationMark',
         Station: 'station',
         StationChain: 'stationChain',
+        Posture: 'posture',
         Desc: 'desc',
         BimFiles: 'bimFiles',
     },
@@ -127,6 +137,7 @@ const Field = {
         SectionID: 'sectionID',
         LeftPart: 'leftParts',
         RightPart: 'rightPart',
+        Posture: 'posture',
         Desc: 'desc',
         BimFiles: 'bimFiles',
     },
@@ -154,6 +165,7 @@ const Field = {
         SectionID: 'sectionID',
         LeftPart: 'leftParts',
         RightPart: 'rightPart',
+        Posture: 'posture',
         Desc: 'desc',
         BimFiles: 'bimFiles',
     },
@@ -179,23 +191,6 @@ const Field = {
         Desc: 'desc',
     },
     Guardwall: {
-        Project: 'project',
-        id: 'id',
-        Type: 'type',
-        ModelType: 'modelType',
-        SectionID: 'sectionID',
-        AlignmentID: 'alignmentID',
-        AlignmentCnName: 'alignmentCnName',
-        StationMark: 'stationMark',
-        StartStation: 'startStation',
-        EndStation: 'endStation',
-        StartStationChain: 'startStationChain',
-        EndStationChain: 'endStationChain',
-        Desc: 'desc',
-        //
-        Direction: 'direction', // doubt?
-    },
-    Blinddrain: {
         Project: 'project',
         id: 'id',
         Type: 'type',
@@ -341,6 +336,15 @@ export const SubField = {
         },
     },
     Bridge: {
+        Posture: {
+            x: 'x',
+            y: 'y',
+            z: 'z',
+            alpha: '',
+            beta: '',
+            gamma: '',
+            scale: '',
+        },
         LeftPart: {
             AlignmentID: 'alignmentID',
             AlignmentCnName: 'alignmentCnName',
@@ -360,7 +364,38 @@ export const SubField = {
             EndStationChain: 'endStationChain',
         },
     },
+    Culvert: {
+        Posture: {
+            x: 'x',
+            y: 'y',
+            z: 'z',
+            alpha: '',
+            beta: '',
+            gamma: '',
+            scale: '',
+        },
+    },
+    Overbridge: {
+        Posture: {
+            x: 'x',
+            y: 'y',
+            z: 'z',
+            alpha: '',
+            beta: '',
+            gamma: '',
+            scale: '',
+        },
+    },
     Tunnel: {
+        Posture: {
+            x: 'x',
+            y: 'y',
+            z: 'z',
+            alpha: '',
+            beta: '',
+            gamma: '',
+            scale: '',
+        },
         LeftPart: {
             AlignmentID: 'alignmentID',
             AlignmentCnName: 'alignmentCnName',

@@ -87,6 +87,12 @@ export default {
                     editable: true,
                 },
                 {
+                    title: '偏移量',
+                    key: Field.Overbridge.Posture,
+                    align: 'center',
+                    editable: true,
+                },
+                {
                     title: '桩号',
                     key: Field.Overbridge.Station,
                     align: 'center',
