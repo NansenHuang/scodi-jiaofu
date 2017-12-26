@@ -3,7 +3,7 @@ import Services from 'src/services';
 import Field from 'src/config/field';
 import {getRequestFunc, delayRequest} from '../request-func';
 
-const actions = {
+export const actions = {
     [ActionType.LoadConstructionSection]: function ({commit}, payload = {}) {
         let queryFunc = Services.Section.Construction.query;
         let queryParams = payload.query;
@@ -22,4 +22,4 @@ const actions = {
     },
 };
 
-export default actions;
+export const mutations = {};
