@@ -1,23 +1,18 @@
 import Cookies from 'js-cookie';
 import isJSON from 'is-json';
 
-import Field, {SubField} from 'src/config/field';
+import Field from 'src/config/field';
 import Services from 'src/services';
-
-function delayedQuery (project, modelType, files) {
-    return new Promise((resolve) => {
-        setTimeout(async () => {
-            let result = await Services.Storage.getDownloadUrls(project, modelType, files);
-            resolve(result);
-        }, 100);
-    });
-};
 
 export default async function (type, data, state) {
     // clone data
     let srcData = JSON.parse(JSON.stringify(data));
+
+    // check data
     if (!(srcData && Array.isArray(srcData))) {
-        throw new Error(`${type.key} data to process is invalid. Please check.`);
+        // eslint-disable-next-line no-console
+        console.error(`${type.key} data to process is invalid. Please check.`);
+        return [];
     };
 
     // 1、
@@ -29,129 +24,191 @@ export default async function (type, data, state) {
             };
         });
     });
+
     // 2、
-    // add tableType
+    // fill tableType field
     srcData.map((dataItem) => {
         dataItem['tableType'] = type.fileName;
     });
+
     // 3、
     // process LeftParts
-    if (type.key === 'Section') {
-        let newData = [];
-        srcData.map((item) => {
-            if (item[Field.Section.RightPart]) {
-                let newItem = JSON.parse(JSON.stringify(item));
-                delete newItem[Field.Section.LeftPart];
-                newData.push(newItem);
-            };
-            if (item[Field.Section.LeftPart] && Array.isArray(item[Field.Section.LeftPart])) {
-                for (let i = 0; i < item[Field.Section.LeftPart].length; i++) {
+    let newData = [];
+    let alignments = state['highway']['alignment']['alignment'];
+    switch (type.key) {
+        case 'Section':
+            srcData.map((item) => {
+                if (item[Field.Section.RightPart]) {
                     let newItem = JSON.parse(JSON.stringify(item));
-                    newItem[Field.Section.RightPart] = newItem[Field.Section.LeftPart][i];
                     delete newItem[Field.Section.LeftPart];
                     newData.push(newItem);
                 };
-            };
-        });
-        srcData = newData;
-    };
-    if (type.key === 'Bridge' || type.key === 'Tunnel') {
-        let newData = [];
-        srcData.map((dataItem) => {
-            if (dataItem[Field.Bridge.LeftPart] && Array.isArray(dataItem[Field.Bridge.LeftPart])) {
-                // find the right alignmentid
-                let rightAlignmentId = dataItem[Field.Bridge.RightPart] && dataItem[Field.Bridge.RightPart][SubField.Bridge.RightPart.AlignmentID];
-                // seperate left part alignments
-                let leftsAlongWithRight = dataItem[Field.Bridge.LeftPart].filter(
-                    item => item[SubField.Bridge.LeftPart.AlignmentID] === rightAlignmentId
-                );
-                let leftsSeperated = dataItem[Field.Bridge.LeftPart].filter(
-                    item => item[SubField.Bridge.LeftPart.AlignmentID] !== rightAlignmentId
-                );
-
-                // process right
-                if (leftsAlongWithRight.length) {
-                    let itemWithRight = JSON.parse(JSON.stringify(dataItem));
-                    itemWithRight[Field.Bridge.LeftPart] = leftsAlongWithRight[0];
-                    newData.push(itemWithRight);
+                if (item[Field.Section.LeftPart] && Array.isArray(item[Field.Section.LeftPart])) {
+                    for (let i = 0; i < item[Field.Section.LeftPart].length; i++) {
+                        let newItem = JSON.parse(JSON.stringify(item));
+                        newItem[Field.Section.RightPart] = newItem[Field.Section.LeftPart][i];
+                        delete newItem[Field.Section.LeftPart];
+                        newData.push(newItem);
+                    };
                 };
-                // process left
-                leftsSeperated.map((item) => {
-                    let itemOnlyLeft = JSON.parse(JSON.stringify(dataItem));
-                    delete itemOnlyLeft[Field.Bridge.RightPart];
-                    itemOnlyLeft[Field.Bridge.LeftPart] = item;
-                    newData.push(itemOnlyLeft);
-                });
-            } else {
-                newData.push(JSON.parse(JSON.stringify(dataItem)));
-            };
-        });
-        srcData = newData;
-    };
-    if (type.key === 'Blignment') {
-        let alignments = state['highway']['alignment']['alignment'];
-        srcData.map((blignmentItem) => {
-            let al = alignments.filter(item => {
-                return item[Field.Alignment.id] === blignmentItem[Field.Blignment.AlignmentID];
             });
-            if (al.length) {
-                let str = JSON.stringify({
-                    regionID: al[0][Field.Alignment.OwerID],
-                    regionType: al[0][Field.Alignment.OwerType],
-                    regionCnName: al[0][Field.Alignment.OwerCnName],
-                    siteID: '',
-                    siteType: '',
-                    siteCnName: '',
-                });
-                blignmentItem['region'] = str.replace(/,/g, '#');
-            };
-        });
-    };
-    if (type.key === 'Chain') {
-        let alignments = state['highway']['alignment']['alignment'];
-        srcData.map((chainItem) => {
-            let al = alignments.filter(item => {
-                return item[Field.Alignment.id] === chainItem[Field.Chain.AlignmentID];
+            srcData = newData;
+            break;
+        case 'Bridge':
+        case 'Tunnel':
+            srcData.map((dataItem) => {
+                if (dataItem['leftParts'] && Array.isArray(dataItem['leftParts'])) {
+                    // get the right alignment id
+                    let rightAlignmentId = dataItem['rightPart'] && dataItem['rightPart']['alignmentID'];
+                    // separate leftParts
+                    let leftsAlongWithRight = dataItem['leftParts'].filter(item => item['alignmentID'] === rightAlignmentId);
+                    let leftsSeparated = dataItem['leftParts'].filter(item => item['alignmentID'] !== rightAlignmentId);
+                    // process right
+                    if (leftsAlongWithRight.length) {
+                        let itemWithRight = JSON.parse(JSON.stringify(dataItem));
+                        itemWithRight['leftParts'] = leftsAlongWithRight[0];
+                        newData.push(itemWithRight);
+                    };
+                    // process left
+                    leftsSeparated.map((item) => {
+                        let itemOnlyLeft = JSON.parse(JSON.stringify(dataItem));
+                        delete itemOnlyLeft['rightPart'];
+                        itemOnlyLeft['leftParts'] = item;
+                        newData.push(itemOnlyLeft);
+                    });
+                } else {
+                    newData.push(JSON.parse(JSON.stringify(dataItem)));
+                };
             });
-            if (al.length) {
-                chainItem['stationMark'] = al[0][Field.Alignment.StationMark];
-            };
-        });
+            srcData = newData;
+            break;
+        case 'Bridge_Model':
+            srcData.map((item) => {
+                if (typeof item['leftParts'] !== 'string') {
+                    item['leftParts'] = JSON.stringify(item['leftParts']);
+                };
+                let str = item['leftParts'] || '';
+                item['leftParts'] = str.replace(/,/g, '#');
+            });
+            break;
     };
+
     // 4、
+    // other process
+    switch (type.key) {
+        case 'Blignment':
+            srcData.map((blignmentItem) => {
+                let al = alignments.filter(item => item[Field.Alignment.id] === blignmentItem[Field.Blignment.AlignmentID]);
+                if (al.length) {
+                    let str = JSON.stringify({
+                        regionID: al[0][Field.Alignment.OwerID],
+                        regionType: al[0][Field.Alignment.OwerType],
+                        regionCnName: al[0][Field.Alignment.OwerCnName],
+                        siteID: '',
+                        siteType: '',
+                        siteCnName: '',
+                    });
+                    blignmentItem['region'] = str.replace(/,/g, '#').replace(/None/g, '');
+                };
+            });
+            break;
+        case 'Clignment':
+            srcData.map((clignmentItem) => {
+                let al = alignments.filter(item => item[Field.Alignment.id] === clignmentItem[Field.Blignment.AlignmentID]);
+                if (al.length) {
+                    clignmentItem['direction'] = al[0][Field.Alignment.Direction];
+                };
+            });
+            break;
+        case 'Chain':
+            srcData.map((chainItem) => {
+                let al = alignments.filter(item => item[Field.Alignment.id] === chainItem[Field.Chain.AlignmentID]);
+                if (al.length) {
+                    chainItem['stationMark'] = al[0][Field.Alignment.StationMark];
+                };
+            });
+            break;
+    };
+
+    // 5、
     // get file access urls
+    let urlsObject = {};
+    let fileType;
     for (let i = 0; i < srcData.length; i++) {
         let dataItem = srcData[i];
-        if (type.key === 'Blignment') {
-            {
-                let filesInfo = dataItem['alignmentFiles'];
-                if (filesInfo && Array.isArray(filesInfo) && filesInfo.files && filesInfo.files.length) {
-                    let remoteFiles = await
-                        delayedQuery(Cookies.get('project'), filesInfo.type, filesInfo.files.map(item => item.name));
-                    dataItem['alignmentFiles'] = remoteFiles.map(item => item.uri).join(',');
-                };
-            };
-            {
-                let filesInfo = dataItem['corridorFiles'];
-                if (filesInfo && Array.isArray(filesInfo) && filesInfo.files && filesInfo.files.length) {
-                    let remoteFiles = await
-                        delayedQuery(Cookies.get('project'), filesInfo.type, filesInfo.files.map(item => item.name));
-                    dataItem['corridorFiles'] = remoteFiles.map(item => item.uri).join(',');
-                };
+        {
+            let filesInfo = dataItem['alignmentFiles'];
+            if (filesInfo && Array.isArray(filesInfo.files) && filesInfo.files.length) {
+                fileType = filesInfo.type;
+                filesInfo.files.map((item) => {
+                    urlsObject[item.name] = item;
+                });
             };
         };
-        if (type.key === 'Bridge_Model') {
-            // if (type.key === 'Culvert' || type.key === 'Overbridge' || type.key === 'Bridge' || type.key === 'Geology' || type.key === 'Tunnel') {
+        {
+            let filesInfo = dataItem['corridorFiles'];
+            if (filesInfo && Array.isArray(filesInfo.files) && filesInfo.files.length) {
+                fileType = filesInfo.type;
+                filesInfo.files.map((item) => {
+                    urlsObject[item.name] = item;
+                });
+            };
+        };
+        {
             let filesInfo = dataItem['bimFiles'];
-            if (filesInfo && Array.isArray(filesInfo) && filesInfo.files && filesInfo.files.length) {
-                let remoteFiles = await
-                    delayedQuery(Cookies.get('project'), filesInfo.type, filesInfo.files.map(item => item.name));
-                dataItem['alignmentFiles'] = remoteFiles.map(item => item.uri).join(',');
+            if (filesInfo && Array.isArray(filesInfo.files) && filesInfo.files.length) {
+                fileType = filesInfo.type;
+                filesInfo.files.map((item) => {
+                    urlsObject[item.name] = item;
+                });
             };
         };
-
     };
+    const size = 50;
+    let index = 0;
+    let taskList = Object.values(urlsObject);
+    while (taskList.length) {
+        let startIndex = index * size;
+        let endIndex = startIndex + 49;
+        endIndex = endIndex < taskList.length ? endIndex : taskList.length - 1;
+        let filesToQuery = taskList.filter((item, index) => index >= startIndex && index <= endIndex);
+        let remoteFiles = await Services.Storage.getDownloadUrls(Cookies.get('project'), fileType, filesToQuery.map(item => item.name));
+        remoteFiles.map((item) => {
+            urlsObject[item.name] = {
+                ...urlsObject[item.name],
+                ...item,
+            };
+        });
+        index += 1;
+        if (index * 50 >= taskList.length) {
+            break;
+        };
+    };
+    for (let i = 0; i < srcData.length; i++) {
+        let dataItem = srcData[i];
+        {
+            let filesInfo = dataItem['alignmentFiles'];
+            if (filesInfo && Array.isArray(filesInfo.files) && filesInfo.files.length) {
+                let requestedFiles = filesInfo.files.map(item => urlsObject[item.name].uri);
+                dataItem['alignmentFiles'] = requestedFiles.join(',');
+            };
+        };
+        {
+            let filesInfo = dataItem['corridorFiles'];
+            if (filesInfo && Array.isArray(filesInfo.files) && filesInfo.files.length) {
+                let requestedFiles = filesInfo.files.map(item => urlsObject[item.name].uri);
+                dataItem['corridorFiles'] = requestedFiles.join(',');
+            };
+        };
+        {
+            let filesInfo = dataItem['bimFiles'];
+            if (filesInfo && Array.isArray(filesInfo.files) && filesInfo.files.length) {
+                let requestedFiles = filesInfo.files.map(item => urlsObject[item.name].uri);
+                dataItem['bimFiles'] = requestedFiles.join(',');
+            };
+        };
+    };
+
     //
-    // finish
     return srcData;
 };

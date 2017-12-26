@@ -169,11 +169,6 @@ const NodeField = {
             'value': 'alignmentFiles',
             'enable': true
         },
-        // {
-        //     'label': 'corridorFiles',
-        //     'value': 'corridorFiles',
-        //     'enable': true
-        // },
         {
             'label': 'tableType',
             'value': 'tableType',
@@ -199,6 +194,11 @@ const NodeField = {
         {
             'label': 'alignmentCnName',
             'value': 'alignmentCnName',
+            'enable': true
+        },
+        {
+            'label': 'direction',
+            'value': 'direction',
             'enable': true
         },
         // {
@@ -677,6 +677,11 @@ const NodeField = {
             'enable': true
         },
         {
+            'label': 'direction',
+            'value': 'direction',
+            'enable': true
+        },
+        {
             'label': 'tableType',
             'value': 'tableType',
             'enable': true
@@ -721,6 +726,11 @@ const NodeField = {
         {
             'label': 'stationChain',
             'value': 'stationChain',
+            'enable': true
+        },
+        {
+            'label': 'direction',
+            'value': 'direction',
             'enable': true
         },
         {
@@ -833,6 +843,11 @@ const NodeField = {
         {
             'label': 'rightEndStationChain',
             'value': 'rightPart.endStationChain',
+            'enable': true
+        },
+        {
+            'label': 'direction',
+            'value': 'direction',
             'enable': true
         },
         {
@@ -1022,6 +1037,11 @@ const NodeField = {
         {
             'label': 'rightEndStationChain',
             'value': 'rightPart.endStationChain',
+            'enable': true
+        },
+        {
+            'label': 'direction',
+            'value': 'direction',
             'enable': true
         },
         {
@@ -1344,7 +1364,78 @@ const NodeField = {
         }
     ],
     //
-    Bridge_Model: [],
+    Bridge_Model: [
+        {
+            'label': 'project',
+            'value': 'project',
+            'enable': false
+        },
+        {
+            'label': 'idx',
+            'value': 'id',
+            'enable': true
+        },
+        {
+            'label': 'bridgeCnName',
+            'value': 'bridgeCnName',
+            'enable': true
+        },
+        {
+            'label': 'bridgeEnName',
+            'value': 'bridgeEnName',
+            'enable': true
+        },
+        {
+            'label': 'section',
+            'value': 'sectionID',
+            'enable': true
+        },
+        {
+            'label': 'rightAlignmentID',
+            'value': 'rightPart.alignmentID',
+            'enable': true
+        },
+        {
+            'label': 'rightAlignmentCnName',
+            'value': 'rightPart.alignmentCnName',
+            'enable': true
+        },
+        {
+            'label': 'x',
+            'value': 'posture.x',
+            'enable': true
+        },
+        {
+            'label': 'y',
+            'value': 'posture.y',
+            'enable': true
+        },
+        {
+            'label': 'z',
+            'value': 'posture.z',
+            'enable': true
+        },
+        {
+            'label': 'angle',
+            'value': 'posture.alpha',
+            'enable': true
+        },
+        {
+            'label': 'leftParts',
+            'value': 'leftParts',
+            'enable': true
+        },
+        {
+            'label': 'desc',
+            'value': 'desc',
+            'enable': true
+        },
+        {
+            'label': 'bimFile',
+            'value': 'bimFiles',
+            'enable': true
+        }
+    ],
 };
 
 export default NodeField;
