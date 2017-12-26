@@ -8,7 +8,7 @@ export const actions = {
     [ActionType.LoadBridge]: function ({commit}, payload = {}) {
         let queryFunc = Services.Structure.Bridge.query;
         let queryParams = payload.query;
-        let recursive = true;
+        let recursive = payload.recursive;
         let idField = Field.Bridge.id;
         let storePath = ['highway', 'structure', 'bridge'];
 
@@ -48,7 +48,7 @@ export const actions = {
     [ActionType.LoadTunnel]: function ({commit}, payload = {}) {
         let queryFunc = Services.Structure.Tunnel.query;
         let queryParams = payload.query;
-        let recursive = true;
+        let recursive = payload.recursive;
         let idField = Field.Tunnel.id;
         let storePath = ['highway', 'structure', 'tunnel'];
 

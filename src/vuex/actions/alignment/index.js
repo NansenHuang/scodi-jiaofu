@@ -8,7 +8,7 @@ export const actions = {
     [ActionType.LoadAlignment]: function ({commit}, payload = {}) {
         let queryFunc = Services.Alignment.Alignment.query;
         let queryParams = payload.query;
-        let recursive = true;
+        let recursive = payload.recursive;
         let idField = Field.Alignment.id;
         let storePath = ['highway', 'alignment', 'alignment'];
 
@@ -18,7 +18,7 @@ export const actions = {
     [ActionType.LoadBlignment]: function ({commit}, payload = {}) {
         let queryFunc = Services.Alignment.Blignment.query;
         let queryParams = payload.query;
-        let recursive = true; // TODO true?
+        let recursive = payload.recursive;
         let idField = Field.Blignment.id;
         let storePath = ['highway', 'alignment', 'blignment'];
 
@@ -28,7 +28,7 @@ export const actions = {
     [ActionType.LoadClignment]: function ({commit}, payload = {}) {
         let queryFunc = Services.Alignment.Clignment.query;
         let queryParams = payload.query;
-        let recursive = true; // TODO true?
+        let recursive = payload.recursive;
         let idField = Field.Clignment.id;
         let storePath = ['highway', 'alignment', 'clignment'];
 
@@ -96,7 +96,7 @@ export const actions = {
     [ActionType.LoadChain]: function ({commit}, payload = {}) {
         let queryFunc = Services.Alignment.Chain.query;
         let queryParams = payload.query;
-        let recursive = true;
+        let recursive = payload.recursive;
         let idField = Field.Chain.id;
         let storePath = ['highway', 'alignment', 'chain'];
 
@@ -119,7 +119,7 @@ export const actions = {
     [ActionType.LoadInterchange]: function ({commit}, payload = {}) {
         let queryFunc = Services.Alignment.Interchange.query;
         let queryParams = payload.query;
-        let recursive = true;
+        let recursive = payload.recursive;
         let idField = Field.Interchange.id;
         let storePath = ['highway', 'alignment', 'interchange'];
 
@@ -129,7 +129,7 @@ export const actions = {
     [ActionType.LoadParkinglot]: function ({commit}, payload = {}) {
         let queryFunc = Services.Alignment.Parkinglot.query;
         let queryParams = payload.query;
-        let recursive = true;
+        let recursive = payload.recursive;
         let idField = Field.Parkinglot.id;
         let storePath = ['highway', 'alignment', 'parkinglot'];
 
@@ -139,7 +139,7 @@ export const actions = {
     [ActionType.LoadServicearea]: function ({commit}, payload = {}) {
         let queryFunc = Services.Alignment.Servicearea.query;
         let queryParams = payload.query;
-        let recursive = true;
+        let recursive = payload.recursive;
         let idField = Field.Servicearea.id;
         let storePath = ['highway', 'alignment', 'servicearea'];
 

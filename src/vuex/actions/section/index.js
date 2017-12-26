@@ -7,7 +7,7 @@ export const actions = {
     [ActionType.LoadConstructionSection]: function ({commit}, payload = {}) {
         let queryFunc = Services.Section.Construction.query;
         let queryParams = payload.query;
-        let recursive = true;
+        let recursive = payload.recursive;
         let idField = Field.Section.id;
         let storePath = ['highway', 'section', 'construction'];
 
