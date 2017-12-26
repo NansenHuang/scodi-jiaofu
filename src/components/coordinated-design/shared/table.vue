@@ -15,6 +15,7 @@
             border
             disabled-hover
         ></Table>
+        <Page :styles="{marginTop: '10px'}" :total="this.value.length" @on-change="pageChange" :current.sync="currentPage" :page-size="pageCapacity"></Page>
     </div>
 </template>
 
@@ -186,8 +187,20 @@ export default {
             default: false
         }
     },
+    computed: {
+        pageData: function () {
+            return this.value.filter((item, index) =>
+                (index >= (this.currentPage - 1) * this.pageCapacity) &&
+                (index < this.currentPage * this.pageCapacity) &&
+                (index < this.value.length));
+        },
+    },
     data () {
         return {
+            // pagination
+            pageCapacity: 10,
+            currentPage: 1,
+            //
             columns: [],
             thisTableData: [],
             edittingStore: []
@@ -198,6 +211,10 @@ export default {
         this.setFilter();
     },
     methods: {
+        pageChange () {
+            console.log('page change: ', arguments);
+            // TODO load more data or reload data according to new sort & query
+        },
         init () {
             let vm = this;
             let editableCell = this.columnsList.filter(item => {
@@ -207,7 +224,7 @@ export default {
                     }
                 }
             });
-            let cloneData = JSON.parse(JSON.stringify(this.value));
+            let cloneData = JSON.parse(JSON.stringify(this.pageData));
             cloneData.map((dataItem) => {
                 Object.keys(dataItem).map((key) => {
                     if (typeof dataItem[key] === 'object') {
@@ -369,6 +386,10 @@ export default {
         },
     },
     watch: {
+        pageData (data) {
+            this.init();
+            this.setFilter();
+        },
         value (data) {
             this.init();
             this.setFilter();

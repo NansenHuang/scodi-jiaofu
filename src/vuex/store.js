@@ -1,8 +1,9 @@
 import ActionType from '../config/action-type';
 
-import AlignmentAction, { mutations as AlignmentMutations } from './actions/alignment';
-import StructureAction from './actions/structure';
-import SectionAction from './actions/section';
+import { actions as AlignmentActions, mutations as AlignmentMutations } from './actions/alignment';
+import { actions as StructureActions, mutations as StructureMutations } from './actions/structure';
+import { actions as SectionActions, mutations as SectionMutations } from './actions/section';
+import { actions as OtherActions, mutations as OtherMutations } from './actions/others';
 
 function deepFind (obj, pathArray) {
     let current = obj;
@@ -68,6 +69,9 @@ export const mutations = {
         state['highway']['globalMessage'].push(payload);
     },
     ...AlignmentMutations,
+    ...StructureMutations,
+    ...SectionMutations,
+    ...OtherMutations,
 };
 
 export const actions = {
@@ -83,7 +87,8 @@ export const actions = {
             ...payload,
         });
     },
-    ...AlignmentAction,
-    ...StructureAction,
-    ...SectionAction,
+    ...AlignmentActions,
+    ...StructureActions,
+    ...SectionActions,
+    ...OtherActions,
 };
