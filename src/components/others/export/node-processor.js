@@ -80,15 +80,15 @@ export default async function (type, data, state) {
             });
             srcData = newData;
             break;
-        case 'Bridge_Model':
-            srcData.map((item) => {
-                if (typeof item['leftParts'] !== 'string') {
-                    item['leftParts'] = JSON.stringify(item['leftParts']);
-                };
-                let str = item['leftParts'] || '';
-                item['leftParts'] = str.replace(/,/g, '#');
-            });
-            break;
+        // case 'Bridge_Model':
+        //     srcData.map((item) => {
+        //         if (typeof item['leftParts'] !== 'string') {
+        //             item['leftParts'] = JSON.stringify(item['leftParts']);
+        //         };
+        //         let str = item['leftParts'] || '';
+        //         item['leftParts'] = str.replace(/,/g, '#');
+        //     });
+        //     break;
     };
 
     // add alignments
@@ -108,6 +108,7 @@ export default async function (type, data, state) {
                         'station': dataItem['station'],
                         'stationChain': dataItem['stationChain'],
                     }]);
+                    dataItem[targetField] = dataItem[targetField].replace(/,/g, '#');
                 };
             });
             break;
@@ -132,9 +133,11 @@ export default async function (type, data, state) {
                         'startStationChain': dataItem['startStationChain'],
                         'endStationChain': dataItem['endStationChain'],
                     }]);
+                    dataItem[targetField] = dataItem[targetField].replace(/,/g, '#');
                 };
             });
             break;
+        case 'Bridge_Model':
         case 'Bridge':
         case 'Tunnel':
             srcData.map((dataItem) => {
@@ -142,9 +145,16 @@ export default async function (type, data, state) {
                 dataItem['rightPartsCopy'] = '[]';
                 if (dataItem['leftParts'] && dataItem['leftParts'].hasOwnProperty('alignmentID')) {
                     dataItem['leftPartsCopy'] = JSON.stringify([dataItem['leftParts']]);
+                    dataItem['leftPartsCopy'] = dataItem['leftPartsCopy'].replace(/,/g, '#');
                 };
                 if (dataItem['rightPart'] && dataItem['rightPart'].hasOwnProperty('alignmentID')) {
                     dataItem['rightPartsCopy'] = JSON.stringify([dataItem['rightPart']]);
+                    dataItem['rightPartsCopy'] = dataItem['rightPartsCopy'].replace(/,/g, '#');
+                };
+                // for bridge_model
+                if (dataItem['leftParts'] && Array.isArray(dataItem['leftParts'])) {
+                    dataItem['leftPartsCopy'] = JSON.stringify(dataItem['leftParts']);
+                    dataItem['leftPartsCopy'] = dataItem['leftPartsCopy'].replace(/,/g, '#');
                 };
             });
             break;
