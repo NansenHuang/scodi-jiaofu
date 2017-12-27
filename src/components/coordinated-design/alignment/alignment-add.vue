@@ -99,7 +99,7 @@ export default {
                         ],
                         storePattern: [
                             {
-                                path: ['highway', 'alignment', 'servicearea'],
+                                path: ['highway', 'basic', 'servicearea'],
                                 map: [
                                     { from: Field.Servicearea.CnName, to: 'label' },
                                     { from: Field.Servicearea.id, to: 'value1' },
@@ -108,7 +108,7 @@ export default {
                                 ],
                             },
                             {
-                                path: ['highway', 'alignment', 'parkinglot'],
+                                path: ['highway', 'basic', 'parkinglot'],
                                 map: [
                                     { from: Field.Parkinglot.CnName, to: 'label' },
                                     { from: Field.Parkinglot.id, to: 'value1' },
@@ -117,7 +117,7 @@ export default {
                                 ],
                             },
                             {
-                                path: ['highway', 'alignment', 'interchange'],
+                                path: ['highway', 'basic', 'interchange'],
                                 map: [
                                     { from: Field.Interchange.CnName, to: 'label' },
                                     { from: Field.Interchange.id, to: 'value1' },

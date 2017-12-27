@@ -12,7 +12,7 @@ function GetNumber (val) {
 
 export const mutations = {
     [ActionType.BuildChainIntervalTree] (state, payload) {
-        let chainSrc = state['highway']['alignment']['chain'].map((storeItem) => {
+        let chainSrc = state['highway']['basic']['chain'].map((storeItem) => {
             return {
                 ...storeItem,
                 ...JSON.parse(storeItem['config']),
