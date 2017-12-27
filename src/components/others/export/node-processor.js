@@ -91,6 +91,42 @@ export default async function (type, data, state) {
             break;
     };
 
+    // add alignments
+    switch (type.key) {
+        case 'Geology':
+        case 'Culvert':
+        case 'Overbridge':
+            srcData.map((dataItem) => {
+                let al = alignments.filter(alignmentItem => alignmentItem[Field.Alignment.id] === dataItem['alignmentID']);
+                dataItem['leftParts'] = '[]';
+                dataItem['rightParts'] = '[]';
+                if (al.length) {
+                    let targetField = al[0][Field.Alignment.Direction] === 'left' ? 'leftParts' : 'rightParts';
+                    dataItem[targetField] = JSON.stringify([{
+                        'alignmentID': dataItem['alignmentID'],
+                        'alignmentCnName': dataItem['alignmentCnName'],
+                        'stationMark': dataItem['stationMark'],
+                        'startStation': dataItem['startStation'],
+                        'endStation': dataItem['endStation'],
+                    }]);
+                };
+            });
+            break;
+        case 'Bridge':
+        case 'Tunnel':
+            srcData.map((dataItem) => {
+                dataItem['leftPartsCopy'] = '[]';
+                dataItem['rightPartsCopy'] = '[]';
+                if (dataItem['leftParts'] && dataItem['leftParts'].hasOwnProperty('alignmentID')) {
+                    dataItem['leftPartsCopy'] = JSON.stringify([dataItem['leftParts']]);
+                };
+                if (dataItem['rightPart'] && dataItem['rightPart'].hasOwnProperty('alignmentID')) {
+                    dataItem['rightPartsCopy'] = JSON.stringify([dataItem['rightPart']]);
+                };
+            });
+            break;
+    };
+
     // 4、
     // other process
     switch (type.key) {
