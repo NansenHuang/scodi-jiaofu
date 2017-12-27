@@ -53,6 +53,7 @@
                     :deleteRow="deleteRowInline"
                     :refName="tableId"
                     ref="table"
+                    @data-reach-end="loadMoreData"
                 ></multifunctional-table>
             </Col>
         </Row>
@@ -233,14 +234,31 @@ export default {
         refresh () {
             this.$store.dispatch(this.loadDataAction);
         },
+        loadMoreData () {
+            let payload = {
+                loadMore: true,
+            };
+            this.$store.dispatch(this.loadDataAction, payload);
+        },
+        loadInitData () {
+            if (this.firstLoad && this.tabActive) {
+                this.$store.dispatch(this.loadDataAction);
+                this.firstLoad = false;
+            };
+        },
+    },
+    data: function () {
+        return {
+            firstLoad: true,
+        };
     },
     watch: {
         tabActive: function (val) {
-            val && this.$store.dispatch(this.loadDataAction);
+            this.loadInitData();
         }
     },
     created: function () {
-        this.tabActive && this.$store.dispatch(this.loadDataAction);
+        this.loadInitData();
     },
 };
 </script>

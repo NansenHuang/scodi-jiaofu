@@ -211,9 +211,10 @@ export default {
         this.setFilter();
     },
     methods: {
-        pageChange () {
-            console.log('page change: ', arguments);
-            // TODO load more data or reload data according to new sort & query
+        pageChange (index) {
+            if (Math.ceil(this.value.length / this.pageCapacity) === index) {
+                this.$emit('data-reach-end');
+            };
         },
         init () {
             let vm = this;
