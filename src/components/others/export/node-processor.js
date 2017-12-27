@@ -34,7 +34,7 @@ export default async function (type, data, state) {
     // 3、
     // process LeftParts
     let newData = [];
-    let alignments = state['highway']['alignment']['alignment'];
+    let alignments = state['highway']['basic']['alignment'];
     switch (type.key) {
         case 'Section':
             srcData.map((item) => {

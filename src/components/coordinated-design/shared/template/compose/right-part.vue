@@ -56,7 +56,7 @@
         },
         computed: {
             alignmentArray () {
-                let data = this.$store.state['highway']['alignment']['alignment'].map((item) => {
+                let data = this.$store.state['highway']['basic']['alignment'].map((item) => {
                     return {
                         ...item,
                         label: item[Field.Alignment.CnName],
