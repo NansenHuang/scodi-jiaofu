@@ -53,6 +53,7 @@
                     :deleteRow="deleteRowInline"
                     :refName="tableId"
                     ref="table"
+                    @data-reach-end="loadMoreData"
                 ></multifunctional-table>
             </Col>
         </Row>
@@ -80,6 +81,9 @@ export default {
         MultifunctionalTable
     },
     props: {
+        tabActive: {
+            type: Boolean,
+        },
         tableId: {
             type: String,
             required: true,
@@ -103,22 +107,15 @@ export default {
                 return {};
             },
         },
-        loadData: {
-            type: Function,
-            // eslint-disable-next-line no-console
-            default: () => { console.error('找不到刷新数据的方法。'); },
-        },
         setActiveTabFunc: {
             type: Function,
             default: () => {},
         },
-        deleteItem: {
-            type: Function,
-            required: true,
+        deleteItemAction: {
+            type: String,
         },
-        editItem: {
-            type: Function,
-            required: true,
+        loadDataAction: {
+            type: String,
         },
     },
     computed: {
@@ -211,7 +208,7 @@ export default {
         },
         deleteRowInline (index, success, fail) {
             success(() => {
-                this.deleteItem(this.tableData[index]);
+                this.$store.dispatch(this.deleteItemAction, this.tableData[index]);
             });
         },
         addData () {
@@ -235,11 +232,33 @@ export default {
             });
         },
         refresh () {
-            this.loadData();
+            this.$store.dispatch(this.loadDataAction);
+        },
+        loadMoreData () {
+            let payload = {
+                loadMore: true,
+            };
+            this.$store.dispatch(this.loadDataAction, payload);
+        },
+        loadInitData () {
+            if (this.firstLoad && this.tabActive) {
+                this.$store.dispatch(this.loadDataAction);
+                this.firstLoad = false;
+            };
         },
     },
-    created () {
-        this.loadData();
-    }
+    data: function () {
+        return {
+            firstLoad: true,
+        };
+    },
+    watch: {
+        tabActive: function (val) {
+            this.loadInitData();
+        }
+    },
+    created: function () {
+        this.loadInitData();
+    },
 };
 </script>

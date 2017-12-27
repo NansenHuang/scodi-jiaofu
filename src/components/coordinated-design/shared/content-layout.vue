@@ -8,7 +8,7 @@
             <Card>
                 <Tabs v-model="currentTab">
                     <TabPane v-for="item in itemTypes" :name="item.label" :label="item.label" :key="item.key || item.name || item.label">
-                        <slot name="content" :isType="item.type"></slot>
+                        <slot name="content" :isType="item.type" :tabActive="currentTab === item.label"></slot>
                     </TabPane>
                 </Tabs>
                 <slot></slot>

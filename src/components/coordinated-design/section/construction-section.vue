@@ -7,16 +7,15 @@
         :columnsList="columnsList"
         :storePath="['highway', 'section', 'construction']"
         @showItemModal="showItemModal"
-        :loadData="loadData"
-        :deleteItem="deleteItem"
-        :editItem="editItem"
+        :loadDataAction="ActionType.LoadConstructionSection"
+        :deleteItemAction="ActionType.DeleteConstructionSection"
+        :tabActive="tabActive"
     ></template-table>
 </template>
 
 <script>
 import TemplateTable from 'src/components/coordinated-design/shared/template.vue';
 import Field from 'src/config/field';
-import Services from 'src/services';
 import ActionType from 'src/config/action-type';
 
 export default {
@@ -31,6 +30,9 @@ export default {
                 return {};
             },
         },
+        tabActive: {
+            type: Boolean,
+        },
         setActiveTabFunc: {
             type: Function,
             default: () => {},
@@ -39,6 +41,7 @@ export default {
     computed: {},
     data () {
         return {
+            ActionType,
             filterField: '',
             filterFieldName: '',
             columnsList: [
@@ -72,21 +75,6 @@ export default {
     methods: {
         showItemModal () {
             this.$emit('showItemModal', this.$options.name, ...arguments);
-        },
-        loadData: async function () {
-            this.$store.dispatch(ActionType.LoadConstructionSection);
-        },
-        deleteItem: async function (fieldData) {
-            await Services.Section.Construction.delete(fieldData);
-            setTimeout(() => {
-                this.loadData();
-            }, 1500);
-        },
-        editItem: async function (fieldData) {
-            await Services.Section.Construction.update(fieldData);
-            setTimeout(() => {
-                this.loadData();
-            }, 1500);
         },
     },
 };

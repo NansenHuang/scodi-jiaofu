@@ -10,17 +10,16 @@
         :filters="filters"
         @update:filters="val => this.$emit('update:filters',val)"
         @showItemModal="showItemModal"
-        :loadData="loadData"
         :setActiveTabFunc="setActiveTabFunc"
-        :deleteItem="deleteItem"
-        :editItem="editItem"
+        :loadDataAction="ActionType.LoadAlignment"
+        :deleteItemAction="ActionType.DeleteAlignment"
+        :tabActive="tabActive"
     ></template-table>
 </template>
 
 <script>
 import TemplateTable from 'src/components/coordinated-design/shared/template.vue';
 import Field from 'src/config/field';
-import Services from 'src/services';
 import ActionType from 'src/config/action-type';
 
 export default {
@@ -35,6 +34,9 @@ export default {
                 return {};
             },
         },
+        tabActive: {
+            type: Boolean,
+        },
         setActiveTabFunc: {
             type: Function,
             default: () => {},
@@ -45,24 +47,10 @@ export default {
         showItemModal () {
             this.$emit('showItemModal', this.$options.name, ...arguments);
         },
-        loadData () {
-            this.$store.dispatch(ActionType.LoadAlignment);
-        },
-        deleteItem: async function (fieldData) {
-            await Services.Alignment.Alignment.delete(fieldData);
-            setTimeout(() => {
-                this.loadData();
-            }, 1500);
-        },
-        editItem: async function (fieldData) {
-            await Services.Alignment.Alignment.update(fieldData);
-            setTimeout(() => {
-                this.loadData();
-            }, 1500);
-        },
     },
     data () {
         return {
+            ActionType,
             filterField: Field.Alignment.CnName,
             filterFieldName: '名称',
             columnsList: [

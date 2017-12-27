@@ -1,12 +1,32 @@
 import Cookies from 'js-cookie';
 import ActionType from 'src/config/action-type';
 
-export function getRequestFunc (commit, queryFunc, query = {}, recursive = false, idField, path) {
+function deepFind (obj, pathArray) {
+    let current = obj;
+    for (let i = 0; i < pathArray.length; i++) {
+        if (current[pathArray[i]] === undefined) {
+            return undefined;
+        } else {
+            current = current[pathArray[i]];
+        }
+    }
+    return current;
+}
+
+export function getRequestFunc ({commit, state}, queryFunc, query = {}, recursive = false, idField, path, loadMore = false) {
     return async function request (searchAfter, index = 0) {
         let queryParams = {
-            size: 50,
+            size: 53,
             sort: [{Timestamp: {order: 'desc'}}],
             ...query,
+        };
+        if (loadMore) {
+            let cachedData = deepFind(state, path);
+            let lastItem = cachedData.length ? cachedData[cachedData.length - 1] : null;
+            let sort = lastItem ? lastItem['sort'] : null;
+            if (sort && sort.length) {
+                queryParams['search_after'] = sort;
+            };
         };
         if (searchAfter && searchAfter.length) {
             queryParams['search_after'] = searchAfter;
@@ -20,10 +40,11 @@ export function getRequestFunc (commit, queryFunc, query = {}, recursive = false
                 return {
                     [idField]: item['_source']['ID'],
                     ...item['_source']['Data'],
+                    sort: item['sort'],
                 };
             });
             commit({
-                type: searchAfter && searchAfter.length ? ActionType.Append : ActionType.Write,
+                type: (searchAfter && searchAfter.length) || loadMore ? ActionType.Append : ActionType.Write,
                 path,
                 data,
             });
@@ -48,6 +69,6 @@ export function delayRequest (func, delay) {
             let result = await func();
             // console.log('最终的result: ', JSON.stringify(result, null, 4));
             resolve(result);
-        }, delay ? 1500 : 0);
+        }, delay ? Number(delay) || 1500 : 0);
     });
 };

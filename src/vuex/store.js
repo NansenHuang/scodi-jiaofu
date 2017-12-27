@@ -19,6 +19,14 @@ function deepFind (obj, pathArray) {
 
 const initStateString = JSON.stringify({
     highway: {
+        basic: {
+            alignment: [],
+            chain: [],
+            construct_section: [],
+            interchange: [],
+            servicearea: [],
+            parkinglot: [],
+        },
         section: {
             design: [],
             construction: [],

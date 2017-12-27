@@ -11,6 +11,15 @@ const ActionType = {
     // Query: 'Query',
     // Delete: 'Delete',
     //
+    // Load basic data
+    //
+    LoadBasicData_ConstructionSection: 'load_basic_data_construction_section',
+    LoadBasicData_Alignment: 'load_basic_data_alignment',
+    LoadBasicData_Chain: 'load_basic_data_chain',
+    LoadBasicData_Interchange: 'load_basic_data_interchange',
+    LoadBasicData_Parkinglot: 'load_basic_data_parkinglot',
+    LoadBasicData_Servicearea: 'load_basic_data_servicearea',
+    //
     // Load
     //
     LoadConstructionSection: 'load_construction',
@@ -76,6 +85,28 @@ const ActionType = {
     UpdateGeology: 'update_geology',
     UpdateOverbridge: 'update_overbridge',
     UpdateTunnel: 'update_tunnel',
+    //
+    // Delete
+    //
+    DeleteConstructionSection: 'delete_construction',
+    //
+    DeleteAlignment: 'delete_alignment',
+    DeleteBlignment: 'delete_blignment',
+    DeleteClignment: 'delete_clignment',
+    DeleteSideBlinddrain: 'delete_sideblinddrain',
+    DeleteCrossBlinddrain: 'delete_crossblinddrain',
+    DeleteChain: 'delete_chain',
+    DeleteGuardwall: 'delete_guardwall',
+    DeleteInterchange: 'delete_interchange',
+    DeleteParkinglot: 'delete_parkinglot',
+    DeleteServicearea: 'delete_servicearea',
+    DeleteSoftbase: 'delete_softbase',
+    //
+    DeleteBridge: 'delete_bridge',
+    DeleteCulvert: 'delete_culvert',
+    DeleteGeology: 'delete_geology',
+    DeleteOverbridge: 'delete_overbridge',
+    DeleteTunnel: 'delete_tunnel',
     //
     // interval tree
     //
