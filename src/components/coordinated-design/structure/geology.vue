@@ -47,63 +47,63 @@ export default {
         showItemModal () {
             this.$emit('showItemModal', this.$options.name, ...arguments);
         },
-        data () {
-            return {
-                ActionType,
-                filterField: Field.Geology.CnName,
-                filterFieldName: '名称',
-                columnsList: [
-                    {
-                        title: '地质名称',
-                        key: Field.Geology.CnName,
-                        align: 'center',
-                        editable: true,
-                    },
-                    {
-                        title: '区段编号',
-                        key: Field.Geology.SectionID,
-                        align: 'center',
-                        editable: true,
-                    },
-                    {
-                        title: '路线名称',
-                        key: Field.Geology.AlignmentCnName,
-                        align: 'center',
-                        editable: true,
-                    },
-                    {
-                        title: '路线标识符',
-                        key: Field.Geology.StationMark,
-                        align: 'center',
-                        editable: true,
-                    },
-                    {
-                        title: '起点桩号',
-                        key: Field.Geology.StartStation,
-                        align: 'center',
-                        editable: true,
-                    },
-                    {
-                        title: '中点桩号',
-                        key: Field.Geology.MidStation,
-                        align: 'center',
-                        editable: true,
-                    },
-                    {
-                        title: '终点桩号',
-                        key: Field.Geology.EndStation,
-                        align: 'center',
-                        editable: true,
-                    },
-                    {
-                        title: '描述',
-                        key: Field.Geology.Desc,
-                        align: 'center',
-                        editable: true,
-                    },
-                ],
-            };
-        },
+    },
+    data () {
+        return {
+            ActionType,
+            filterField: Field.Geology.CnName,
+            filterFieldName: '名称',
+            columnsList: [
+                {
+                    title: '地质名称',
+                    key: Field.Geology.CnName,
+                    align: 'center',
+                    editable: true,
+                },
+                {
+                    title: '区段编号',
+                    key: Field.Geology.SectionID,
+                    align: 'center',
+                    editable: true,
+                },
+                {
+                    title: '路线名称',
+                    key: Field.Geology.AlignmentCnName,
+                    align: 'center',
+                    editable: true,
+                },
+                {
+                    title: '路线标识符',
+                    key: Field.Geology.StationMark,
+                    align: 'center',
+                    editable: true,
+                },
+                {
+                    title: '起点桩号',
+                    key: Field.Geology.StartStation,
+                    align: 'center',
+                    editable: true,
+                },
+                {
+                    title: '中点桩号',
+                    key: Field.Geology.MidStation,
+                    align: 'center',
+                    editable: true,
+                },
+                {
+                    title: '终点桩号',
+                    key: Field.Geology.EndStation,
+                    align: 'center',
+                    editable: true,
+                },
+                {
+                    title: '描述',
+                    key: Field.Geology.Desc,
+                    align: 'center',
+                    editable: true,
+                },
+            ],
+        };
     },
 };
 </script>
