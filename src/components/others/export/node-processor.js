@@ -34,7 +34,7 @@ export default async function (type, data, state) {
     // 3、
     // process LeftParts
     let newData = [];
-    let alignments = state['highway']['alignment']['alignment'];
+    let alignments = state['highway']['basic']['alignment'];
     switch (type.key) {
         case 'Section':
             srcData.map((item) => {
@@ -64,11 +64,9 @@ export default async function (type, data, state) {
                     let leftsAlongWithRight = dataItem['leftParts'].filter(item => item['alignmentID'] === rightAlignmentId);
                     let leftsSeparated = dataItem['leftParts'].filter(item => item['alignmentID'] !== rightAlignmentId);
                     // process right
-                    if (leftsAlongWithRight.length) {
-                        let itemWithRight = JSON.parse(JSON.stringify(dataItem));
-                        itemWithRight['leftParts'] = leftsAlongWithRight[0];
-                        newData.push(itemWithRight);
-                    };
+                    let itemWithRight = JSON.parse(JSON.stringify(dataItem));
+                    itemWithRight['leftParts'] = leftsAlongWithRight.length ? leftsAlongWithRight[0] : null;
+                    newData.push(itemWithRight);
                     // process left
                     leftsSeparated.map((item) => {
                         let itemOnlyLeft = JSON.parse(JSON.stringify(dataItem));
@@ -89,6 +87,42 @@ export default async function (type, data, state) {
                 };
                 let str = item['leftParts'] || '';
                 item['leftParts'] = str.replace(/,/g, '#');
+            });
+            break;
+    };
+
+    // add alignments
+    switch (type.key) {
+        case 'Geology':
+        case 'Culvert':
+        case 'Overbridge':
+            srcData.map((dataItem) => {
+                let al = alignments.filter(alignmentItem => alignmentItem[Field.Alignment.id] === dataItem['alignmentID']);
+                dataItem['leftParts'] = '[]';
+                dataItem['rightParts'] = '[]';
+                if (al.length) {
+                    let targetField = al[0][Field.Alignment.Direction] === 'left' ? 'leftParts' : 'rightParts';
+                    dataItem[targetField] = JSON.stringify([{
+                        'alignmentID': dataItem['alignmentID'],
+                        'alignmentCnName': dataItem['alignmentCnName'],
+                        'stationMark': dataItem['stationMark'],
+                        'startStation': dataItem['startStation'],
+                        'endStation': dataItem['endStation'],
+                    }]);
+                };
+            });
+            break;
+        case 'Bridge':
+        case 'Tunnel':
+            srcData.map((dataItem) => {
+                dataItem['leftPartsCopy'] = '[]';
+                dataItem['rightPartsCopy'] = '[]';
+                if (dataItem['leftParts'] && dataItem['leftParts'].hasOwnProperty('alignmentID')) {
+                    dataItem['leftPartsCopy'] = JSON.stringify([dataItem['leftParts']]);
+                };
+                if (dataItem['rightPart'] && dataItem['rightPart'].hasOwnProperty('alignmentID')) {
+                    dataItem['rightPartsCopy'] = JSON.stringify([dataItem['rightPart']]);
+                };
             });
             break;
     };

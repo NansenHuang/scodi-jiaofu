@@ -662,6 +662,16 @@ const NodeField = {
             'enable': true
         },
         {
+            'label': 'leftParts',
+            'value': 'leftParts',
+            'enable': true
+        },
+        {
+            'label': 'rightParts',
+            'value': 'rightParts',
+            'enable': true
+        },
+        {
             'label': 'desc',
             'value': 'desc',
             'enable': true
@@ -734,6 +744,16 @@ const NodeField = {
             'enable': true
         },
         {
+            'label': 'leftParts',
+            'value': 'leftParts',
+            'enable': true
+        },
+        {
+            'label': 'rightParts',
+            'value': 'rightParts',
+            'enable': true
+        },
+        {
             'label': 'desc',
             'value': 'desc',
             'enable': true
@@ -776,6 +796,11 @@ const NodeField = {
             'enable': true
         },
         {
+            'label': 'leftParts',
+            'value': 'leftPartsCopy',
+            'enable': true
+        },
+        {
             'label': 'leftAlignmentID',
             'value': 'leftParts.alignmentID',
             'enable': true
@@ -808,6 +833,11 @@ const NodeField = {
         {
             'label': 'leftEndStationChain',
             'value': 'leftParts.endStationChain',
+            'enable': true
+        },
+        {
+            'label': 'rightParts',
+            'value': 'rightPartsCopy',
             'enable': true
         },
         {
@@ -928,6 +958,16 @@ const NodeField = {
             'enable': true
         },
         {
+            'label': 'leftParts',
+            'value': 'leftParts',
+            'enable': true
+        },
+        {
+            'label': 'rightParts',
+            'value': 'rightParts',
+            'enable': true
+        },
+        {
             'label': 'desc',
             'value': 'desc',
             'enable': true
@@ -970,6 +1010,11 @@ const NodeField = {
             'enable': true
         },
         {
+            'label': 'leftParts',
+            'value': 'leftPartsCopy',
+            'enable': true
+        },
+        {
             'label': 'leftAlignmentID',
             'value': 'leftParts.alignmentID',
             'enable': true
@@ -1002,6 +1047,11 @@ const NodeField = {
         {
             'label': 'leftEndStationChain',
             'value': 'leftParts.endStationChain',
+            'enable': true
+        },
+        {
+            'label': 'rightParts',
+            'value': 'rightPartsCopy',
             'enable': true
         },
         {
