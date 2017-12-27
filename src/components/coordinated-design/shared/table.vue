@@ -32,7 +32,7 @@ const editButton = (vm, h, currentRow, index) => {
         },
         on: {
             'click': () => {
-                vm.saveEdit(vm.editIndex(index), vm.successSave(currentRow, vm, index), vm.failSave(currentRow, vm, index));
+                vm.saveEdit(vm.editIndex(index) + (vm.currentPage - 1) * vm.pageCapacity, vm.successSave(currentRow, vm, index), vm.failSave(currentRow, vm, index));
                 return;
                 if (currentRow.saveFail) {
                     currentRow.saving = vm.edittingStore[index].saving = true;
