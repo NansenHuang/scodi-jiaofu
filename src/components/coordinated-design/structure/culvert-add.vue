@@ -99,7 +99,7 @@ export default {
                     params: {
                         displayName: Field.Section.SectionID,
                         id: Field.Section.id,
-                        storePath: ['highway', 'section', 'construction'],
+                        storePath: ['highway', 'basic', 'construct_section'],
                         map: [
                             {
                                 from: Field.Section.SectionID,

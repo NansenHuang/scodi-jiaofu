@@ -107,10 +107,7 @@ export const actions = {
         let loadMore = payload.loadMore;
 
         let request = getRequestFunc(context, queryFunc, queryParams, recursive, idField, storePath, loadMore);
-        return delayRequest(request, payload.delay).then((data) => {
-            context.commit(ActionType.BuildChainIntervalTree);
-            return Promise.resolve(data);
-        });
+        return delayRequest(request, payload.delay);
     },
     [ActionType.LoadGuardwall]: function (context, payload = {}) {
         let queryFunc = Services.Alignment.Guardwall.query;

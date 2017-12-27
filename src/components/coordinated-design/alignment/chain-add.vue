@@ -76,7 +76,7 @@ export default {
                     params: {
                         displayName: Field.Alignment.CnName,
                         id: Field.Alignment.id,
-                        storePath: ['highway', 'alignment', 'alignment'],
+                        storePath: ['highway', 'basic', 'alignment'],
                         map: [
                             {
                                 from: Field.Alignment.id,
