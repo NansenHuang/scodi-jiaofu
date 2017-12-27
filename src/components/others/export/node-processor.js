@@ -93,21 +93,44 @@ export default async function (type, data, state) {
 
     // add alignments
     switch (type.key) {
-        case 'Geology':
         case 'Culvert':
         case 'Overbridge':
             srcData.map((dataItem) => {
                 let al = alignments.filter(alignmentItem => alignmentItem[Field.Alignment.id] === dataItem['alignmentID']);
-                dataItem['leftParts'] = '[]';
-                dataItem['rightParts'] = '[]';
+                dataItem['leftPartsCopy'] = '[]';
+                dataItem['rightPartsCopy'] = '[]';
                 if (al.length) {
-                    let targetField = al[0][Field.Alignment.Direction] === 'left' ? 'leftParts' : 'rightParts';
+                    let targetField = al[0][Field.Alignment.Direction] === 'left' ? 'leftPartsCopy' : 'rightPartsCopy';
+                    dataItem[targetField] = JSON.stringify([{
+                        'alignmentID': dataItem['alignmentID'],
+                        'alignmentCnName': dataItem['alignmentCnName'],
+                        'stationMark': dataItem['stationMark'],
+                        'station': dataItem['station'],
+                        'stationChain': dataItem['stationChain'],
+                    }]);
+                };
+            });
+            break;
+        case 'Clignment':
+        case 'Guardwall':
+        case 'CrossBlinddrain':
+        case 'SideBlinddrain':
+        case 'Softbase':
+        case 'Geology':
+            srcData.map((dataItem) => {
+                let al = alignments.filter(alignmentItem => alignmentItem[Field.Alignment.id] === dataItem['alignmentID']);
+                dataItem['leftPartsCopy'] = '[]';
+                dataItem['rightPartsCopy'] = '[]';
+                if (al.length) {
+                    let targetField = al[0][Field.Alignment.Direction] === 'left' ? 'leftPartsCopy' : 'rightPartsCopy';
                     dataItem[targetField] = JSON.stringify([{
                         'alignmentID': dataItem['alignmentID'],
                         'alignmentCnName': dataItem['alignmentCnName'],
                         'stationMark': dataItem['stationMark'],
                         'startStation': dataItem['startStation'],
                         'endStation': dataItem['endStation'],
+                        'startStationChain': dataItem['startStationChain'],
+                        'endStationChain': dataItem['endStationChain'],
                     }]);
                 };
             });
