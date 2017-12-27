@@ -222,6 +222,16 @@ const NodeField = {
             'enable': true
         },
         {
+            'label': 'leftParts',
+            'value': 'leftPartsCopy',
+            'enable': true
+        },
+        {
+            'label': 'rightParts',
+            'value': 'rightPartsCopy',
+            'enable': true
+        },
+        {
             'label': 'corridorFiles',
             'value': 'corridorFiles',
             'enable': true
@@ -663,12 +673,12 @@ const NodeField = {
         },
         {
             'label': 'leftParts',
-            'value': 'leftParts',
+            'value': 'leftPartsCopy',
             'enable': true
         },
         {
             'label': 'rightParts',
-            'value': 'rightParts',
+            'value': 'rightPartsCopy',
             'enable': true
         },
         {
@@ -745,12 +755,12 @@ const NodeField = {
         },
         {
             'label': 'leftParts',
-            'value': 'leftParts',
+            'value': 'leftPartsCopy',
             'enable': true
         },
         {
             'label': 'rightParts',
-            'value': 'rightParts',
+            'value': 'rightPartsCopy',
             'enable': true
         },
         {
@@ -959,12 +969,12 @@ const NodeField = {
         },
         {
             'label': 'leftParts',
-            'value': 'leftParts',
+            'value': 'leftPartsCopy',
             'enable': true
         },
         {
             'label': 'rightParts',
-            'value': 'rightParts',
+            'value': 'rightPartsCopy',
             'enable': true
         },
         {
@@ -1172,6 +1182,16 @@ const NodeField = {
             'enable': true
         },
         {
+            'label': 'leftParts',
+            'value': 'leftPartsCopy',
+            'enable': true
+        },
+        {
+            'label': 'rightParts',
+            'value': 'rightPartsCopy',
+            'enable': true
+        },
+        {
             'label': 'desc',
             'value': 'desc',
             'enable': true
@@ -1241,6 +1261,16 @@ const NodeField = {
         {
             'label': 'endStationChain',
             'value': 'endStationChain',
+            'enable': true
+        },
+        {
+            'label': 'leftParts',
+            'value': 'leftPartsCopy',
+            'enable': true
+        },
+        {
+            'label': 'rightParts',
+            'value': 'rightPartsCopy',
             'enable': true
         },
         {
@@ -1321,6 +1351,16 @@ const NodeField = {
             'enable': true
         },
         {
+            'label': 'leftParts',
+            'value': 'leftPartsCopy',
+            'enable': true
+        },
+        {
+            'label': 'rightParts',
+            'value': 'rightPartsCopy',
+            'enable': true
+        },
+        {
             'label': 'desc',
             'value': 'desc',
             'enable': true
@@ -1395,6 +1435,16 @@ const NodeField = {
         {
             'label': 'endStationChain',
             'value': 'endStationChain',
+            'enable': true
+        },
+        {
+            'label': 'leftParts',
+            'value': 'leftPartsCopy',
+            'enable': true
+        },
+        {
+            'label': 'rightParts',
+            'value': 'rightPartsCopy',
             'enable': true
         },
         {

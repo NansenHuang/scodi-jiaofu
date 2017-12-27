@@ -97,10 +97,10 @@ export default async function (type, data, state) {
         case 'Overbridge':
             srcData.map((dataItem) => {
                 let al = alignments.filter(alignmentItem => alignmentItem[Field.Alignment.id] === dataItem['alignmentID']);
-                dataItem['leftParts'] = '[]';
-                dataItem['rightParts'] = '[]';
+                dataItem['leftPartsCopy'] = '[]';
+                dataItem['rightPartsCopy'] = '[]';
                 if (al.length) {
-                    let targetField = al[0][Field.Alignment.Direction] === 'left' ? 'leftParts' : 'rightParts';
+                    let targetField = al[0][Field.Alignment.Direction] === 'left' ? 'leftPartsCopy' : 'rightPartsCopy';
                     dataItem[targetField] = JSON.stringify([{
                         'alignmentID': dataItem['alignmentID'],
                         'alignmentCnName': dataItem['alignmentCnName'],
@@ -111,13 +111,18 @@ export default async function (type, data, state) {
                 };
             });
             break;
+        case 'Clignment':
+        case 'Guardwall':
+        case 'CrossBlinddrain':
+        case 'SideBlinddrain':
+        case 'Softbase':
         case 'Geology':
             srcData.map((dataItem) => {
                 let al = alignments.filter(alignmentItem => alignmentItem[Field.Alignment.id] === dataItem['alignmentID']);
-                dataItem['leftParts'] = '[]';
-                dataItem['rightParts'] = '[]';
+                dataItem['leftPartsCopy'] = '[]';
+                dataItem['rightPartsCopy'] = '[]';
                 if (al.length) {
-                    let targetField = al[0][Field.Alignment.Direction] === 'left' ? 'leftParts' : 'rightParts';
+                    let targetField = al[0][Field.Alignment.Direction] === 'left' ? 'leftPartsCopy' : 'rightPartsCopy';
                     dataItem[targetField] = JSON.stringify([{
                         'alignmentID': dataItem['alignmentID'],
                         'alignmentCnName': dataItem['alignmentCnName'],
