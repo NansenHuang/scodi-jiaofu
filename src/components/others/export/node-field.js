@@ -1522,7 +1522,12 @@ const NodeField = {
         },
         {
             'label': 'leftParts',
-            'value': 'leftParts',
+            'value': 'leftPartsCopy',
+            'enable': true
+        },
+        {
+            'label': 'rightParts',
+            'value': 'rightPartsCopy',
             'enable': true
         },
         {
