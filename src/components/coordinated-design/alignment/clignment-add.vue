@@ -11,6 +11,7 @@
                 :save="saveFunc"
                 :update="update"
                 :currentData="currentData"
+                :deleteItemAction="ActionType.DeleteClignment"
                 @close="() => {this.$emit('close')}"
         ></template-add>
     </div>
@@ -70,6 +71,7 @@
         },
         data () {
             return {
+                ActionType,
                 fields: [
                     {
                         label: '所属设计路线',

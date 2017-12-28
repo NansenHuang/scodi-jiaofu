@@ -177,9 +177,9 @@ export default {
             return cl.concat(this.columnsList).concat({
                 title: '操作',
                 align: 'center',
-                width: 190,
+                width: 96,
                 key: 'handle',
-                handle: ['edit', 'delete']
+                handle: ['edit']
             });
         },
         filter: {

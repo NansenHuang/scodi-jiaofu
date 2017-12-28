@@ -11,6 +11,7 @@
           :save="saveFunc"
           :update="update"
           :currentData="currentData"
+          :deleteItemAction="ActionType.DeleteInterchange"
           @close="() => {this.$emit('close')}"
       ></template-add>
   </div>
@@ -73,6 +74,7 @@ export default {
     },
     data () {
         return {
+            ActionType,
             fields: [
                 {
                     label: '互通中文名称',

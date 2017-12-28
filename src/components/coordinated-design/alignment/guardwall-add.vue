@@ -11,6 +11,7 @@
           :save="saveFunc"
           :update="update"
           :currentData="newCurrentData"
+          :deleteItemAction="ActionType.DeleteGuardwall"
           @close="() => {this.$emit('close')}"
       ></template-add>
   </div>
@@ -95,6 +96,7 @@ export default {
     },
     data () {
         return {
+            ActionType,
             fields: [
                 {
                     label: '部件类型',
