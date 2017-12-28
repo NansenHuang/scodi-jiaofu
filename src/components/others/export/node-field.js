@@ -201,11 +201,11 @@ const NodeField = {
             'value': 'direction',
             'enable': true
         },
-        // {
-        //     'label': 'region',
-        //     'value': 'region',
-        //     'enable': true
-        // },
+        {
+            'label': 'region',
+            'value': 'region',
+            'enable': true
+        },
         {
             'label': 'stationMark',
             'value': 'stationMark',
@@ -803,6 +803,11 @@ const NodeField = {
         {
             'label': 'section',
             'value': 'sectionID',
+            'enable': true
+        },
+        {
+            'label': 'region',
+            'value': 'region',
             'enable': true
         },
         {
@@ -1488,6 +1493,11 @@ const NodeField = {
         {
             'label': 'section',
             'value': 'sectionID',
+            'enable': true
+        },
+        {
+            'label': 'region',
+            'value': 'region',
             'enable': true
         },
         {
