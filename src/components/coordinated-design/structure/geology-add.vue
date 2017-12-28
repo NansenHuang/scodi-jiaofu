@@ -11,6 +11,7 @@
           :save="saveFunc"
           :update="update"
           :currentData="newCurrentData"
+          :deleteItemAction="ActionType.DeleteGeology"
           @close="() => {this.$emit('close')}"
       ></template-add>
   </div>
@@ -96,6 +97,7 @@ export default {
     },
     data () {
         return {
+            ActionType,
             fields: [
                 {
                     label: '地质中文名称',

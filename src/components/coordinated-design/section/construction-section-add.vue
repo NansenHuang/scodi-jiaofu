@@ -11,6 +11,7 @@
           :update="update"
           :currentData="currentData"
           :save="saveFunc"
+          :deleteItemAction="ActionType.DeleteConstructionSection"
           @close="() => {this.$emit('close')}"
       ></template-add>
   </div>
@@ -72,6 +73,7 @@ export default {
     },
     data () {
         return {
+            ActionType,
             fields: [
                 {
                     label: '区段名称',

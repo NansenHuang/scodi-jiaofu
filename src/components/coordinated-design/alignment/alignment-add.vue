@@ -11,6 +11,7 @@
           :save="saveFunc"
           :update="update"
           :currentData="currentData"
+          :deleteItemAction="ActionType.DeleteAlignment"
           @close="() => {this.$emit('close')}"
       ></template-add>
   </div>
@@ -71,6 +72,7 @@ export default {
     },
     data () {
         return {
+            ActionType,
             fields: [
                 {
                     label: '路线中文名称',
