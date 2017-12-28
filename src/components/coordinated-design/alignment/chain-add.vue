@@ -18,9 +18,10 @@
 
 <script>
 import TemplateAdd from 'src/components/coordinated-design/shared/template-add.vue';
+import ChainConfig from 'src/components/coordinated-design/shared/template/compose/chain-config';
 import FieldType from 'src/config/field-type';
 import ActionType from 'src/config/action-type.js';
-import Field, { SubField } from 'src/config/field';
+import Field from 'src/config/field';
 import Cookies from 'js-cookie';
 
 export default {
@@ -90,60 +91,9 @@ export default {
                     },
                 },
                 {
-                    label: '测量桩号',
+                    label: '断链参数',
                     key: Field.Chain.config,
-                    type: FieldType.JSON,
-                    params: {
-                        name: SubField.Chain.config.MeasureStation,
-                    },
-                },
-                {
-                    label: '断链桩号',
-                    key: Field.Chain.config,
-                    type: FieldType.JSON,
-                    params: {
-                        name: SubField.Chain.config.Station,
-                    },
-                },
-                {
-                    label: '断链类型',
-                    key: Field.Chain.config,
-                    type: FieldType.JSON,
-                    params: {
-                        name: SubField.Chain.config.Type,
-                    },
-                },
-                {
-                    label: '长度',
-                    key: Field.Chain.config,
-                    type: FieldType.JSON,
-                    params: {
-                        name: SubField.Chain.config.Length,
-                    },
-                },
-                {
-                    label: '累积长链',
-                    key: Field.Chain.config,
-                    type: FieldType.JSON,
-                    params: {
-                        name: SubField.Chain.config.SumLong,
-                    },
-                },
-                {
-                    label: '累积短链',
-                    key: Field.Chain.config,
-                    type: FieldType.JSON,
-                    params: {
-                        name: SubField.Chain.config.SumShort,
-                    },
-                },
-                {
-                    label: '连续桩号',
-                    key: Field.Chain.config,
-                    type: FieldType.JSON,
-                    params: {
-                        name: SubField.Chain.config.SequentStation,
-                    },
+                    component: ChainConfig,
                 },
             ],
         };
