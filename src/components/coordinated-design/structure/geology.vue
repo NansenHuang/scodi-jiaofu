@@ -73,20 +73,8 @@ export default {
                     editable: true,
                 },
                 {
-                    title: '路线标识符',
-                    key: Field.Geology.StationMark,
-                    align: 'center',
-                    editable: true,
-                },
-                {
                     title: '起点桩号',
                     key: Field.Geology.StartStation,
-                    align: 'center',
-                    editable: true,
-                },
-                {
-                    title: '中点桩号',
-                    key: Field.Geology.MidStation,
                     align: 'center',
                     editable: true,
                 },
@@ -99,6 +87,12 @@ export default {
                 {
                     title: '描述',
                     key: Field.Geology.Desc,
+                    align: 'center',
+                    editable: true,
+                },
+                {
+                    title: '设计文件',
+                    key: Field.Geology.BimFiles,
                     align: 'center',
                     editable: true,
                 },
