@@ -67,12 +67,6 @@ export default {
                     editable: true,
                 },
                 {
-                    title: '偏移量',
-                    key: Field.Tunnel.Posture,
-                    align: 'center',
-                    editable: true,
-                },
-                {
                     title: '左',
                     key: Field.Tunnel.LeftPart,
                     align: 'center',
@@ -85,8 +79,20 @@ export default {
                     editable: true,
                 },
                 {
+                    title: '偏移量',
+                    key: Field.Tunnel.Posture,
+                    align: 'center',
+                    editable: true,
+                },
+                {
                     title: '描述',
                     key: Field.Tunnel.Desc,
+                    align: 'center',
+                    editable: true,
+                },
+                {
+                    title: '设计文件',
+                    key: Field.Tunnel.BimFiles,
                     align: 'center',
                     editable: true,
                 },

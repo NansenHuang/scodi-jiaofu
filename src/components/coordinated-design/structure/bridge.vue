@@ -67,12 +67,6 @@ export default {
                     editable: true,
                 },
                 {
-                    title: '偏移量',
-                    key: Field.Bridge.Posture,
-                    align: 'center',
-                    editable: true,
-                },
-                {
                     title: '左',
                     key: Field.Bridge.LeftPart,
                     align: 'center',
@@ -81,6 +75,12 @@ export default {
                 {
                     title: '右',
                     key: Field.Bridge.RightPart,
+                    align: 'center',
+                    editable: true,
+                },
+                {
+                    title: '偏移量',
+                    key: Field.Bridge.Posture,
                     align: 'center',
                     editable: true,
                 },

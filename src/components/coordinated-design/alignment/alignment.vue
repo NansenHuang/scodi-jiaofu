@@ -100,15 +100,6 @@ export default {
                         targetLabel: '断链',
                     },
                 },
-                // {
-                //     title: '设计资料（dwg）',
-                //     key: Field.Alignment.Attachments,
-                //     align: 'center',
-                //     open: {
-                //         fieldName: Field.Alignment.CnName,
-                //         srcId: 'alignment',
-                //     },
-                // },
             ],
         };
     },

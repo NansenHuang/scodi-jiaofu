@@ -78,12 +78,6 @@ export default {
                     align: 'center',
                     editable: true,
                 },
-                // {
-                //     title: '路线标识符',
-                //     key: Field.Softbase.StationMark,
-                //     align: 'center',
-                //     editable: true,
-                // },
                 {
                     title: '起始桩号',
                     key: Field.Softbase.StartStation,

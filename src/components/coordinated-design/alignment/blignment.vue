@@ -65,12 +65,12 @@ export default {
                         targetLabel: '路线',
                     },
                 },
-                // {
-                //     title: '路线标识符',
-                //     key: Field.Blignment.StationMark,
-                //     align: 'center',
-                //     editable: true,
-                // },
+                {
+                    title: '名称',
+                    key: Field.Blignment.CnName,
+                    align: 'center',
+                    editable: true,
+                },
                 {
                     title: '起点桩号',
                     key: Field.Blignment.StartStation,
@@ -95,15 +95,6 @@ export default {
                     align: 'center',
                     editable: true,
                 },
-                // {
-                //     title: '设计资料（dwg）',
-                //     key: Field.Alignment.Attachments,
-                //     align: 'center',
-                //     open: {
-                //         fieldName: Field.Alignment.CnName,
-                //         srcId: 'alignment',
-                //     },
-                // },
             ],
         };
     },
