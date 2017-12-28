@@ -69,6 +69,6 @@ export function delayRequest (func, delay) {
             let result = await func();
             // console.log('最终的result: ', JSON.stringify(result, null, 4));
             resolve(result);
-        }, delay ? Number(delay) || 1500 : 0);
+        }, delay ? (Number.isInteger(delay) ? delay : 1500) : 0);
     });
 };

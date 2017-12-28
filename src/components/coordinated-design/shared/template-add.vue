@@ -21,6 +21,7 @@
           </FormItem>
       </Form>
       <Row class="margin-top-20 publish-button-con" style="width:100%;display:inline-flex;justify-content:flex-end;">
+          <Button v-if="this.update" icon="android-delete" @click="handleDelete" style="width:90px;margin-right: 64px;" type="error">删除</Button>
           <span class="publish-button">
               <Button icon="ios-checkmark" @click="handleSave" style="width:90px;" :type="this.update?'success':'primary'">{{this.update?'更新':'保存'}}</Button>
               <Button @click="close" style="width:90px;">关闭</Button>
@@ -40,6 +41,7 @@ import MapType from './template/maptype';
 import ComplexType from './template/complextype';
 import IntervalValidateType from './template/interval-validate';
 import File from './template/file';
+import ActionType from 'src/config/action-type';
 
 export default {
     name: 'NewItemTemplate',
@@ -63,6 +65,9 @@ export default {
         },
         currentData: {
             type: Object,
+        },
+        deleteItemAction: {
+            type: String,
         },
     },
     data () {
@@ -98,6 +103,18 @@ export default {
         },
         handleSave () {
             this.save(this.data, this.update);
+        },
+        handleDelete () {
+            this.$Modal.confirm({
+                title: '确定要删除这条数据吗？',
+                content: '<p>请务必确认是否存在与之关联的其他数据。</p>',
+                onOk: () => {
+                    this.$store.dispatch(this.deleteItemAction, this.data).then(() => {
+                        this.$store.dispatch(ActionType.LoadAlignment, { delay: true });
+                        this.$emit('close');
+                    });
+                }
+            });
         },
         clearData () {
             // 在关闭Modal时清空已填写数据
