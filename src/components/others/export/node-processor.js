@@ -160,12 +160,22 @@ export default async function (type, data, state) {
             break;
     };
 
-    // 4、
-    // other process
+    // 4、add region
     switch (type.key) {
+        case 'Bridge_Model':
+        case 'Bridge':
         case 'Blignment':
+        case 'Clignment':
             srcData.map((blignmentItem) => {
-                let al = alignments.filter(item => item[Field.Alignment.id] === blignmentItem[Field.Blignment.AlignmentID]);
+                let al = alignments.filter(item => item[Field.Alignment.id] === blignmentItem['alignmentID']);
+                blignmentItem['region'] = JSON.stringify({
+                    regionID: '',
+                    regionType: '',
+                    regionCnName: '',
+                    siteID: '',
+                    siteType: '',
+                    siteCnName: '',
+                }).replace(/,/g, '#');
                 if (al.length) {
                     let str = JSON.stringify({
                         regionID: al[0][Field.Alignment.OwerID],
@@ -179,6 +189,9 @@ export default async function (type, data, state) {
                 };
             });
             break;
+    };
+    // other process
+    switch (type.key) {
         case 'Clignment':
             srcData.map((clignmentItem) => {
                 let al = alignments.filter(item => item[Field.Alignment.id] === clignmentItem[Field.Blignment.AlignmentID]);
