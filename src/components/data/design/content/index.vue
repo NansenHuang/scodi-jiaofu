@@ -25,10 +25,10 @@
   <div class="content-root">
     <h3>文件</h3>
     <div class="content">
-      <folder-icon @enter="onEnterFolder" @select="onSelectFolder" v-for="(item, index) in folders" :key="index" :folderId="item.name" :childCount="item.count" :folderName="item.name" :folderDate="item.date"></folder-icon>
+      <folder-icon @enter="onEnterFolder" @select="onSelectFolder" @append-select="onAppendSelectFolder" v-for="(item, index) in folders" :key="index" :folderId="item.name" :childCount="item.count" :folderName="item.name" :folderDate="item.date"></folder-icon>
     </div>
     <div class="content">
-      <file-icon @enter="onEnterFile" @select="onSelectFile" v-for="(item, index) in files" :key="index" :fileId="item.name" :fileName="item.name" :fileDate="item.date"></file-icon>
+      <file-icon @enter="onEnterFile" @select="onSelectFile" @append-select="onAppendSelectFile" v-for="(item, index) in files" :key="index" :fileId="item.name" :fileName="item.name" :fileDate="item.date"></file-icon>
     </div>
     <div class="no-content" v-if="!folders.length && !files.length">
         <span>当前文件夹无内容</span>
@@ -88,12 +88,19 @@ export default {
         onSelectFolder (val) {
             console.log('Select folder: ', val);
         },
+        onAppendSelectFolder (val) {
+            console.log('Appendselect folder: ', val);
+        },
         onEnterFile (val) {
             console.log('Enter file: ', val);
         },
         onSelectFile (val) {
             console.log('Select file: ', val);
         },
+        onAppendSelectFile (val) {
+            console.log('Appendselect file: ', val);
+        },
+        
     },
 };
 </script>

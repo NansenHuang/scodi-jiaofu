@@ -19,7 +19,7 @@
 </style>
 
 <template>
-  <icon-base @enter="$emit('enter', fileId)" @select="$emit('select', fileId)">
+  <icon-base @enter="$emit('enter', fileId)" @select="$emit('select', fileId)" @append-select="$emit('append-select', fileId)">
       <div slot="icon" class="file-icon">
           <img src="./genericfile.png" alt="">
       </div>

@@ -38,7 +38,7 @@
 </style>
 
 <template>
-  <icon-base @enter="$emit('enter', folderId)" @select="$emit('select', folderId)">
+  <icon-base @enter="$emit('enter', folderId)" @select="$emit('select', folderId)" @append-select="$emit('append-select', folderId)">
       <div slot="icon" class="file-icon">
           <img src="./folder-large_backplate.svg" alt="">
           <div v-if="childCount !== 0"></div>
