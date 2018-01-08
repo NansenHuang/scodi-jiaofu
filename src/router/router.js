@@ -155,7 +155,7 @@ export const appRouter = [
                 icon: 'pound',
                 name: 'design-data',
                 title: '设计资料',
-                component: resolve => { require(['../components/data/design/main.vue'], resolve); }
+                component: resolve => { require(['../components/data/design'], resolve); }
             },
             {
                 path: 'test2',
