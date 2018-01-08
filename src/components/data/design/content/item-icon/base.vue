@@ -15,12 +15,13 @@
   flex-direction: column;
   justify-content: space-between;
   height: 90px;
+  cursor: pointer;
 }
 </style>
 
 <template>
-    <div class="icon-base">
-        <div class="click-area">
+    <div class="icon-base" @click.stop="$emit('select')">
+        <div class="click-area" @click.stop="$emit('enter')">
             <slot name="icon"></slot>
             <slot name="name"></slot>
         </div>

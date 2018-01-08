@@ -31,14 +31,14 @@
 </style>
 
 <template>
-  <icon-base>
+  <icon-base @enter="$emit('enter', folderId)" @select="$emit('select', folderId)">
       <div slot="icon" class="file-icon">
           <img src="./folder-large_backplate.svg" alt="">
-          <div v-if="fileCount !== 0"></div>
+          <div v-if="childCount !== 0"></div>
           <img src="./folder-large_frontplate_nopreview.svg" alt="">
       </div>
-      <p slot="name" class="file-name">{{ fileName }}</p>
-      <p slot="date" class="file-date">{{ fileDate }}</p>
+      <p slot="name" class="file-name">{{ folderName }}</p>
+      <p slot="date" class="file-date">{{ folderDate }}</p>
   </icon-base>
 </template>
 
@@ -51,15 +51,19 @@ export default {
         IconBase
     },
     props: {
-        fileCount: {
-            type: Number,
-            required: true,
-        },
-        fileName: {
+        folderId: {
             type: String,
             required: true,
         },
-        fileDate: {
+        childCount: {
+            type: Number,
+            required: true,
+        },
+        folderName: {
+            type: String,
+            required: true,
+        },
+        folderDate: {
             type: String,
             required: true,
         },
