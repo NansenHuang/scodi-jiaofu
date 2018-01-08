@@ -151,11 +151,11 @@ export const appRouter = [
         component: Main,
         children: [
             {
-                path: 'test',
+                path: 'design',
                 icon: 'pound',
-                name: 'data-test',
-                title: '占位',
-                // component: resolve => { require(['./components/coordinated-design/section/design-section.vue'], resolve); }
+                name: 'design-data',
+                title: '设计资料',
+                component: resolve => { require(['../components/data/design/main.vue'], resolve); }
             },
             {
                 path: 'test2',
