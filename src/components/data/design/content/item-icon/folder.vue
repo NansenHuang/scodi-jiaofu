@@ -18,6 +18,13 @@
   background-color: white;
   box-shadow: 0 1px 3px 2px rgba(1, 1, 0, 0.2);
 }
+.file-icon > span {
+  position: absolute;
+  right: 8px;
+  top: 36px;
+  color: white;
+  font-size: 8px;
+}
 .file-name {
   display: inline-flex;
   justify-content: center;
@@ -36,6 +43,7 @@
           <img src="./folder-large_backplate.svg" alt="">
           <div v-if="childCount !== 0"></div>
           <img src="./folder-large_frontplate_nopreview.svg" alt="">
+          <span v-if="childCount !== 0">{{ childCount }}</span>
       </div>
       <p slot="name" class="file-name">{{ folderName }}</p>
       <p slot="date" class="file-date">{{ folderDate }}</p>
