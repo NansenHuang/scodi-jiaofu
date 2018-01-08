@@ -2,10 +2,13 @@
 .icon-base {
   display: flex;
   flex-direction: column;
-  width: 120px;
+  width: 150px;
   height: 150px;
-  margin: 20px;
-  padding: 20px;
+  margin: 20px 10px;
+  padding: 20px 35px;
+}
+.icon-base:hover {
+    background-color: #f4f4f4;
 }
 .click-area {
   display: flex;
