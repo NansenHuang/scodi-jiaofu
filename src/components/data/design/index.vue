@@ -1,7 +1,6 @@
 <style lang="less" scoped>
   .main-layout {
     display: flex;
-    min-height: 500px;
   }
   .main-left {
     flex-grow: 0;
