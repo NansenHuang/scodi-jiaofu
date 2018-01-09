@@ -12,12 +12,17 @@
   .no-content {
       flex-grow: 1;
       display: flex;
+      flex-direction: column;
       justify-content: center;
       align-items: center;
+      margin-top: -16%;
   }
 .no-content span {
     font-size: 24px;
     color: #ccc;
+}
+.no-content img {
+    width: 128px;
 }
 </style>
 
@@ -31,6 +36,7 @@
       <file-icon @enter="deselectAll" @select="onSelectFile" @append-select="onAppendSelectFile" v-for="(item, index) in files" :key="index" :selected="item.selected" :fileId="item.name" :fileName="item.name" :fileDate="item.date"></file-icon>
     </div>
     <div class="no-content" v-if="!folders.length && !files.length">
+        <img src="./empty_folder.svg" alt="">
         <span>当前文件夹无内容</span>
     </div>
   </div>
