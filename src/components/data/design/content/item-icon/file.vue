@@ -19,7 +19,7 @@
 </style>
 
 <template>
-  <icon-base @enter="$emit('enter', fileId)" @select="$emit('select', fileId)" @append-select="$emit('append-select', fileId)">
+  <icon-base :selected="selected" @enter="$emit('enter', fileId)" @select="$emit('select', fileId)" @append-select="$emit('append-select', fileId)">
       <div slot="icon" class="file-icon">
           <img src="./genericfile.png" alt="">
       </div>
@@ -37,6 +37,10 @@ export default {
         IconBase
     },
     props: {
+        selected: {
+            type: Boolean,
+            default: false,
+        },
         fileId: {
             type: String,
             required: true,

@@ -38,7 +38,7 @@
 </style>
 
 <template>
-  <icon-base @enter="$emit('enter', folderId)" @select="$emit('select', folderId)" @append-select="$emit('append-select', folderId)">
+  <icon-base :selected="selected" @enter="$emit('enter', folderId)" @select="$emit('select', folderId)" @append-select="$emit('append-select', folderId)">
       <div slot="icon" class="file-icon">
           <img src="./folder-large_backplate.svg" alt="">
           <div v-if="childCount !== 0"></div>
@@ -59,6 +59,10 @@ export default {
         IconBase
     },
     props: {
+        selected: {
+            type: Boolean,
+            default: false,
+        },
         folderId: {
             type: String,
             required: true,
