@@ -24,11 +24,21 @@
 .no-content img {
     width: 128px;
 }
+.navigator button {
+    padding: 6px 6px;
+}
 </style>
 
 <template>
   <div class="content-root" @click="deselectAll">
-    <h3>文件</h3>
+    <h3 v-if="currentPath === '/'">文件</h3>
+    <div v-else class="navigator">
+        <span v-for="item in parentFolders" :key="item.value">
+            <Button type="text" @click="jumpToPath(item.value)">{{ item.label }}</Button>
+            <span>/</span>
+        </span>
+        <Button type="text">{{ currentPathBasename }}</Button>
+    </div>
     <div class="content">
       <folder-icon @enter="enterFolder" @select="onSelectFolder" @append-select="onAppendSelectFolder" v-for="item in folders" :key="item.id" :selected="selected[item.id]" :folderId="item.id" :childCount="item.count" :folderName="item.name" :folderDate="item.date"></folder-icon>
     </div>
@@ -59,6 +69,27 @@ export default {
             let currentPath = this.$store.state['highway']['graphyCurrentPath'];
             return this.$store.state['highway']['graphy'][currentPath] || [];
         },
+        currentPath: function () {
+            return this.$store.state['highway']['graphyCurrentPath'];
+        },
+        currentPathBasename: function () {
+            return Path.basename(this.currentPath);
+        },
+        parentFolders: function () {
+            let ancestorFolders = [];
+            let path = this.currentPath;
+            while (true) {
+                if (path === '/') {
+                    break;
+                };
+                ancestorFolders.splice(0, 0, Path.dirname(path));
+                path = Path.dirname(path);
+            };
+            return ancestorFolders.map((path) => ({
+                label: Path.basename(path) || '根目录',
+                value: path,
+            }));
+        },
         folders: function () {
             let folders = this.currentFolderData.filter(item => item.Type === 'DIRECTORY');
             return folders.map((item) => ({
@@ -82,6 +113,9 @@ export default {
         };
     },
     methods: {
+        jumpToPath (val) {
+            this.$store.commit(ActionType.SetPath, val);
+        },
         deselectAll () {
             this.selected = {};
             console.log('deselect all！');
