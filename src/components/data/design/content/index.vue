@@ -24,6 +24,13 @@
 .no-content img {
     width: 128px;
 }
+.navigator {
+  height: 36px;
+}
+.navigator .root-nav {
+  font-size: 14px;
+  padding: 6px 7px;
+}
 .navigator button {
     padding: 6px 6px;
 }
@@ -31,13 +38,15 @@
 
 <template>
   <div class="content-root" @click="deselectAll">
-    <h3 v-if="currentPath === '/'">文件</h3>
-    <div v-else class="navigator">
-        <span v-for="item in parentFolders" :key="item.value">
-            <Button type="text" @click="jumpToPath(item.value)">{{ item.label }}</Button>
-            <span>/</span>
-        </span>
-        <Button type="text">{{ currentPathBasename }}</Button>
+    <div class="navigator">
+      <div class="root-nav" v-if="currentPath === '/'">文件</div>
+      <div v-else>
+          <span v-for="item in parentFolders" :key="item.value">
+              <Button size="large" type="text" @click="jumpToPath(item.value)">{{ item.label }}</Button>
+              <span>/</span>
+          </span>
+          <Button size="large" type="text">{{ currentPathBasename }}</Button>
+      </div>
     </div>
     <div class="content">
       <folder-icon @enter="enterFolder" @select="onSelectFolder" @append-select="onAppendSelectFolder" v-for="item in folders" :key="item.id" :selected="selected[item.id]" :folderId="item.id" :childCount="item.count" :folderName="item.name" :folderDate="item.date"></folder-icon>
