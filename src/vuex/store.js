@@ -4,6 +4,7 @@ import { actions as AlignmentActions, mutations as AlignmentMutations } from './
 import { actions as StructureActions, mutations as StructureMutations } from './actions/structure';
 import { actions as SectionActions, mutations as SectionMutations } from './actions/section';
 import { actions as OtherActions, mutations as OtherMutations } from './actions/others';
+import { actions as GraphyActions, mutations as GraphyMutations } from './actions/graphy';
 
 function deepFind (obj, pathArray) {
     let current = obj;
@@ -53,6 +54,8 @@ const initStateString = JSON.stringify({
             overbridge: [],
         },
         globalMessage: [],
+        graphy: {},
+        graphyCurrentPath: '',
     },
 });
 
@@ -80,6 +83,7 @@ export const mutations = {
     ...StructureMutations,
     ...SectionMutations,
     ...OtherMutations,
+    ...GraphyMutations,
 };
 
 export const actions = {
@@ -99,4 +103,5 @@ export const actions = {
     ...StructureActions,
     ...SectionActions,
     ...OtherActions,
+    ...GraphyActions,
 };
