@@ -24,16 +24,26 @@
 .no-content img {
     width: 128px;
 }
+.navigator button {
+    padding: 6px 6px;
+}
 </style>
 
 <template>
   <div class="content-root" @click="deselectAll">
-    <h3>文件</h3>
-    <div class="content">
-      <folder-icon @enter="deselectAll" @select="onSelectFolder" @append-select="onAppendSelectFolder" v-for="(item, index) in folders" :key="index" :selected="item.selected" :folderId="item.name" :childCount="item.count" :folderName="item.name" :folderDate="item.date"></folder-icon>
+    <h3 v-if="currentPath === '/'">文件</h3>
+    <div v-else class="navigator">
+        <span v-for="item in parentFolders" :key="item.value">
+            <Button type="text" @click="jumpToPath(item.value)">{{ item.label }}</Button>
+            <span>/</span>
+        </span>
+        <Button type="text">{{ currentPathBasename }}</Button>
     </div>
     <div class="content">
-      <file-icon @enter="deselectAll" @select="onSelectFile" @append-select="onAppendSelectFile" v-for="(item, index) in files" :key="index" :selected="item.selected" :fileId="item.name" :fileName="item.name" :fileDate="item.date"></file-icon>
+      <folder-icon @enter="enterFolder" @select="onSelectFolder" @append-select="onAppendSelectFolder" v-for="item in folders" :key="item.id" :selected="selected[item.id]" :folderId="item.id" :childCount="item.count" :folderName="item.name" :folderDate="item.date"></folder-icon>
+    </div>
+    <div class="content">
+      <file-icon @enter="deselectAll" @select="onSelectFile" @append-select="onAppendSelectFile" v-for="item in files" :key="item.id" :selected="selected[item.id]" :fileId="item.id" :fileName="item.name" :fileDate="item.date"></file-icon>
     </div>
     <div class="no-content" v-if="!folders.length && !files.length">
         <img src="./empty_folder.svg" alt="">
@@ -45,6 +55,8 @@
 <script>
 import FolderIcon from './item-icon/folder.vue';
 import FileIcon from './item-icon/file.vue';
+import ActionType from 'src/config/action-type';
+import Path from 'path-browserify';
 
 export default {
     name: 'DesignDataContent',
@@ -52,72 +64,92 @@ export default {
         FolderIcon,
         FileIcon,
     },
-    computed: {},
+    computed: {
+        currentFolderData: function () {
+            let currentPath = this.$store.state['highway']['graphyCurrentPath'];
+            return this.$store.state['highway']['graphy'][currentPath] || [];
+        },
+        currentPath: function () {
+            return this.$store.state['highway']['graphyCurrentPath'];
+        },
+        currentPathBasename: function () {
+            return Path.basename(this.currentPath);
+        },
+        parentFolders: function () {
+            let ancestorFolders = [];
+            let path = this.currentPath;
+            while (true) {
+                if (path === '/') {
+                    break;
+                };
+                ancestorFolders.splice(0, 0, Path.dirname(path));
+                path = Path.dirname(path);
+            };
+            return ancestorFolders.map((path) => ({
+                label: Path.basename(path) || '根目录',
+                value: path,
+            }));
+        },
+        folders: function () {
+            let folders = this.currentFolderData.filter(item => item.Type === 'DIRECTORY');
+            return folders.map((item) => ({
+                name: item.Name,
+                date: item.Timestamp.substring(0, item.Timestamp.indexOf('T')),
+                id: item.id,
+            }));
+        },
+        files: function () {
+            let files = this.currentFolderData.filter(item => item.Type === 'FILE');
+            return files.map((item) => ({
+                name: item.Name,
+                date: item.Timestamp.substring(0, item.Timestamp.indexOf('T')),
+                id: item.id,
+            }));
+        }
+    },
     data: function () {
         return {
-            folders: [
-                {
-                    name: '文件夹一',
-                    date: '2018/01/01',
-                    count: 2,
-                }, {
-                    name: '文件夹二',
-                    date: '2018/01/04',
-                    count: 4,
-                }, {
-                    name: '文件夹三',
-                    date: '2018/01/09',
-                    count: 0,
-                }
-            ],
-            files: [
-                {
-                    name: 'a.txt',
-                    date: '2018/01/01',
-                }, {
-                    name: 'b.txt',
-                    date: '2018/01/02',
-                }
-            ],
+            selected: {},
         };
     },
     methods: {
+        jumpToPath (val) {
+            this.$store.commit(ActionType.SetPath, val);
+        },
         deselectAll () {
-            let newFolders = this.folders.map(item => ({...item, selected: false}));
-            let newFiles = this.files.map(item => ({...item, selected: false}));
-
-            this.folders = newFolders;
-            this.files = newFiles;
+            this.selected = {};
             console.log('deselect all！');
         },
+        enterFolder (val) {
+            let clickedFolder = this.currentFolderData.find(item => item.id === val);
+            let newPath = Path.resolve(clickedFolder['Path'], clickedFolder['Name']);
+            clickedFolder && this.$store.commit(ActionType.SetPath, newPath);
+        },
         onSelectFolder (val) {
-            let newFolders = this.folders.map(item => ({...item, selected: item.name === val}));
-            let newFiles = this.files.map(item => ({...item, selected: false}));
-
-            this.folders = newFolders;
-            this.files = newFiles;
+            this.selected = {[val]: true};
             console.log('Select folder: ', val);
         },
         onAppendSelectFolder (val) {
-            let newFolders = this.folders.map(item => ({...item, selected: item.selected || item.name === val}));
-
-            this.folders = newFolders;
+            this.selected = {...this.selected, [val]: !this.selected[val]};
             console.log('Appendselect folder: ', val);
         },
         onSelectFile (val) {
-            let newFolders = this.folders.map(item => ({...item, selected: false}));
-            let newFiles = this.files.map(item => ({...item, selected: item.name === val}));
-
-            this.folders = newFolders;
-            this.files = newFiles;
+            this.selected = {[val]: true};
             console.log('Select file: ', val);
         },
         onAppendSelectFile (val) {
-            let newFiles = this.files.map(item => ({...item, selected: item.selected || item.name === val}));
-
-            this.files = newFiles;
+            this.selected = {...this.selected, [val]: !this.selected[val]};
             console.log('Appendselect file: ', val);
         },
+    },
+    created: function () {
+        let path = '/';
+        this.$store.commit(ActionType.SetPath, path);
+        let queryParams = {query: {bool: {filter: []}}};
+        queryParams.query.bool.filter.push({
+            match: { 'Path.keyword': path }
+        });
+        this.$store.dispatch(ActionType.LoadFiles, {query: queryParams});
     },
 };
 </script>

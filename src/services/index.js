@@ -5,6 +5,7 @@ import Alignment from './alignment';
 import Section from './section';
 import Structure from './structure';
 import Storage from './storage';
+import Graphy from './graphy';
 
 export default {
     Account,
@@ -14,4 +15,5 @@ export default {
     Section,
     Structure,
     Storage,
+    Graphy,
 };

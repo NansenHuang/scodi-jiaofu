@@ -114,6 +114,11 @@ const ActionType = {
     BuildAlignmentIntervalTree: 'build_alignment_interval_tree',
     // others
     GlobalMessage: 'global_message',
+    // graphy
+    LoadFiles: 'load_files',
+    AppendFiles: 'append_files',
+    WriteFiles: 'write_files',
+    SetPath: 'set_path',
 };
 
 export default ActionType;
