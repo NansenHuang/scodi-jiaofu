@@ -266,4 +266,16 @@ util.checkUpdate = function (vm) {
     });
 };
 
+util.deepFind = function (obj, pathArray) {
+    let current = obj;
+    for (let i = 0; i < pathArray.length; i++) {
+        if (current[pathArray[i]] === undefined) {
+            return undefined;
+        } else {
+            current = current[pathArray[i]];
+        }
+    }
+    return current;
+};
+
 export default util;

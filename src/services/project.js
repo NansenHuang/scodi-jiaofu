@@ -10,7 +10,7 @@ export default class Project {
         return Cherry.post('/project/add', data);
     }
 
-    static query (query = JSON.stringify({})) {
+    static query (query = JSON.stringify({size: 53})) {
         let data = {
             query,
         };

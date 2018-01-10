@@ -69,7 +69,7 @@ export default {
         },
         childCount: {
             type: Number,
-            required: true,
+            default: 0,
         },
         folderName: {
             type: String,
