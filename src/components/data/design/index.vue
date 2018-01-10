@@ -3,6 +3,7 @@
     display: flex;
   }
   .main-left {
+    flex-shrink: 0;
     flex-grow: 0;
     width: 200px;
   }
@@ -25,6 +26,7 @@
     flex-grow: 1;
   }
   .content-info {
+    flex-shrink: 0;
     flex-grow: 0;
     width: 200px;
   }
