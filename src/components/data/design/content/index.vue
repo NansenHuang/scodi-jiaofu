@@ -45,6 +45,7 @@
 <script>
 import FolderIcon from './item-icon/folder.vue';
 import FileIcon from './item-icon/file.vue';
+import ActionType from 'src/config/action-type';
 
 export default {
     name: 'DesignDataContent',
@@ -52,38 +53,30 @@ export default {
         FolderIcon,
         FileIcon,
     },
-    computed: {},
+    computed: {
+        currentFolderData: function () {
+            let currentPath = this.$store.state['highway']['graphyCurrentPath'];
+            return this.$store.state['highway']['graphy'][currentPath] || [];
+        },
+        folders: function () {
+            let folders = this.currentFolderData.filter(item => item.Type === 'DIRECTORY');
+            return folders.map((item) => ({
+                name: item.Name,
+                date: item.Timestamp.substring(0, item.Timestamp.indexOf('T')),
+                id: item.id,
+            }));
+        },
+        files: function () {
+            let files = this.currentFolderData.filter(item => item.Type === 'FILE');
+            return files.map((item) => ({
+                name: item.Name,
+                date: item.Timestamp.substring(0, item.Timestamp.indexOf('T')),
+                id: item.id,
+            }));
+        }
+    },
     data: function () {
         return {
-            folders: [
-                {
-                    name: '文件夹一',
-                    date: '2018/01/01',
-                    count: 2,
-                    id: '1',
-                }, {
-                    name: '文件夹二',
-                    date: '2018/01/04',
-                    count: 4,
-                    id: '2',
-                }, {
-                    name: '文件夹三',
-                    date: '2018/01/09',
-                    count: 0,
-                    id: '3',
-                }
-            ],
-            files: [
-                {
-                    name: 'a.txt',
-                    date: '2018/01/01',
-                    id: '4',
-                }, {
-                    name: 'b.txt',
-                    date: '2018/01/02',
-                    id: '5',
-                }
-            ],
             selected: {},
         };
     },
@@ -108,6 +101,15 @@ export default {
             this.selected = {...this.selected, [val]: !this.selected[val]};
             console.log('Appendselect file: ', val);
         },
+    },
+    created: function () {
+        let path = '/';
+        this.$store.commit(ActionType.SetPath, path);
+        let queryParams = {query: {bool: {filter: []}}};
+        queryParams.query.bool.filter.push({
+            match: { 'Path.keyword': path }
+        });
+        this.$store.dispatch(ActionType.LoadFiles, {query: queryParams});
     },
 };
 </script>
