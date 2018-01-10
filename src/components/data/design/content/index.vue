@@ -30,7 +30,7 @@
   <div class="content-root" @click="deselectAll">
     <h3>文件</h3>
     <div class="content">
-      <folder-icon @enter="deselectAll" @select="onSelectFolder" @append-select="onAppendSelectFolder" v-for="item in folders" :key="item.id" :selected="selected[item.id]" :folderId="item.id" :childCount="item.count" :folderName="item.name" :folderDate="item.date"></folder-icon>
+      <folder-icon @enter="enterFolder" @select="onSelectFolder" @append-select="onAppendSelectFolder" v-for="item in folders" :key="item.id" :selected="selected[item.id]" :folderId="item.id" :childCount="item.count" :folderName="item.name" :folderDate="item.date"></folder-icon>
     </div>
     <div class="content">
       <file-icon @enter="deselectAll" @select="onSelectFile" @append-select="onAppendSelectFile" v-for="item in files" :key="item.id" :selected="selected[item.id]" :fileId="item.id" :fileName="item.name" :fileDate="item.date"></file-icon>
@@ -46,6 +46,7 @@
 import FolderIcon from './item-icon/folder.vue';
 import FileIcon from './item-icon/file.vue';
 import ActionType from 'src/config/action-type';
+import Path from 'path-browserify';
 
 export default {
     name: 'DesignDataContent',
@@ -84,6 +85,11 @@ export default {
         deselectAll () {
             this.selected = {};
             console.log('deselect all！');
+        },
+        enterFolder (val) {
+            let clickedFolder = this.currentFolderData.find(item => item.id === val);
+            let newPath = Path.resolve(clickedFolder['Path'], clickedFolder['Name']);
+            clickedFolder && this.$store.commit(ActionType.SetPath, newPath);
         },
         onSelectFolder (val) {
             this.selected = {[val]: true};
