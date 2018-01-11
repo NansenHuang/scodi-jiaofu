@@ -35,8 +35,12 @@ export const mutations = {
     },
     [ActionType.WriteFiles] (state, payload) {
         let target = Utils.deepFind(state, payload['path']);
-        Object.keys(target).map((key) => { target[key] = []; });
+        let cleared = {};
         payload['data'].map((item) => {
+            if (!cleared[item['Path']]) {
+                target[item['Path']] = [];
+                cleared[item['Path']] = true;
+            }
             if (!target.hasOwnProperty(item['Path'])) {
                 target[item['Path']] = [];
             };

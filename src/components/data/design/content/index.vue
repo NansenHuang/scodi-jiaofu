@@ -139,6 +139,12 @@ export default {
             let clickedFolder = this.currentFolderData.find(item => item.id === val);
             let newPath = Path.resolve(clickedFolder['Path'], clickedFolder['Name']);
             clickedFolder && this.$store.commit(ActionType.SetPath, newPath);
+            //
+            let queryParams = {query: {bool: {filter: []}}};
+            queryParams.query.bool.filter.push({
+                match: { 'Path.keyword': newPath }
+            });
+            this.$store.dispatch(ActionType.LoadFiles, {query: queryParams});
         },
         onSelectFolder (val) {
             this.$store.commit(ActionType.SetFileSelection, {});
