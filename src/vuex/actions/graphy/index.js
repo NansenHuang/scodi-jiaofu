@@ -7,7 +7,7 @@ export const actions = {
     [ActionType.LoadFiles]: function (context, payload = {}) {
         let queryFunc = Services.Graphy.Manage.queryFile;
         let queryParams = payload.query;
-        let recursive = payload.recursive;
+        let recursive = true;
         let idField = 'id';
         let storePath = ['highway', 'graphy'];
         let loadMore = payload.loadMore;
@@ -25,26 +25,32 @@ export const actions = {
 
 export const mutations = {
     [ActionType.AppendFiles] (state, payload) {
-        let target = Utils.deepFind(state, payload['path']);
         payload['data'].map((item) => {
-            if (!target.hasOwnProperty(item['Path'])) {
-                target[item['Path']] = [];
+            state['highway']['graphy'] = {
+                ...state['highway']['graphy'],
+                [item['Path']]: [
+                    ...(state['highway']['graphy'][item['Path']] || []),
+                    item,
+                ],
             };
-            target[item['Path']].push(item);
         });
     },
     [ActionType.WriteFiles] (state, payload) {
-        let target = Utils.deepFind(state, payload['path']);
         let cleared = {};
         payload['data'].map((item) => {
             if (!cleared[item['Path']]) {
-                target[item['Path']] = [];
+                state['highway']['graphy'][item['Path']] = [];
                 cleared[item['Path']] = true;
             }
-            if (!target.hasOwnProperty(item['Path'])) {
-                target[item['Path']] = [];
+        });
+        payload['data'].map((item) => {
+            state['highway']['graphy'] = {
+                ...state['highway']['graphy'],
+                [item['Path']]: [
+                    ...state['highway']['graphy'][item['Path']],
+                    item,
+                ],
             };
-            target[item['Path']].push(item);
         });
     },
     [ActionType.SetPath] (state, payload) {

@@ -105,6 +105,13 @@ export function getRequestFunc2 ({commit, state}, queryFunc, query = {}, recursi
             if (sortArray && sortArray.length && recursive) {
                 // TODO 例外情况未处理：hits的结果中，sort为null??
                 // console.log(`第${index}次递归调用的result: `, JSON.stringify(ids, null, 4));
+                if (recursive) {
+                    await new Promise((resolve) => {
+                        setTimeout(() => {
+                            resolve();
+                        }, 200);
+                    });
+                };
                 let result = await request(sortArray, index + 1);
                 return Promise.resolve(data.concat(result));
             } else {
