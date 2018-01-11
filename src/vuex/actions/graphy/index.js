@@ -16,6 +16,11 @@ export const actions = {
             ActionType.AppendFiles, ActionType.WriteFiles);
         return delayRequest(request, payload.delay);
     },
+    [ActionType.DeleteItems]: async function (context, payload) {
+        context.commit(ActionType.SetFolderSelection, {});
+        context.commit(ActionType.SetFileSelection, {});
+        console.log('delete items: ', payload);
+    },
 };
 
 export const mutations = {

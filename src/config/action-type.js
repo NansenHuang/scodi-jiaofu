@@ -122,6 +122,14 @@ const ActionType = {
     // selection
     SetFolderSelection: 'set_folder_selection',
     SetFileSelection: 'set_file_selection',
+    // dellete/move/copy
+    DeleteItems: 'delete_items',
+    MoveItems: 'move_items',
+    CopyItems: 'copy_items',
+    //
+    DeleteItem: 'delete_item',
+    MoveItem: 'move_item',
+    CopyItem: 'copy_item',
 };
 
 export default ActionType;
