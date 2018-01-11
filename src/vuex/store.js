@@ -58,6 +58,7 @@ const initStateString = JSON.stringify({
         graphyCurrentPath: '',
         folderSelected: {},
         fileSelected: {},
+        bindToModels: null,
     },
 });
 

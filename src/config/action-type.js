@@ -130,6 +130,8 @@ const ActionType = {
     DeleteItem: 'delete_item',
     MoveItem: 'move_item',
     CopyItem: 'copy_item',
+    //
+    BindModels: 'bind_models',
 };
 
 export default ActionType;

@@ -62,4 +62,7 @@ export const mutations = {
     [ActionType.SetFileSelection] (state, payload) {
         state['highway']['fileSelected'] = payload;
     },
+    [ActionType.BindModels] (state, payload) {
+        state['highway']['bindToModels'] = payload;
+    },
 };

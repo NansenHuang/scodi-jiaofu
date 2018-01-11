@@ -45,6 +45,10 @@
       <Icon size="16" type="ios-compose-outline"></Icon>
       <span class="text">重命名</span>
     </Button>
+    <Button class="toolbar-btn" type="text" @click="bindModel" v-if="selectedItems.length">
+      <Icon size="16" type="link"></Icon>
+      <span class="text">绑定到模型</span>
+    </Button>
     <Modal
     :styles="{minWidth:'800px'}"
     :closable="false"
@@ -147,6 +151,9 @@ export default {
         },
         deleteItems: function () {
             this.$store.dispatch(ActionType.DeleteItems, this.selectedItems);
+        },
+        bindModel: function () {
+            this.$store.commit(ActionType.BindModels, this.selectedItems);
         },
         startUpload: async function () {
             let currentPath = this.currentPath;
