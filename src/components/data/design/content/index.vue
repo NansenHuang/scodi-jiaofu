@@ -135,6 +135,7 @@ export default {
             console.log('deselect all！');
         },
         enterFolder (val) {
+            this.deselectAll();
             let clickedFolder = this.currentFolderData.find(item => item.id === val);
             let newPath = Path.resolve(clickedFolder['Path'], clickedFolder['Name']);
             clickedFolder && this.$store.commit(ActionType.SetPath, newPath);

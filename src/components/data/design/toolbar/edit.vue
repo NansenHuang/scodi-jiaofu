@@ -84,10 +84,19 @@ export default {
             return this.$store.state['highway']['graphyCurrentPath'];
         },
         selectedItems: function () {
-            // return [{ type: 'folder' }];
-            // return [{ type: 'file' }];
-            // return [{}, {}, {}];
-            return [];
+            let fileSelected = Object.keys(this.$store.state['highway']['fileSelected']).map((key) => ({
+                type: 'file',
+                id: key,
+            }));
+            fileSelected = fileSelected.filter(item => this.$store.state['highway']['fileSelected'][item.id]);
+
+            let folderSelected = Object.keys(this.$store.state['highway']['folderSelected']).map((key) => ({
+                type: 'folder',
+                id: key,
+            }));
+            folderSelected = folderSelected.filter(item => this.$store.state['highway']['folderSelected'][item.id]);
+
+            return [...fileSelected, ...folderSelected];
         },
         singleFileSelected: function () {
             return this.selectedItems.length === 1 && this.selectedItems[0]['type'] === 'file';
