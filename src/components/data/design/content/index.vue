@@ -49,10 +49,10 @@
       </div>
     </div>
     <div class="content">
-      <folder-icon @enter="enterFolder" @select="onSelectFolder" @append-select="onAppendSelectFolder" v-for="item in folders" :key="item.id" :selected="selected[item.id]" :folderId="item.id" :childCount="item.count" :folderName="item.name" :folderDate="item.date"></folder-icon>
+      <folder-icon @enter="enterFolder" @select="onSelectFolder" @append-select="onAppendSelectFolder" v-for="item in folders" :key="item.id" :selected="folderSelected[item.id]" :folderId="item.id" :childCount="item.count" :folderName="item.name" :folderDate="item.date"></folder-icon>
     </div>
     <div class="content">
-      <file-icon @enter="deselectAll" @select="onSelectFile" @append-select="onAppendSelectFile" v-for="item in files" :key="item.id" :selected="selected[item.id]" :fileId="item.id" :fileName="item.name" :fileDate="item.date"></file-icon>
+      <file-icon @enter="deselectAll" @select="onSelectFile" @append-select="onAppendSelectFile" v-for="item in files" :key="item.id" :selected="fileSelected[item.id]" :fileId="item.id" :fileName="item.name" :fileDate="item.date"></file-icon>
     </div>
     <div class="no-content" v-if="!folders.length && !files.length">
         <img src="./empty_folder.svg" alt="">
@@ -114,19 +114,24 @@ export default {
                 date: item.Timestamp.substring(0, item.Timestamp.indexOf('T')),
                 id: item.id,
             }));
-        }
+        },
+        folderSelected: function () {
+            return this.$store.state['highway']['folderSelected'];
+        },
+        fileSelected: function () {
+            return this.$store.state['highway']['fileSelected'];
+        },
     },
     data: function () {
-        return {
-            selected: {},
-        };
+        return {};
     },
     methods: {
         jumpToPath (val) {
             this.$store.commit(ActionType.SetPath, val);
         },
         deselectAll () {
-            this.selected = {};
+            this.$store.commit(ActionType.SetFolderSelection, {});
+            this.$store.commit(ActionType.SetFileSelection, {});
             console.log('deselect all！');
         },
         enterFolder (val) {
@@ -135,19 +140,27 @@ export default {
             clickedFolder && this.$store.commit(ActionType.SetPath, newPath);
         },
         onSelectFolder (val) {
-            this.selected = {[val]: true};
+            this.$store.commit(ActionType.SetFileSelection, {});
+            this.$store.commit(ActionType.SetFolderSelection, {[val]: true});
             console.log('Select folder: ', val);
         },
         onAppendSelectFolder (val) {
-            this.selected = {...this.selected, [val]: !this.selected[val]};
+            this.$store.commit(ActionType.SetFolderSelection, {
+                ...this.folderSelected,
+                [val]: !this.folderSelected[val]
+            });
             console.log('Appendselect folder: ', val);
         },
         onSelectFile (val) {
-            this.selected = {[val]: true};
+            this.$store.commit(ActionType.SetFolderSelection, {});
+            this.$store.commit(ActionType.SetFileSelection, {[val]: true});
             console.log('Select file: ', val);
         },
         onAppendSelectFile (val) {
-            this.selected = {...this.selected, [val]: !this.selected[val]};
+            this.$store.commit(ActionType.SetFileSelection, {
+                ...this.fileSelected,
+                [val]: !this.fileSelected[val]
+            });
             console.log('Appendselect file: ', val);
         },
     },

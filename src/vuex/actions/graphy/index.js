@@ -41,4 +41,10 @@ export const mutations = {
     [ActionType.SetPath] (state, payload) {
         state['highway']['graphyCurrentPath'] = payload;
     },
+    [ActionType.SetFolderSelection] (state, payload) {
+        state['highway']['folderSelected'] = payload;
+    },
+    [ActionType.SetFileSelection] (state, payload) {
+        state['highway']['fileSelected'] = payload;
+    },
 };
