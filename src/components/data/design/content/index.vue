@@ -50,11 +50,17 @@
           </span>
       </div>
     </div>
-    <div class="content">
+    <div class="content" v-if="layout === 'grid'">
       <folder-icon @enter="enterFolder" @select="onSelectFolder" @append-select="onAppendSelectFolder" v-for="item in folders" :key="item.id" :selected="folderSelected[item.id]" :folderId="item.id" :childCount="item.count" :folderName="item.name" :folderDate="item.date"></folder-icon>
     </div>
-    <div class="content">
+    <div v-else>
+      <folder-row @enter="enterFolder" @select="onSelectFolder" @append-select="onAppendSelectFolder" v-for="item in folders" :key="item.id" :selected="folderSelected[item.id]" :folderId="item.id" :childCount="item.count" :folderName="item.name" :folderDate="item.date"></folder-row>
+    </div>
+    <div class="content" v-if="layout === 'grid'">
       <file-icon @enter="deselectAll" @select="onSelectFile" @append-select="onAppendSelectFile" v-for="item in files" :key="item.id" :selected="fileSelected[item.id]" :fileId="item.id" :fileName="item.name" :fileDate="item.date"></file-icon>
+    </div>
+    <div v-else>
+      <file-row @enter="deselectAll" @select="onSelectFile" @append-select="onAppendSelectFile" v-for="item in files" :key="item.id" :selected="fileSelected[item.id]" :fileId="item.id" :fileName="item.name" :fileDate="item.date"></file-row>
     </div>
     <div class="no-content" v-if="!folders.length && !files.length">
         <img src="./empty_folder.svg" alt="">
@@ -82,6 +88,8 @@
 <script>
 import FolderIcon from './item-icon/folder.vue';
 import FileIcon from './item-icon/file.vue';
+import FolderRow from './item-row/folder.vue';
+import FileRow from './item-row/file.vue';
 import ActionType from 'src/config/action-type';
 import Path from 'path-browserify';
 import BindField from './bind-field';
@@ -91,9 +99,14 @@ export default {
     components: {
         FolderIcon,
         FileIcon,
+        FolderRow,
+        FileRow,
         BindField,
     },
     computed: {
+        layout: function () {
+            return this.$store.state['highway']['graphyLayout'] || 'grid';
+        },
         currentDataToBind: function () {
             return this.$store.state['highway']['bindToModels'] && this.$store.state['highway']['bindToModels'].map(item => {
                 let dataItem = this.currentFolderData.find(i => i.id === item.id);
