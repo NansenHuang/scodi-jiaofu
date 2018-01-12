@@ -86,7 +86,9 @@ export default {
             return [];
         },
         currentPath: function () {
-            return this.$store.state['highway']['graphyCurrentPath'];
+            let path = this.$store.state['highway']['graphyCurrentPath'];
+            path = path[path.length - 1];
+            return path;
         },
         selectedItems: function () {
             let fileSelected = Object.keys(this.$store.state['highway']['fileSelected']).map((key) => ({
@@ -156,7 +158,7 @@ export default {
             this.$store.commit(ActionType.BindModels, this.selectedItems);
         },
         startUpload: async function () {
-            let currentPath = this.currentPath;
+            let currentPath = this.currentPath.path;
 
             let parentFoldersObject = {};
             for (let index = 0; index < this.currentData.length; index++) {

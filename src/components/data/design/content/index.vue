@@ -39,13 +39,12 @@
 <template>
   <div class="content-root" @click="deselectAll">
     <div class="navigator">
-      <div class="root-nav" v-if="currentPath === '/'">文件</div>
+      <div class="root-nav" v-if="currentPath.path === '/'">文件</div>
       <div v-else>
-          <span v-for="item in parentFolders" :key="item.value">
-              <Button size="large" type="text" @click="jumpToPath(item.value)">{{ item.label }}</Button>
-              <span>/</span>
+          <span v-for="(item, index) in parentFolders" :key="item.path">
+              <Button size="large" type="text" @click="jumpToPath(index)">{{ item.name }}</Button>
+              <span v-if="index !== parentFolders.length - 1">/</span>
           </span>
-          <Button size="large" type="text">{{ currentPathBasename }}</Button>
       </div>
     </div>
     <div class="content">
@@ -75,34 +74,23 @@ export default {
     },
     computed: {
         currentFolderData: function () {
-            let currentPath = this.$store.state['highway']['graphyCurrentPath'];
-            return this.$store.state['highway']['graphy'][currentPath] || [];
+            return this.$store.state['highway']['graphy'][this.currentPath.path] || [];
         },
         currentPath: function () {
-            return this.$store.state['highway']['graphyCurrentPath'];
-        },
-        currentPathBasename: function () {
-            return Path.basename(this.currentPath);
+            let path = this.$store.state['highway']['graphyCurrentPath'];
+            path = path[path.length - 1];
+            return path;
         },
         parentFolders: function () {
-            let ancestorFolders = [];
-            let path = this.currentPath;
-            while (true) {
-                if (path === '/') {
-                    break;
-                };
-                ancestorFolders.splice(0, 0, Path.dirname(path));
-                path = Path.dirname(path);
-            };
-            return ancestorFolders.map((path) => ({
-                label: Path.basename(path) || '根目录',
-                value: path,
+            return this.$store.state['highway']['graphyCurrentPath'].map(item => ({
+                name: item.name,
+                path: item.path,
             }));
         },
         folders: function () {
             let folders = this.currentFolderData.filter(item => item.Type === 'DIRECTORY');
             return folders.map((item) => ({
-                name: item.Name,
+                name: item.Alias,
                 date: item.Timestamp.substring(0, item.Timestamp.indexOf('T')),
                 id: item.id,
             }));
@@ -110,7 +98,7 @@ export default {
         files: function () {
             let files = this.currentFolderData.filter(item => item.Type === 'FILE');
             return files.map((item) => ({
-                name: item.Name,
+                name: item.Alias,
                 date: item.Timestamp.substring(0, item.Timestamp.indexOf('T')),
                 id: item.id,
             }));
@@ -127,7 +115,10 @@ export default {
     },
     methods: {
         jumpToPath (val) {
-            this.$store.commit(ActionType.SetPath, val);
+            this.$store.commit(
+                ActionType.SetPath,
+                this.$store.state['highway']['graphyCurrentPath'].slice(0, val + 1)
+            );
         },
         deselectAll () {
             this.$store.commit(ActionType.SetFolderSelection, {});
@@ -137,12 +128,15 @@ export default {
         enterFolder (val) {
             this.deselectAll();
             let clickedFolder = this.currentFolderData.find(item => item.id === val);
-            let newPath = Path.resolve(clickedFolder['Path'], clickedFolder['Name']);
-            clickedFolder && this.$store.commit(ActionType.SetPath, newPath);
+            let newPath = {
+                name: clickedFolder['Alias'],
+                path: clickedFolder['id'],
+            };
+            clickedFolder && this.$store.commit(ActionType.AppendPath, newPath);
             //
             let queryParams = {query: {bool: {filter: []}}};
             queryParams.query.bool.filter.push({
-                match: { 'Path.keyword': newPath }
+                match: { 'Path.keyword': newPath.path }
             });
             this.$store.dispatch(ActionType.LoadFiles, {query: queryParams});
         },
@@ -172,11 +166,14 @@ export default {
         },
     },
     created: function () {
-        let path = '/';
-        this.$store.commit(ActionType.SetPath, path);
+        let path = {
+            name: '根目录',
+            path: '/',
+        };
+        this.$store.commit(ActionType.SetPath, [path]);
         let queryParams = {query: {bool: {filter: []}}};
         queryParams.query.bool.filter.push({
-            match: { 'Path.keyword': path }
+            match: { 'Path.keyword': path.path }
         });
         this.$store.dispatch(ActionType.LoadFiles, {query: queryParams});
     },
