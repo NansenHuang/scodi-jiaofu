@@ -13,6 +13,14 @@ export default class Manage {
         return Cherry.post('/drawing/graphy/add', postData);
     };
 
+    static addFile2 (project, file) {
+        let postData = {
+            project,
+            ...file,
+        };
+        return Cherry.post('/drawing/graphy/add', postData);
+    };
+
     static queryFile (project, query = JSON.stringify({size: 50})) {
         let data = {
             project,

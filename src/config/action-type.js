@@ -119,6 +119,20 @@ const ActionType = {
     AppendFiles: 'append_files',
     WriteFiles: 'write_files',
     SetPath: 'set_path',
+    AppendPath: 'append_path',
+    // selection
+    SetFolderSelection: 'set_folder_selection',
+    SetFileSelection: 'set_file_selection',
+    // dellete/move/copy
+    DeleteItems: 'delete_items',
+    MoveItems: 'move_items',
+    CopyItems: 'copy_items',
+    //
+    DeleteItem: 'delete_item',
+    MoveItem: 'move_item',
+    CopyItem: 'copy_item',
+    //
+    BindModels: 'bind_models',
 };
 
 export default ActionType;
