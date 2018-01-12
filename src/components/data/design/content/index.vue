@@ -34,6 +34,9 @@
 .navigator button {
     padding: 6px 6px;
 }
+.modal-content {
+    margin: 20px 0;
+}
 </style>
 
 <template>
@@ -62,8 +65,16 @@
     :closable="false"
     :mask-closable="false"
     v-model="displayBindPanel">
-        <h4>为以下内容设置绑定信息：</h4>
-        <Table :columns="columns" :data="currentDataToBind"></Table>
+        <h3>为以下内容设置绑定信息：</h3>
+        <div class="modal-content">
+            <Table :columns="columns" :data="currentDataToBind"></Table>
+        </div>
+        <h3>选择相应的字段值：</h3>
+        <div class="modal-content">
+            <bind-field @close="displayBindPanel = false"></bind-field>
+        </div>
+        <div slot="footer">
+        </div>
     </Modal>
   </div>
 </template>
@@ -73,12 +84,14 @@ import FolderIcon from './item-icon/folder.vue';
 import FileIcon from './item-icon/file.vue';
 import ActionType from 'src/config/action-type';
 import Path from 'path-browserify';
+import BindField from './bind-field';
 
 export default {
     name: 'DesignDataContent',
     components: {
         FolderIcon,
         FileIcon,
+        BindField,
     },
     computed: {
         currentDataToBind: function () {
@@ -144,10 +157,10 @@ export default {
                     title: '名称',
                     key: 'name',
                 },
-                {
-                    title: 'ID',
-                    key: 'id',
-                },
+                // {
+                //     title: 'ID',
+                //     key: 'id',
+                // },
                 {
                     title: '类型',
                     key: 'type',
