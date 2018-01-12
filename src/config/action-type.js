@@ -119,6 +119,7 @@ const ActionType = {
     AppendFiles: 'append_files',
     WriteFiles: 'write_files',
     SetPath: 'set_path',
+    AppendPath: 'append_path',
     // selection
     SetFolderSelection: 'set_folder_selection',
     SetFileSelection: 'set_file_selection',

@@ -53,8 +53,11 @@ export const mutations = {
             };
         });
     },
+    [ActionType.AppendPath] (state, payload) {
+        state['highway']['graphyCurrentPath'].push(payload);
+    },
     [ActionType.SetPath] (state, payload) {
-        state['highway']['graphyCurrentPath'] = payload;
+        state['highway']['graphyCurrentPath'] = [...payload];
     },
     [ActionType.SetFolderSelection] (state, payload) {
         state['highway']['folderSelected'] = payload;
