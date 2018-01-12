@@ -136,6 +136,8 @@ const ActionType = {
     //
     AddRelation: 'add_relation',
     DeleteRelation: 'delete_relation',
+    //
+    SetLayout: 'set_layout',
 };
 
 export default ActionType;
