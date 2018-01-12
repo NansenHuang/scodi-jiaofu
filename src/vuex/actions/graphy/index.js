@@ -2,6 +2,7 @@ import Utils from 'src/libs/util';
 import Services from 'src/services';
 import ActionType from 'src/config/action-type';
 import {getRequestFunc2, delayRequest} from '../request-func';
+import Cookies from 'js-cookie';
 
 export const actions = {
     [ActionType.LoadFiles]: function (context, payload = {}) {
@@ -17,9 +18,24 @@ export const actions = {
         return delayRequest(request, payload.delay);
     },
     [ActionType.DeleteItems]: async function (context, payload) {
+        let items = payload.items;
+        for (let i = 0; i < items.length; i++) {
+            let resp = await Services.Graphy.Manage.deleteFile(
+                Cookies.get('project'),
+                items[i].id,
+                items[i].type,
+                payload.path,
+                [],
+            );
+            console.log(resp);
+            await new Promise((resolve) => {
+                setTimeout(() => {
+                    resolve();
+                }, 200);
+            });
+        };
         context.commit(ActionType.SetFolderSelection, {});
         context.commit(ActionType.SetFileSelection, {});
-        console.log('delete items: ', payload);
     },
 };
 

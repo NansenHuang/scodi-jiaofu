@@ -152,7 +152,10 @@ export default {
             console.log('用户执行了操作：', name);
         },
         deleteItems: function () {
-            this.$store.dispatch(ActionType.DeleteItems, this.selectedItems);
+            this.$store.dispatch(ActionType.DeleteItems, {
+                path: this.currentPath.path,
+                items: this.selectedItems,
+            });
         },
         bindModel: function () {
             this.$store.commit(ActionType.BindModels, this.selectedItems);

@@ -42,12 +42,14 @@ export default class Manage {
         return Cherry.post('/drawing/graphy/update', postData);
     };
 
-    static deleteFile (project, id, type, names) {
+    static deleteFile (project, id, type, path, names) {
         let data = {
             project,
             id,
             type,
+            path,
             names,
+            timestamp: (new Date()).getTime(),
         };
         return Cherry.post('/drawing/graphy/delete', data);
     };
