@@ -133,6 +133,9 @@ const ActionType = {
     CopyItem: 'copy_item',
     //
     BindModels: 'bind_models',
+    //
+    AddRelation: 'add_relation',
+    DeleteRelation: 'delete_relation',
 };
 
 export default ActionType;
