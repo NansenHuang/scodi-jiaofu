@@ -57,6 +57,14 @@
         <img src="./empty_folder.svg" alt="">
         <span>当前文件夹无内容</span>
     </div>
+    <Modal
+    :styles="{minWidth:'800px'}"
+    :closable="false"
+    :mask-closable="false"
+    v-model="displayBindPanel">
+        <h4>为以下内容设置绑定信息：</h4>
+        <Table :columns="columns" :data="currentDataToBind"></Table>
+    </Modal>
   </div>
 </template>
 
@@ -73,6 +81,25 @@ export default {
         FileIcon,
     },
     computed: {
+        currentDataToBind: function () {
+            return this.$store.state['highway']['bindToModels'] && this.$store.state['highway']['bindToModels'].map(item => {
+                let dataItem = this.currentFolderData.find(i => i.id === item.id);
+                return {
+                    ...item,
+                    name: dataItem ? dataItem['Alias'] : '',
+                };
+            }) || [];
+        },
+        displayBindPanel: {
+            get: function () {
+                return Boolean(this.$store.state['highway']['bindToModels']);
+            },
+            set: function (val) {
+                if (!val) {
+                    this.$store.commit(ActionType.BindModels, null);
+                };
+            },
+        },
         currentFolderData: function () {
             return this.$store.state['highway']['graphy'][this.currentPath.path] || [];
         },
@@ -111,7 +138,22 @@ export default {
         },
     },
     data: function () {
-        return {};
+        return {
+            columns: [
+                {
+                    title: '名称',
+                    key: 'name',
+                },
+                {
+                    title: 'ID',
+                    key: 'id',
+                },
+                {
+                    title: '类型',
+                    key: 'type',
+                }
+            ]
+        };
     },
     methods: {
         jumpToPath (val) {
