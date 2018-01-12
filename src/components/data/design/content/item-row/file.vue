@@ -1,18 +1,12 @@
 <style lang="less" scoped>
 .file-icon {
-  display: inline-flex;
-  justify-content: center;
 }
 .file-icon img {
-  height: 64px;
+  height: 20px;
 }
 .file-name {
-  display: inline-flex;
-  justify-content: center;
 }
 .file-date {
-  display: inline-flex;
-  justify-content: center;
   font-size: 10px;
   color: #999;
 }

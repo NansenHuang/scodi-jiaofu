@@ -1,27 +1,27 @@
 <style lang="less" scoped>
 .icon-base {
   display: flex;
-  flex-direction: column;
-  width: 150px;
-  height: 150px;
-  margin: 20px 10px;
-  padding: 28px 35px 12px 35px;
   position: relative;
 }
-.icon-base-selected, .icon-base:hover {
+.icon-base-selected {
     background-color: #f4f4f4;
+}
+.icon-base:hover {
+    background-color: #ddd;
 }
 .click-area {
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  height: 90px;
+  width: 200px;
+  margin-left: 36px;
+  overflow: hidden;
+  margin-right: 100px;
   cursor: pointer;
+}
+.click-area > * {
+    padding-right: 8px;
 }
 .selected-sign {
   position: absolute;
-  right: 6px;
-  top: 6px;
   color: #aaa;
 }
 .selected-sign-selected {
@@ -38,6 +38,7 @@
         >
             <Icon size="20" :type="`${selected ? 'ios-checkmark' : circleMouseHover ? 'ios-checkmark-outline' : 'ios-circle-outline'}`"></Icon>
         </div>
+
         <div class="click-area" @click.stop="$emit('enter')">
             <slot name="icon"></slot>
             <slot name="name"></slot>
