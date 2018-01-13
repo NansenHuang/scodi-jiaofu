@@ -28,7 +28,7 @@
   .content-info {
     flex-shrink: 0;
     flex-grow: 0;
-    width: 200px;
+    width: 240px;
   }
   .vertical-split {
     flex-grow: 0;
