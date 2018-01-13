@@ -249,13 +249,10 @@ export default {
                 };
             });
 
-            packages.map(item => { console.table(item); });
-            return;
-
-            let resp = await Services.Graphy.Manage.batchAddFile(Cookies.get('project'), Object.values(parentFoldersObject), false);
-            console.log(resp);
-            let fileResp = await Services.Graphy.Manage.batchAddFile(Cookies.get('project'), Object.values(filesObject), false);
-            console.log(fileResp);
+            for (let i = 0; i < packages.length; i++) {
+                let resp = await Services.Graphy.Manage.batchAddFile(Cookies.get('project'), packages[i], false);
+                console.log(resp);
+            }
             return;
             // let existsFolder = {};
             // for (let index = 0; index < this.currentData.length; index++) {
