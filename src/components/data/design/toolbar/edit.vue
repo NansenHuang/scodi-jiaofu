@@ -164,6 +164,7 @@ export default {
             let currentPath = this.currentPath.path;
 
             let parentFoldersObject = {};
+            let filesObject = {};
             for (let index = 0; index < this.currentData.length; index++) {
                 // 1、
                 let parentFolders = [];
@@ -200,11 +201,25 @@ export default {
                         };
                         parrentId = id;
                     }
+                    if (i === parentFolders.length - 1) {
+                        let fileId = uuidv4();
+                        let fileName = uuidv4();
+                        filesObject[file.id] = {
+                            id: fileId,
+                            type: 'FILE',
+                            path: parrentId,
+                            name: fileName,
+                            alias: Path.basename(file.name),
+                            data: JSON.stringify({id: fileId, name: file.name, parrentId}),
+                        };
+                    }
                 }
             }
 
             let resp = await Services.Graphy.Manage.batchAddFile(Cookies.get('project'), Object.values(parentFoldersObject), false);
             console.log(resp);
+            let fileResp = await Services.Graphy.Manage.batchAddFile(Cookies.get('project'), Object.values(filesObject), false);
+            console.log(fileResp);
             return;
             // let existsFolder = {};
             // for (let index = 0; index < this.currentData.length; index++) {
