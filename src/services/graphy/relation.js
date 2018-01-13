@@ -42,10 +42,9 @@ export default class Relation {
         return Cherry.post('/drawing/relation/delete', data);
     };
 
-    static batchAddRelation (project, type, scenes) {
+    static batchAddRelation (project, scenes) {
         let data = {
             project,
-            type,
             scenes,
         };
         return Cherry.post('/drawing/relation/add/multi', data);

@@ -152,9 +152,15 @@ export default {
             console.log('用户执行了操作：', name);
         },
         deleteItems: function () {
-            this.$store.dispatch(ActionType.DeleteItems, {
-                path: this.currentPath.path,
-                items: this.selectedItems,
+            this.$Modal.confirm({
+                title: '确定删除吗？',
+                // content: '<p>请务必确认是否存在与之关联的其他数据。</p>',
+                onOk: () => {
+                    this.$store.dispatch(ActionType.DeleteItems, {
+                        path: this.currentPath.path,
+                        items: this.selectedItems,
+                    });
+                }
             });
         },
         bindModel: function () {

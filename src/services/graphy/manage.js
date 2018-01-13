@@ -38,6 +38,7 @@ export default class Manage {
             name,
             alias,
             data,
+            timestamp: (new Date()).getTime(),
         };
         return Cherry.post('/drawing/graphy/update', postData);
     };
@@ -63,9 +64,10 @@ export default class Manage {
         return Cherry.post('/drawing/graphy/add/multi', data);
     };
 
-    static batchDeleteFile (project, files) {
+    static batchDeleteFile (project, path, files) {
         let data = {
             project,
+            path,
             files,
         };
         return Cherry.post('/drawing/graphy/delete/multi', data);
