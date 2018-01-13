@@ -219,6 +219,23 @@ export default {
                 }
             }
 
+            const CAPACITY = 100;
+            let packages = [[]];
+            Object.keys(parentFoldersObject).map((key) => {
+                let currentPackage = packages[packages.length - 1];
+                let folderKey = parentFoldersObject[key]['id'];
+                if (filesObject[folderKey].length < CAPACITY - currentPackage.length) {
+                    packages[packages.length - 1] = [...packages[packages.length - 1], parentFoldersObject[key], ...filesObject[folderKey]];
+                } else {
+                    packages.push([
+                        parentFoldersObject[key], ...filesObject[folderKey]
+                    ]);
+                };
+            });
+
+            packages.map(item => { console.table(item); });
+            return;
+
             let resp = await Services.Graphy.Manage.batchAddFile(Cookies.get('project'), Object.values(parentFoldersObject), false);
             console.log(resp);
             let fileResp = await Services.Graphy.Manage.batchAddFile(Cookies.get('project'), Object.values(filesObject), false);
