@@ -224,11 +224,22 @@ export default {
             Object.keys(parentFoldersObject).map((key) => {
                 let currentPackage = packages[packages.length - 1];
                 let folderKey = parentFoldersObject[key]['id'];
+
+                let parentFolders = [];
+                let currentParent = parentFoldersObject[key];
+                while (true) {
+                    parentFolders.splice(0, 0, currentParent);
+                    if (currentParent['path'] === '/' || currentParent['path'] === '.') {
+                        break;
+                    };
+                    currentParent = Object.values(parentFoldersObject).find(item => item.id === currentParent.path);
+                };
+
                 if (filesObject[folderKey].length < CAPACITY - currentPackage.length) {
-                    packages[packages.length - 1] = [...packages[packages.length - 1], parentFoldersObject[key], ...filesObject[folderKey]];
+                    packages[packages.length - 1] = [...packages[packages.length - 1], ...parentFolders, ...filesObject[folderKey]];
                 } else {
                     packages.push([
-                        parentFoldersObject[key], ...filesObject[folderKey]
+                        ...parentFolders, ...filesObject[folderKey]
                     ]);
                 };
             });
