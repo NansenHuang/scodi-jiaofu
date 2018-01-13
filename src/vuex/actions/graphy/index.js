@@ -47,6 +47,13 @@ export const actions = {
         );
         console.log(resp);
     },
+    [ActionType.AddRelations]: async function (context, payload) {
+        let resp = await Services.Graphy.Relation.batchAddRelation(
+            Cookies.get('project'),
+            payload
+        );
+        console.log(resp);
+    },
     [ActionType.DeleteRelation]: async function (context, payload) {
         let resp = await Services.Graphy.Relation.deleteRelation(
             Cookies.get('project'),

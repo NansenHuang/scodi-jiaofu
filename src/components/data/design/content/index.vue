@@ -184,20 +184,22 @@ export default {
     methods: {
         handleBind (val) {
             let items = this.currentDataToBind;
-            for (let i = 0; i < items.length; i++) {
-                let item = this.currentFolderData.find(t => t.id === items[i].id);
+            let postData = items.map(obj => {
+                let item = this.currentFolderData.find(t => t.id === obj.id);
                 let data = {
-                    type: items[i].type,
-                    id: items[i].id,
+                    type: val.type[0] || 'ERROR',
+                    id: obj.id,
                     model: val,
                     docs: {
-                        path: item && item.Path,
-                        type: items[i].type,
                         id: item && item.id,
+                        type: obj.type,
+                        path: item && item['Path'],
+                        alias: item && item['Alias'],
                     },
                 };
-                this.$store.dispatch(ActionType.AddRelation, data);
-            };
+                return data;
+            });
+            this.$store.dispatch(ActionType.AddRelations, postData);
             // TODO close modal or not
         },
         jumpToPath (val) {

@@ -135,6 +135,7 @@ const ActionType = {
     BindModels: 'bind_models',
     //
     AddRelation: 'add_relation',
+    AddRelations: 'add_relations',
     DeleteRelation: 'delete_relation',
     //
     SetLayout: 'set_layout',
