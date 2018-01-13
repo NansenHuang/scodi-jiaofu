@@ -40,7 +40,6 @@ export const actions = {
     [ActionType.AddRelation]: async function (context, payload) {
         let resp = await Services.Graphy.Relation.addRelation(
             Cookies.get('project'),
-            payload.type,
             payload.id,
             payload.model,
             payload.docs,
@@ -57,7 +56,6 @@ export const actions = {
     [ActionType.DeleteRelation]: async function (context, payload) {
         let resp = await Services.Graphy.Relation.deleteRelation(
             Cookies.get('project'),
-            payload.type,
             payload.id,
         );
         console.log(resp);

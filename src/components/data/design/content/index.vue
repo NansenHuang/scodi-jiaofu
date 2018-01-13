@@ -187,7 +187,6 @@ export default {
             let postData = items.map(obj => {
                 let item = this.currentFolderData.find(t => t.id === obj.id);
                 let data = {
-                    type: val.type[0] || 'ERROR',
                     id: obj.id,
                     model: val,
                     docs: {
