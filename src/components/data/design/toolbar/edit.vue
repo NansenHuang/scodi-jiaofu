@@ -219,7 +219,7 @@ export default {
                 }
             }
 
-            const CAPACITY = 100;
+            const CAPACITY = 50;
             let packages = [[]];
             Object.keys(parentFoldersObject).map((key) => {
                 let currentPackage = packages[packages.length - 1];
@@ -238,9 +238,14 @@ export default {
                 if (filesObject[folderKey].length < CAPACITY - currentPackage.length) {
                     packages[packages.length - 1] = [...packages[packages.length - 1], ...parentFolders, ...filesObject[folderKey]];
                 } else {
-                    packages.push([
-                        ...parentFolders, ...filesObject[folderKey]
-                    ]);
+                    let partIndex = CAPACITY - currentPackage.length;
+                    packages[packages.length - 1] = [...packages[packages.length - 1], ...parentFolders, ...filesObject[folderKey].slice(0, partIndex)];
+                    while (partIndex < filesObject[folderKey].length) {
+                        packages.push([
+                            ...parentFolders, ...filesObject[folderKey].slice(partIndex, partIndex + CAPACITY)
+                        ]);
+                        partIndex += CAPACITY;
+                    }
                 };
             });
 
