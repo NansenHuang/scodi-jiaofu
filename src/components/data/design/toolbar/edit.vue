@@ -187,7 +187,6 @@ export default {
                     }
                     if (parentFoldersObject[path]) {
                         parrentId = parentFoldersObject[path].id;
-                        continue;
                     } else {
                         let id = uuidv4();
                         let name = uuidv4();
@@ -204,22 +203,56 @@ export default {
                     if (i === parentFolders.length - 1) {
                         let fileId = uuidv4();
                         let fileName = uuidv4();
-                        filesObject[file.id] = {
+                        if (!filesObject[parrentId]) {
+                            filesObject[parrentId] = [];
+                        };
+
+                        filesObject[parrentId].push({
                             id: fileId,
                             type: 'FILE',
                             path: parrentId,
                             name: fileName,
                             alias: Path.basename(file.name),
                             data: JSON.stringify({id: fileId, name: file.name, parrentId}),
-                        };
+                        });
                     }
                 }
             }
 
-            let resp = await Services.Graphy.Manage.batchAddFile(Cookies.get('project'), Object.values(parentFoldersObject), false);
-            console.log(resp);
-            let fileResp = await Services.Graphy.Manage.batchAddFile(Cookies.get('project'), Object.values(filesObject), false);
-            console.log(fileResp);
+            const CAPACITY = 50;
+            let packages = [[]];
+            Object.keys(parentFoldersObject).map((key) => {
+                let currentPackage = packages[packages.length - 1];
+                let folderKey = parentFoldersObject[key]['id'];
+
+                let parentFolders = [];
+                let currentParent = parentFoldersObject[key];
+                while (true) {
+                    parentFolders.splice(0, 0, currentParent);
+                    if (currentParent['path'] === '/' || currentParent['path'] === '.') {
+                        break;
+                    };
+                    currentParent = Object.values(parentFoldersObject).find(item => item.id === currentParent.path);
+                };
+
+                if (filesObject[folderKey].length < CAPACITY - currentPackage.length) {
+                    packages[packages.length - 1] = [...packages[packages.length - 1], ...parentFolders, ...filesObject[folderKey]];
+                } else {
+                    let partIndex = CAPACITY - currentPackage.length;
+                    packages[packages.length - 1] = [...packages[packages.length - 1], ...parentFolders, ...filesObject[folderKey].slice(0, partIndex)];
+                    while (partIndex < filesObject[folderKey].length) {
+                        packages.push([
+                            ...parentFolders, ...filesObject[folderKey].slice(partIndex, partIndex + CAPACITY)
+                        ]);
+                        partIndex += CAPACITY;
+                    }
+                };
+            });
+
+            for (let i = 0; i < packages.length; i++) {
+                let resp = await Services.Graphy.Manage.batchAddFile(Cookies.get('project'), packages[i], false);
+                console.log(resp);
+            }
             return;
             // let existsFolder = {};
             // for (let index = 0; index < this.currentData.length; index++) {
