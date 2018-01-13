@@ -26,12 +26,37 @@
 </template>
 
 <script>
+import Type from 'src/config/type';
+
 export default {
     name: 'BindField',
+    computed: {
+        fieldValuesForSave: function () {
+            let result = JSON.parse(JSON.stringify(this.fieldValues));
+            Object.keys(result).map((key) => {
+                if (!result[key] || !result[key].length) {
+                    delete result[key];
+                };
+            });
+            return result;
+        },
+    },
     data: function () {
         return {
-            fieldValues: {},
-            fieldOptions: {},
+            fieldValues: {
+                type: [],
+                modelType: [],
+                section: [],
+                alignment: [],
+                site: [],
+            },
+            fieldOptions: {
+                type: Object.values(Type).map(item => ({ label: item, value: item })),
+                modelType: [],
+                section: ['LJ8', 'LJ9', 'LJ10'].map(item => ({ label: item, value: item })),
+                alignment: [],
+                site: [],
+            },
             fields: [
                 {
                     name: '类型',
@@ -61,7 +86,7 @@ export default {
             this.$emit('close');
         },
         handleSave: function () {
-            console.log('Save bind.');
+            this.$emit('save', this.fieldValuesForSave);
         },
     },
 };

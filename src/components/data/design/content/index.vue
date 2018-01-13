@@ -77,7 +77,7 @@
         </div>
         <h3>选择相应的字段值：</h3>
         <div class="modal-content">
-            <bind-field @close="displayBindPanel = false"></bind-field>
+            <bind-field @close="displayBindPanel = false" @save="handleBind"></bind-field>
         </div>
         <div slot="footer">
         </div>
@@ -182,6 +182,24 @@ export default {
         };
     },
     methods: {
+        handleBind (val) {
+            let items = this.currentDataToBind;
+            for (let i = 0; i < items.length; i++) {
+                let item = this.currentFolderData.find(t => t.id === items[i].id);
+                let data = {
+                    type: items[i].type,
+                    id: items[i].id,
+                    model: val,
+                    docs: {
+                        path: item && item.Path,
+                        type: items[i].type,
+                        id: item && item.id,
+                    },
+                };
+                this.$store.dispatch(ActionType.AddRelation, data);
+            };
+            // TODO close modal or not
+        },
         jumpToPath (val) {
             this.$store.commit(
                 ActionType.SetPath,
