@@ -34,6 +34,9 @@
 .navigator button {
     padding: 6px 6px;
 }
+.modal-content {
+    margin: 20px 0;
+}
 </style>
 
 <template>
@@ -47,32 +50,82 @@
           </span>
       </div>
     </div>
-    <div class="content">
+    <div class="content" v-if="layout === 'grid'">
       <folder-icon @enter="enterFolder" @select="onSelectFolder" @append-select="onAppendSelectFolder" v-for="item in folders" :key="item.id" :selected="folderSelected[item.id]" :folderId="item.id" :childCount="item.count" :folderName="item.name" :folderDate="item.date"></folder-icon>
     </div>
-    <div class="content">
+    <div v-else>
+      <folder-row @enter="enterFolder" @select="onSelectFolder" @append-select="onAppendSelectFolder" v-for="item in folders" :key="item.id" :selected="folderSelected[item.id]" :folderId="item.id" :childCount="item.count" :folderName="item.name" :folderDate="item.date"></folder-row>
+    </div>
+    <div class="content" v-if="layout === 'grid'">
       <file-icon @enter="deselectAll" @select="onSelectFile" @append-select="onAppendSelectFile" v-for="item in files" :key="item.id" :selected="fileSelected[item.id]" :fileId="item.id" :fileName="item.name" :fileDate="item.date"></file-icon>
+    </div>
+    <div v-else>
+      <file-row @enter="deselectAll" @select="onSelectFile" @append-select="onAppendSelectFile" v-for="item in files" :key="item.id" :selected="fileSelected[item.id]" :fileId="item.id" :fileName="item.name" :fileDate="item.date"></file-row>
     </div>
     <div class="no-content" v-if="!folders.length && !files.length">
         <img src="./empty_folder.svg" alt="">
         <span>当前文件夹无内容</span>
     </div>
+    <Modal
+    :styles="{minWidth:'800px'}"
+    :closable="false"
+    :mask-closable="false"
+    v-model="displayBindPanel">
+        <h3>为以下内容设置绑定信息：</h3>
+        <div class="modal-content">
+            <Table :columns="columns" :data="currentDataToBind"></Table>
+        </div>
+        <h3>选择相应的字段值：</h3>
+        <div class="modal-content">
+            <bind-field @close="displayBindPanel = false"></bind-field>
+        </div>
+        <div slot="footer">
+        </div>
+    </Modal>
   </div>
 </template>
 
 <script>
 import FolderIcon from './item-icon/folder.vue';
 import FileIcon from './item-icon/file.vue';
+import FolderRow from './item-row/folder.vue';
+import FileRow from './item-row/file.vue';
 import ActionType from 'src/config/action-type';
 import Path from 'path-browserify';
+import BindField from './bind-field';
 
 export default {
     name: 'DesignDataContent',
     components: {
         FolderIcon,
         FileIcon,
+        FolderRow,
+        FileRow,
+        BindField,
     },
     computed: {
+        layout: function () {
+            return this.$store.state['highway']['graphyLayout'] || 'grid';
+        },
+        currentDataToBind: function () {
+            return this.$store.state['highway']['bindToModels'] && this.$store.state['highway']['bindToModels'].map(item => {
+                let dataItem = this.currentFolderData.find(i => i.id === item.id);
+                return {
+                    ...item,
+                    name: dataItem ? dataItem['Alias'] : '',
+                };
+            }) || [];
+        },
+        displayBindPanel: {
+            get: function () {
+                return Boolean(this.$store.state['highway']['bindToModels']);
+            },
+            set: function (val) {
+                if (!val) {
+                    this.$store.commit(ActionType.BindModels, null);
+                };
+            },
+        },
         currentFolderData: function () {
             return this.$store.state['highway']['graphy'][this.currentPath.path] || [];
         },
@@ -111,7 +164,22 @@ export default {
         },
     },
     data: function () {
-        return {};
+        return {
+            columns: [
+                {
+                    title: '名称',
+                    key: 'name',
+                },
+                // {
+                //     title: 'ID',
+                //     key: 'id',
+                // },
+                {
+                    title: '类型',
+                    key: 'type',
+                }
+            ]
+        };
     },
     methods: {
         jumpToPath (val) {

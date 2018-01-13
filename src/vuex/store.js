@@ -56,6 +56,7 @@ const initStateString = JSON.stringify({
         globalMessage: [],
         graphy: {},
         graphyCurrentPath: [],
+        graphyLayout: '',
         folderSelected: {},
         fileSelected: {},
         bindToModels: null,
