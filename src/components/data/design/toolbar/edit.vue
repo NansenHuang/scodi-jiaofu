@@ -187,7 +187,6 @@ export default {
                     }
                     if (parentFoldersObject[path]) {
                         parrentId = parentFoldersObject[path].id;
-                        continue;
                     } else {
                         let id = uuidv4();
                         let name = uuidv4();
@@ -204,14 +203,18 @@ export default {
                     if (i === parentFolders.length - 1) {
                         let fileId = uuidv4();
                         let fileName = uuidv4();
-                        filesObject[file.id] = {
+                        if (!filesObject[parrentId]) {
+                            filesObject[parrentId] = [];
+                        };
+
+                        filesObject[parrentId].push({
                             id: fileId,
                             type: 'FILE',
                             path: parrentId,
                             name: fileName,
                             alias: Path.basename(file.name),
                             data: JSON.stringify({id: fileId, name: file.name, parrentId}),
-                        };
+                        });
                     }
                 }
             }
