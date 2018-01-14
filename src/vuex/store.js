@@ -1,4 +1,5 @@
 import ActionType from '../config/action-type';
+import LayoutType from '../config/layout-type';
 
 import { actions as AlignmentActions, mutations as AlignmentMutations } from './actions/alignment';
 import { actions as StructureActions, mutations as StructureMutations } from './actions/structure';
@@ -57,7 +58,7 @@ const initStateString = JSON.stringify({
         graphy: {},
         graphyBind: {},
         graphyCurrentPath: [],
-        graphyLayout: '',
+        graphyLayout: LayoutType.Grid,
         folderSelected: {},
         fileSelected: {},
         bindToModels: null,

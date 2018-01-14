@@ -7,8 +7,8 @@
 <template>
   <div>
     <ButtonGroup>
-        <Button :type="layout === 'grid' ? 'primary' : 'ghost'" @click="setLayout('grid')" icon="android-apps" size="small"></Button>
-        <Button :type="layout === 'list' ? 'primary' : 'ghost'" @click="setLayout('list')" icon="android-list" size="small"></Button>
+        <Button :type="layout === LayoutType.Grid ? 'primary' : 'ghost'" @click="setLayout(LayoutType.Grid)" icon="android-apps" size="small"></Button>
+        <Button :type="layout === LayoutType.List ? 'primary' : 'ghost'" @click="setLayout(LayoutType.List)" icon="android-list" size="small"></Button>
     </ButtonGroup>
     <Button class="toolbar-btn" type="text" @click="onClick">
       <Icon size="16" type="ios-information-outline"></Icon>
@@ -18,15 +18,18 @@
 
 <script>
 import ActionType from 'src/config/action-type';
+import LayoutType from 'src/config/layout-type';
 
 export default {
     name: 'InfoToolbar',
     data: function () {
-        return {};
+        return {
+            LayoutType,
+        };
     },
     computed: {
         layout: function () {
-            return this.$store.state['highway']['graphyLayout'] || 'grid';
+            return this.$store.state['highway']['graphyLayout'];
         },
     },
     methods: {
