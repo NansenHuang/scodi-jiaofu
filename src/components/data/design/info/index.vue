@@ -3,10 +3,15 @@
     display: flex;
     align-items: center;
   }
-  .info-header img {
+  .info-header img, .info-header i {
     width: 32px;
     height: 32px;
     margin-right: 15px;
+  }
+  .info-header i {
+    display: inline-flex;
+    justify-content: center;
+    color: #666;
   }
   .info-body {
     margin: 20px 0;
@@ -27,7 +32,7 @@
 <template>
   <div>
     <div style="padding:10px;">
-      <div class="info-header" v-if="folderInfoVisible">
+      <div class="info-header" v-if="folderInfoVisible || !fileInfoVisible">
         <img src="./folder.svg" alt="">
         <h4>文件信息</h4>
       </div>
@@ -41,9 +46,31 @@
            <div class="info-item-value">{{item.value}}</div>
         </div>
       </div>
-      <div class="info-header" v-else>
+      <div class="info-body" v-else>
         <h4>{{ `已选中${selected.length}个项目` }}</h4>
       </div>
+      <div class="info-header" v-if="bindInfo.length">
+        <Icon type="link" size="32"></Icon>
+        <h4>绑定信息</h4>
+      </div>
+      <div class="info-body" v-if="bindInfo.length">
+          <div v-for="(bindItem, index) in bindInfo" :key="bindItem['id']">
+              <p>{{ index + 1 }} <Button type="text" @click="deleteBind" style="color:#57a3f3;">删除</Button></p>
+              <p>{{ JSON.stringify(bindItem['Data']['model']) }}</p>
+          </div>
+      </div>
+
+      <div class="info-header" v-if="!folderInfoVisible && !fileInfoVisible && currentFolderInvalidBindData.length">
+        <Icon type="android-alert" size="32"></Icon>
+        <h4>无效的绑定</h4>
+      </div>
+      <div class="info-body" v-if="!folderInfoVisible && !fileInfoVisible && currentFolderInvalidBindData.length">
+          <div v-for="(item, index) in currentFolderInvalidBindData" :key="item['id']">
+              <p>{{ index + 1 }} <Button type="text" @click="deleteInvalidBind" style="color:#57a3f3;">删除</Button></p>
+              <p>{{ JSON.stringify(item['Data']['docs']) }}</p>
+          </div>
+      </div>
+
     </div>
   </div>
 </template>
@@ -52,6 +79,26 @@
 export default {
     name: 'DesignDataInfoView',
     computed: {
+        bindInfo: function () {
+            if (this.selected.length === 1) {
+                let data = this.$store.state['highway']['graphyBind'][this.currentPath.path] || [];
+                let bindInfo = data.filter(item => item['Data']['docs']['id'] === this.selected[0].id);
+                return (bindInfo.length && bindInfo) || [];
+            } else {
+                return [];
+            };
+        },
+        currentFolderInvalidBindData: function () {
+            let data = this.$store.state['highway']['graphyBind'][this.currentPath.path] || [];
+            let dataById = [];
+            data.map((item) => {
+                let validItem = this.currentFolderData.filter(fileItem => fileItem.id === item['Data']['docs']['id']);
+                if (!validItem.length) {
+                    dataById.push(item);
+                };
+            });
+            return dataById;
+        },
         currentPath: function () {
             let path = this.$store.state['highway']['graphyCurrentPath'];
             path = path[path.length - 1];
@@ -96,6 +143,21 @@ export default {
         folderInfoVisible: function () {
             return this.selected.length === 1 && this.selected[0]['type'] === 'DIRECTORY';
         }
+    },
+    methods: {
+        bindInfoForDisplay: function (obj) {
+            let fields = Object.keys(obj);
+            return fields.map((f) => ({
+                key: f,
+                value: obj[f],
+            }));
+        },
+        deleteBind: function () {
+            
+        },
+        deleteInvalidBind: function () {
+
+        },
     },
     data: function () {
         return {};
