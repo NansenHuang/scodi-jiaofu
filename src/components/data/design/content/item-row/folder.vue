@@ -10,6 +10,7 @@
 .file-date {
   font-size: 10px;
   color: #999;
+  margin: 0 40px;
 }
 </style>
 
@@ -20,6 +21,7 @@
       </div>
       <p slot="name" class="file-name">{{ folderName }}</p>
       <p slot="date" class="file-date">{{ folderDate }}</p>
+      <p slot="bind" class="file-date">{{ bindData.length ? `${bindData.length}条绑定记录` : '' }}</p>
   </icon-base>
 </template>
 
@@ -35,6 +37,12 @@ export default {
         selected: {
             type: Boolean,
             default: false,
+        },
+        bindData: {
+            type: Array,
+            default: function () {
+                return [];
+            },
         },
         folderId: {
             type: String,

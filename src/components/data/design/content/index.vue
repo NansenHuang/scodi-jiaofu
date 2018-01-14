@@ -51,16 +51,16 @@
       </div>
     </div>
     <div class="content" v-if="layout === 'grid'">
-      <folder-icon @enter="enterFolder" @select="onSelectFolder" @append-select="onAppendSelectFolder" v-for="item in folders" :key="item.id" :selected="folderSelected[item.id]" :folderId="item.id" :childCount="item.count" :folderName="item.name" :folderDate="item.date"></folder-icon>
+      <folder-icon @enter="enterFolder" @select="onSelectFolder" @append-select="onAppendSelectFolder" v-for="item in folders" :key="item.id" :bindData="currentFolderBindData[item.id]" :selected="folderSelected[item.id]" :folderId="item.id" :childCount="item.count" :folderName="item.name" :folderDate="item.date"></folder-icon>
     </div>
     <div v-else>
-      <folder-row @enter="enterFolder" @select="onSelectFolder" @append-select="onAppendSelectFolder" v-for="item in folders" :key="item.id" :selected="folderSelected[item.id]" :folderId="item.id" :childCount="item.count" :folderName="item.name" :folderDate="item.date"></folder-row>
+      <folder-row @enter="enterFolder" @select="onSelectFolder" @append-select="onAppendSelectFolder" v-for="item in folders" :key="item.id" :bindData="currentFolderBindData[item.id]" :selected="folderSelected[item.id]" :folderId="item.id" :childCount="item.count" :folderName="item.name" :folderDate="item.date"></folder-row>
     </div>
     <div class="content" v-if="layout === 'grid'">
-      <file-icon @enter="deselectAll" @select="onSelectFile" @append-select="onAppendSelectFile" v-for="item in files" :key="item.id" :selected="fileSelected[item.id]" :fileId="item.id" :fileName="item.name" :fileDate="item.date"></file-icon>
+      <file-icon @enter="deselectAll" @select="onSelectFile" @append-select="onAppendSelectFile" v-for="item in files" :key="item.id" :bindData="currentFolderBindData[item.id]" :selected="fileSelected[item.id]" :fileId="item.id" :fileName="item.name" :fileDate="item.date"></file-icon>
     </div>
     <div v-else>
-      <file-row @enter="deselectAll" @select="onSelectFile" @append-select="onAppendSelectFile" v-for="item in files" :key="item.id" :selected="fileSelected[item.id]" :fileId="item.id" :fileName="item.name" :fileDate="item.date"></file-row>
+      <file-row @enter="deselectAll" @select="onSelectFile" @append-select="onAppendSelectFile" v-for="item in files" :key="item.id" :bindData="currentFolderBindData[item.id]" :selected="fileSelected[item.id]" :fileId="item.id" :fileName="item.name" :fileDate="item.date"></file-row>
     </div>
     <div class="no-content" v-if="!folders.length && !files.length">
         <img src="./empty_folder.svg" alt="">
@@ -128,6 +128,17 @@ export default {
         },
         currentFolderData: function () {
             return this.$store.state['highway']['graphy'][this.currentPath.path] || [];
+        },
+        currentFolderBindData: function () {
+            let data = this.$store.state['highway']['graphyBind'][this.currentPath.path] || [];
+            let dataById = {};
+            data.map((item) => {
+                if (!dataById[item['Data']['docs']['id']]) {
+                    dataById[item['Data']['docs']['id']] = [];
+                };
+                dataById[item['Data']['docs']['id']].push(item);
+            });
+            return dataById;
         },
         currentPath: function () {
             let path = this.$store.state['highway']['graphyCurrentPath'];
