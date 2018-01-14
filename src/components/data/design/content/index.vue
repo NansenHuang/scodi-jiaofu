@@ -50,10 +50,10 @@
           </span>
       </div>
     </div>
-    <div class="content">
+    <div :class="layoutString === 'grid' ? 'content' : ''">
       <folder-icon @enter="enterFolder" :layout="layout" @select="onSelectFolder" @append-select="onAppendSelectFolder" v-for="item in folders" :key="item.id" :bindData="currentFolderBindData[item.id]" :selected="folderSelected[item.id]" :folderId="item.id" :childCount="item.count" :folderName="item.name" :folderDate="item.date"></folder-icon>
     </div>
-    <div class="content">
+    <div :class="layoutString === 'grid' ? 'content' : ''">
       <file-icon @enter="deselectAll" :layout="layout" @select="onSelectFile" @append-select="onAppendSelectFile" v-for="item in files" :key="item.id" :bindData="currentFolderBindData[item.id]" :selected="fileSelected[item.id]" :fileId="item.id" :fileName="item.name" :fileDate="item.date"></file-icon>
     </div>
     <div class="no-content" v-if="!folders.length && !files.length">
@@ -85,6 +85,7 @@ import FileIcon from './item-icon/file.vue';
 import ActionType from 'src/config/action-type';
 import Path from 'path-browserify';
 import BindField from './bind-field';
+import LayoutType from 'src/config/layout-type';
 
 export default {
     name: 'DesignDataContent',
@@ -96,6 +97,9 @@ export default {
     computed: {
         layout: function () {
             return this.$store.state['highway']['graphyLayout'];
+        },
+        layoutString: function () {
+            return this.layout === LayoutType.Grid ? 'grid' : 'list';
         },
         currentDataToBind: function () {
             return this.$store.state['highway']['bindToModels'] && this.$store.state['highway']['bindToModels'].map(item => {
