@@ -14,7 +14,7 @@
   width: 200px;
   margin-left: 36px;
   overflow: hidden;
-  margin-right: 100px;
+  margin-right: 40px;
   cursor: pointer;
 }
 .click-area > * {
@@ -44,6 +44,7 @@
             <slot name="name"></slot>
         </div>
         <slot name="date"></slot>
+        <slot name="bind"></slot>
     </div>
 </template>
 

@@ -51,16 +51,16 @@
       </div>
     </div>
     <div class="content" v-if="layout === 'grid'">
-      <folder-icon @enter="enterFolder" @select="onSelectFolder" @append-select="onAppendSelectFolder" v-for="item in folders" :key="item.id" :selected="folderSelected[item.id]" :folderId="item.id" :childCount="item.count" :folderName="item.name" :folderDate="item.date"></folder-icon>
+      <folder-icon @enter="enterFolder" @select="onSelectFolder" @append-select="onAppendSelectFolder" v-for="item in folders" :key="item.id" :bindData="currentFolderBindData[item.id]" :selected="folderSelected[item.id]" :folderId="item.id" :childCount="item.count" :folderName="item.name" :folderDate="item.date"></folder-icon>
     </div>
     <div v-else>
-      <folder-row @enter="enterFolder" @select="onSelectFolder" @append-select="onAppendSelectFolder" v-for="item in folders" :key="item.id" :selected="folderSelected[item.id]" :folderId="item.id" :childCount="item.count" :folderName="item.name" :folderDate="item.date"></folder-row>
+      <folder-row @enter="enterFolder" @select="onSelectFolder" @append-select="onAppendSelectFolder" v-for="item in folders" :key="item.id" :bindData="currentFolderBindData[item.id]" :selected="folderSelected[item.id]" :folderId="item.id" :childCount="item.count" :folderName="item.name" :folderDate="item.date"></folder-row>
     </div>
     <div class="content" v-if="layout === 'grid'">
-      <file-icon @enter="deselectAll" @select="onSelectFile" @append-select="onAppendSelectFile" v-for="item in files" :key="item.id" :selected="fileSelected[item.id]" :fileId="item.id" :fileName="item.name" :fileDate="item.date"></file-icon>
+      <file-icon @enter="deselectAll" @select="onSelectFile" @append-select="onAppendSelectFile" v-for="item in files" :key="item.id" :bindData="currentFolderBindData[item.id]" :selected="fileSelected[item.id]" :fileId="item.id" :fileName="item.name" :fileDate="item.date"></file-icon>
     </div>
     <div v-else>
-      <file-row @enter="deselectAll" @select="onSelectFile" @append-select="onAppendSelectFile" v-for="item in files" :key="item.id" :selected="fileSelected[item.id]" :fileId="item.id" :fileName="item.name" :fileDate="item.date"></file-row>
+      <file-row @enter="deselectAll" @select="onSelectFile" @append-select="onAppendSelectFile" v-for="item in files" :key="item.id" :bindData="currentFolderBindData[item.id]" :selected="fileSelected[item.id]" :fileId="item.id" :fileName="item.name" :fileDate="item.date"></file-row>
     </div>
     <div class="no-content" v-if="!folders.length && !files.length">
         <img src="./empty_folder.svg" alt="">
@@ -77,7 +77,7 @@
         </div>
         <h3>选择相应的字段值：</h3>
         <div class="modal-content">
-            <bind-field @close="displayBindPanel = false"></bind-field>
+            <bind-field @close="displayBindPanel = false" @save="handleBind"></bind-field>
         </div>
         <div slot="footer">
         </div>
@@ -128,6 +128,17 @@ export default {
         },
         currentFolderData: function () {
             return this.$store.state['highway']['graphy'][this.currentPath.path] || [];
+        },
+        currentFolderBindData: function () {
+            let data = this.$store.state['highway']['graphyBind'][this.currentPath.path] || [];
+            let dataById = {};
+            data.map((item) => {
+                if (!dataById[item['Data']['docs']['id']]) {
+                    dataById[item['Data']['docs']['id']] = [];
+                };
+                dataById[item['Data']['docs']['id']].push(item);
+            });
+            return dataById;
         },
         currentPath: function () {
             let path = this.$store.state['highway']['graphyCurrentPath'];
@@ -182,6 +193,25 @@ export default {
         };
     },
     methods: {
+        handleBind (val) {
+            let items = this.currentDataToBind;
+            let postData = items.map(obj => {
+                let item = this.currentFolderData.find(t => t.id === obj.id);
+                let data = {
+                    id: obj.id,
+                    model: val,
+                    docs: {
+                        id: item && item.id,
+                        type: obj.type,
+                        path: item && item['Path'],
+                        alias: item && item['Alias'],
+                    },
+                };
+                return data;
+            });
+            this.$store.dispatch(ActionType.AddRelations, postData);
+            // TODO close modal or not
+        },
         jumpToPath (val) {
             this.$store.commit(
                 ActionType.SetPath,
@@ -207,6 +237,12 @@ export default {
                 match: { 'Path.keyword': newPath.path }
             });
             this.$store.dispatch(ActionType.LoadFiles, {query: queryParams});
+            //
+            let bindQuery = {query: {bool: {filter: []}}};
+            bindQuery.query.bool.filter.push({
+                match: { 'Data.docs.path.keyword': newPath.path }
+            });
+            this.$store.dispatch(ActionType.QueryRelation, {query: bindQuery});
         },
         onSelectFolder (val) {
             this.$store.commit(ActionType.SetFileSelection, {});
@@ -244,6 +280,11 @@ export default {
             match: { 'Path.keyword': path.path }
         });
         this.$store.dispatch(ActionType.LoadFiles, {query: queryParams});
+        let bindQuery = {query: {bool: {filter: []}}};
+        bindQuery.query.bool.filter.push({
+            match: { 'Data.docs.path.keyword': path.path }
+        });
+        this.$store.dispatch(ActionType.QueryRelation, {query: bindQuery});
     },
 };
 </script>
