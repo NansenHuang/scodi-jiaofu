@@ -226,6 +226,12 @@ export default {
                 match: { 'Path.keyword': newPath.path }
             });
             this.$store.dispatch(ActionType.LoadFiles, {query: queryParams});
+            //
+            let bindQuery = {query: {bool: {filter: []}}};
+            bindQuery.query.bool.filter.push({
+                match: { 'Data.docs.path.keyword': newPath.path }
+            });
+            this.$store.dispatch(ActionType.QueryRelation, {query: bindQuery});
         },
         onSelectFolder (val) {
             this.$store.commit(ActionType.SetFileSelection, {});
@@ -263,6 +269,11 @@ export default {
             match: { 'Path.keyword': path.path }
         });
         this.$store.dispatch(ActionType.LoadFiles, {query: queryParams});
+        let bindQuery = {query: {bool: {filter: []}}};
+        bindQuery.query.bool.filter.push({
+            match: { 'Data.docs.path.keyword': path.path }
+        });
+        this.$store.dispatch(ActionType.QueryRelation, {query: bindQuery});
     },
 };
 </script>

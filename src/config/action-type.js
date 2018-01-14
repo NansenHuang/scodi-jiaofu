@@ -135,6 +135,9 @@ const ActionType = {
     BindModels: 'bind_models',
     //
     AddRelation: 'add_relation',
+    QueryRelation: 'query_relation',
+    AppendRelationQueryResult: 'append_relation_query_result',
+    WriteRelationQueryResult: 'write_relation_query_result',
     AddRelations: 'add_relations',
     DeleteRelation: 'delete_relation',
     //
