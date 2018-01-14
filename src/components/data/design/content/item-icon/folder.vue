@@ -1,14 +1,14 @@
 <style lang="less" scoped>
-.file-icon {
+.file-icon-grid {
   position: relative;
 }
-.file-icon img {
+.file-icon-grid img {
   position: absolute;
   left: 0;
   top: 0;
-  width: 80px;
+  width: 80px;  
 }
-.file-icon div {
+.file-icon-grid div {
   position: absolute;
   left: 0;
   top: 0;
@@ -18,40 +18,38 @@
   background-color: white;
   box-shadow: 0 1px 3px 2px rgba(1, 1, 0, 0.2);
 }
-.file-icon > span {
+.file-icon-grid > span {
   position: absolute;
   right: 8px;
   top: 36px;
   color: white;
   font-size: 8px;
 }
-.file-name {
-  display: inline-flex;
-  justify-content: center;
-}
-.file-date {
-  display: inline-flex;
-  justify-content: center;
-  font-size: 10px;
-  color: #999;
+.file-icon-list img {
+  height: 20px;
 }
 </style>
 
 <template>
-  <icon-base :selected="selected" @enter="$emit('enter', folderId)" @select="$emit('select', folderId)" @append-select="$emit('append-select', folderId)">
-      <div slot="icon" class="file-icon">
+  <icon-base :layout="layout" :selected="selected" @enter="$emit('enter', folderId)" @select="$emit('select', folderId)" @append-select="$emit('append-select', folderId)">
+      <div v-if="layoutString === 'grid'" slot="icon" class="file-icon-grid">
           <img src="./folder-large_backplate.svg" alt="">
           <div v-if="childCount !== 0"></div>
           <img src="./folder-large_frontplate_nopreview.svg" alt="">
           <span v-if="childCount !== 0">{{ childCount }}</span>
       </div>
-      <p slot="name" class="file-name">{{ folderName }}</p>
-      <p slot="date" class="file-date">{{ folderDate }}</p>
+      <div v-else slot="icon" class="file-icon-list">
+          <img src="./folder.svg" alt="">
+      </div>
+      <div slot="name">{{ folderName }}</div>
+      <div slot="date">{{ folderDate }}</div>
+      <div slot="bind">{{ bindData.length ? `${bindData.length}条绑定记录` : '' }}</div>
   </icon-base>
 </template>
 
 <script>
 import IconBase from './base';
+import LayoutType from 'src/config/layout-type';
 
 export default {
     name: 'FolderIcon',
@@ -62,6 +60,16 @@ export default {
         selected: {
             type: Boolean,
             default: false,
+        },
+        layout: {
+            type: String,
+            required: true,
+        },
+        bindData: {
+            type: Array,
+            default: function () {
+                return [];
+            },
         },
         folderId: {
             type: String,
@@ -78,6 +86,11 @@ export default {
         folderDate: {
             type: String,
             required: true,
+        },
+    },
+    computed: {
+        layoutString: function () {
+            return this.layout === LayoutType.Grid ? 'grid' : 'list';
         },
     },
 };
