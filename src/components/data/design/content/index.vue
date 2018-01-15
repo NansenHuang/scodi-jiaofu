@@ -106,22 +106,36 @@ export default {
             return this.layout === LayoutType.Grid ? 'grid' : 'list';
         },
         currentDataToBind: function () {
-            return (this.$store.state['highway']['bindToModels'] && this.$store.state['highway']['bindToModels'].map(item => {
+            let fileSelected = Object.keys(this.$store.state['highway']['fileSelected']).map((key) => ({
+                type: 'FILE',
+                id: key,
+            }));
+            fileSelected = fileSelected.filter(item => this.$store.state['highway']['fileSelected'][item.id]);
+
+            let folderSelected = Object.keys(this.$store.state['highway']['folderSelected']).map((key) => ({
+                type: 'DIRECTORY',
+                id: key,
+            }));
+            folderSelected = folderSelected.filter(item => this.$store.state['highway']['folderSelected'][item.id]);
+            let dataToBind = this.$store.state['graphy']['bind']['ing']
+                ? [...fileSelected, ...folderSelected]
+                : [];
+            return dataToBind.map(item => {
                 let dataItem = this.currentFolderData.find(i => i.id === item.id);
                 return {
                     ...item,
                     name: dataItem ? dataItem['Alias'] : '',
                     type: this.$t(item['type']),
                 };
-            })) || [];
+            });
         },
         displayBindPanel: {
             get: function () {
-                return Boolean(this.$store.state['highway']['bindToModels']);
+                return this.$store.state['graphy']['bind']['ing'];
             },
             set: function (val) {
                 if (!val) {
-                    this.$store.commit(ActionType.BindModels, null);
+                    this.$store.commit(ActionType.BindModels, false);
                 };
             },
         },

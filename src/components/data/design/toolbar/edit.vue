@@ -173,7 +173,7 @@ export default {
             });
         },
         bindModel: function () {
-            this.$store.commit(ActionType.BindModels, this.selectedItems);
+            this.$store.commit(ActionType.BindModels, true);
         },
         startUpload: async function () {
             const REQUEST_AMOUNT = 50;

@@ -149,7 +149,7 @@ export const mutations = {
         state['highway']['fileSelected'] = payload;
     },
     [ActionType.BindModels] (state, payload) {
-        state['highway']['bindToModels'] = payload;
+        state['graphy']['bind']['ing'] = Boolean(payload);
     },
     [ActionType.SetLayout] (state, payload) {
         state['graphy']['explore']['layout'] = payload;

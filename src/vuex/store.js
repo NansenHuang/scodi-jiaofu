@@ -56,7 +56,6 @@ const initStateString = JSON.stringify({
         },
         folderSelected: {},
         fileSelected: {},
-        bindToModels: null,
     },
     graphy: {
         upload: {
@@ -70,7 +69,7 @@ const initStateString = JSON.stringify({
         },
         bind: {
             data: {},
-            status: '',
+            ing: false,
         },
     },
     message: {
