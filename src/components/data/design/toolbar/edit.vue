@@ -21,7 +21,7 @@
     </Button>
     <Button class="toolbar-btn" type="text" @click="sendOperation('uploadFolder')" v-if="!selectedItems.length">
       <Icon size="16" type="ios-arrow-thin-up"></Icon>
-      <file-upload v-model="selectedFiles2" multiple directory>
+      <file-upload v-model="selectedFiles2" ref="folder-upload" multiple directory>
         <span class="text">上传文件夹</span>
       </file-upload>
     </Button>
@@ -56,7 +56,8 @@
     v-model="modalVisible">
     上传界面
     <Table :columns="columns" :data="currentData"></Table>
-    <Button type="primary" @click="startUpload">开始上传</Button>
+    <Button type="primary" @click="startUpload">上传文件</Button>
+    <Button type="primary" @click="afterUpload">提交文件</Button>
     </Modal>
   </div>
 </template>
@@ -66,9 +67,10 @@ import VueUploadComponent from 'vue-upload-component';
 import Services from 'src/services';
 import Cookies from 'js-cookie';
 import Path from 'path-browserify';
+import ActionType from 'src/config/action-type';
+import GraphyField from 'src/config/graphy-field';
 import uuid from 'uuid';
 const uuidv4 = uuid.v4;
-import ActionType from 'src/config/action-type';
 
 export default {
     name: 'EditToolbar',
@@ -123,13 +125,17 @@ export default {
                     key: 'name',
                 },
                 {
+                    title: '唯一编码',
+                    key: 'id',
+                },
+                {
                     title: '文件大小',
                     key: 'size',
                 },
                 {
-                    title: '上传速度',
-                    key: 'speed',
-                }
+                    title: '上传进度',
+                    key: 'progress',
+                },
             ],
         };
     },
@@ -167,6 +173,42 @@ export default {
             this.$store.commit(ActionType.BindModels, this.selectedItems);
         },
         startUpload: async function () {
+            const REQUEST_AMOUNT = 50;
+            let index = 0;
+            let idToRemoteName = {};
+            let remoteNameToUrl = {};
+            while (true) {
+                if (index > this.currentData.length) {
+                    break;
+                }
+                let names = this.currentData.slice(index, index + REQUEST_AMOUNT).map((item) => {
+                    let baseName = Path.basename(item.name);
+                    let ext = Path.extname(item.name);
+                    let insertPos = ext ? baseName.lastIndexOf(ext) : baseName.length;
+                    let remoteName = baseName.substring(0, insertPos) + '_' + item.id + ext;
+                    idToRemoteName[item.id] = remoteName;
+                    return remoteName;
+                });
+
+                let resp = await Services.Graphy.Storage.getUploadUrls(
+                    Cookies.get('project'),
+                    names,
+                );
+                resp.map(item => {
+                    remoteNameToUrl[item.name] = item.uri;
+                });
+                index += REQUEST_AMOUNT;
+            };
+            for (let index = 0; index < this.currentData.length; index++) {
+                this.currentData[index]['putAction'] = remoteNameToUrl[idToRemoteName[this.currentData[index]['id']]];
+            }
+            this.idToRemoteName = idToRemoteName;
+            this.remoteNameToUrl = remoteNameToUrl;
+            this.$refs['folder-upload'].active = true;
+        },
+        afterUpload: async function () {
+            let idToRemoteName = this.idToRemoteName;
+            // let remoteNameToUrl = this.remoteNameToUrl;
             let currentPath = this.currentPath.path;
 
             let parentFoldersObject = {};
@@ -185,6 +227,7 @@ export default {
                 };
                 // 2、
                 let parrentId = '';
+                let currentTime = (new Date()).getTime();
                 for (let i = 0; i < parentFolders.length; i++) {
                     let path = parentFolders[i];
                     if (path === '/' || path === '.') {
@@ -202,7 +245,11 @@ export default {
                             path: parrentId,
                             name: name,
                             alias: Path.basename(path),
-                            data: JSON.stringify({path, id, name, parrentId}),
+                            data: JSON.stringify({
+                                [GraphyField.FolderData.uploadTime]: currentTime,
+                                [GraphyField.FolderData.createTime]: '',
+                                [GraphyField.FolderData.updateTIme]: '',
+                            }),
                         };
                         parrentId = id;
                     }
@@ -219,7 +266,15 @@ export default {
                             path: parrentId,
                             name: fileName,
                             alias: Path.basename(file.name),
-                            data: JSON.stringify({id: fileId, name: file.name, parrentId}),
+                            data: JSON.stringify({
+                                [GraphyField.FileData.info]: JSON.stringify({fileSize: file.size}),
+                                [GraphyField.FileData.fileType]: file.type,
+                                [GraphyField.FileData.uploadTime]: currentTime,
+                                [GraphyField.FileData.createTime]: '',
+                                [GraphyField.FileData.updateTIme]: '',
+                                [GraphyField.FileData.viewTime]: '',
+                                [GraphyField.FileData.storage]: idToRemoteName[this.currentData[index]['id']],
+                            }),
                         });
                     }
                 }

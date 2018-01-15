@@ -102,13 +102,13 @@ export default {
             return this.layout === LayoutType.Grid ? 'grid' : 'list';
         },
         currentDataToBind: function () {
-            return this.$store.state['highway']['bindToModels'] && this.$store.state['highway']['bindToModels'].map(item => {
+            return (this.$store.state['highway']['bindToModels'] && this.$store.state['highway']['bindToModels'].map(item => {
                 let dataItem = this.currentFolderData.find(i => i.id === item.id);
                 return {
                     ...item,
                     name: dataItem ? dataItem['Alias'] : '',
                 };
-            }) || [];
+            })) || [];
         },
         displayBindPanel: {
             get: function () {
