@@ -10,7 +10,7 @@ export const actions = {
         let queryParams = payload.query;
         let recursive = true;
         let idField = 'id';
-        let storePath = ['highway', 'graphy'];
+        let storePath = ['graphy', 'explore', 'data'];
         let loadMore = payload.loadMore;
 
         let request = getRequestFunc2(context, queryFunc, queryParams, recursive, idField, storePath, loadMore,
@@ -77,10 +77,10 @@ export const actions = {
 export const mutations = {
     [ActionType.AppendFiles] (state, payload) {
         payload['data'].map((item) => {
-            state['highway']['graphy'] = {
-                ...state['highway']['graphy'],
+            state['graphy']['explore']['data'] = {
+                ...state['graphy']['explore']['data'],
                 [item['Path']]: [
-                    ...(state['highway']['graphy'][item['Path']] || []),
+                    ...(state['graphy']['explore']['data'][item['Path']] || []),
                     item,
                 ],
             };
@@ -90,15 +90,15 @@ export const mutations = {
         let cleared = {};
         payload['data'].map((item) => {
             if (!cleared[item['Path']]) {
-                state['highway']['graphy'][item['Path']] = [];
+                state['graphy']['explore']['data'][item['Path']] = [];
                 cleared[item['Path']] = true;
             }
         });
         payload['data'].map((item) => {
-            state['highway']['graphy'] = {
-                ...state['highway']['graphy'],
+            state['graphy']['explore']['data'] = {
+                ...state['graphy']['explore']['data'],
                 [item['Path']]: [
-                    ...state['highway']['graphy'][item['Path']],
+                    ...state['graphy']['explore']['data'][item['Path']],
                     item,
                 ],
             };

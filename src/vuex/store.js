@@ -54,7 +54,6 @@ const initStateString = JSON.stringify({
             tunnel: [],
             overbridge: [],
         },
-        graphy: {},
         graphyBind: {},
         graphyCurrentPath: [],
         graphyLayout: LayoutType.List,
@@ -66,7 +65,7 @@ const initStateString = JSON.stringify({
         upload: {
             queue: [],
         },
-        explorer: {
+        explore: {
             data: {},
             path: [],
             layout: '',

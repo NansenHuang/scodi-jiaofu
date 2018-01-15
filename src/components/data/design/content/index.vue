@@ -126,7 +126,7 @@ export default {
             },
         },
         currentFolderData: function () {
-            return this.$store.state['highway']['graphy'][this.currentPath.path] || [];
+            return this.$store.state['graphy']['explore']['data'][this.currentPath.path] || [];
         },
         currentFolderBindData: function () {
             let data = this.$store.state['highway']['graphyBind'][this.currentPath.path] || [];

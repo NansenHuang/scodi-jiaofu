@@ -136,7 +136,7 @@ export default {
             return path;
         },
         currentFolderData: function () {
-            return this.$store.state['highway']['graphy'][this.currentPath.path] || [];
+            return this.$store.state['graphy']['explore']['data'][this.currentPath.path] || [];
         },
         selectedInfo: function () {
             if (this.selected.length === 1) {
