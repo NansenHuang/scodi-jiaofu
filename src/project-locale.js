@@ -27,6 +27,9 @@ export default {
         geologyCnName: '地质名称',
         tunnelCnName: '隧道名称',
         //
+        FILE: '文件',
+        DIRECTORY: '文件夹',
+        //
         LUMIAN: '路面',
         LUJIAN: '路肩',
         BX: '标线',
