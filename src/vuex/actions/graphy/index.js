@@ -152,6 +152,6 @@ export const mutations = {
         state['highway']['bindToModels'] = payload;
     },
     [ActionType.SetLayout] (state, payload) {
-        state['highway']['graphyLayout'] = payload;
+        state['graphy']['explore']['layout'] = payload;
     },
 };

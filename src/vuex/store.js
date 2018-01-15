@@ -54,7 +54,6 @@ const initStateString = JSON.stringify({
             tunnel: [],
             overbridge: [],
         },
-        graphyLayout: LayoutType.List,
         folderSelected: {},
         fileSelected: {},
         bindToModels: null,
@@ -66,7 +65,7 @@ const initStateString = JSON.stringify({
         explore: {
             data: {},
             path: [],
-            layout: '',
+            layout: LayoutType.List,
             selected: [],
         },
         bind: {

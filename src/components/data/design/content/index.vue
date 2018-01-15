@@ -100,7 +100,7 @@ export default {
     },
     computed: {
         layout: function () {
-            return this.$store.state['highway']['graphyLayout'];
+            return this.$store.state['graphy']['explore']['layout'];
         },
         layoutString: function () {
             return this.layout === LayoutType.Grid ? 'grid' : 'list';
