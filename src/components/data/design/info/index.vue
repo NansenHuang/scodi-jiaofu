@@ -93,7 +93,7 @@ export default {
     computed: {
         bindInfo: function () {
             if (this.selected.length === 1) {
-                let data = this.$store.state['highway']['graphyBind'][this.currentPath.path] || [];
+                let data = this.$store.state['graphy']['bind']['data'][this.currentPath.path] || [];
                 let bindInfo = data.filter(item => item['Data']['docs']['id'] === this.selected[0].id);
                 return (bindInfo.length && bindInfo) || [];
             } else {
@@ -110,7 +110,7 @@ export default {
             return data;
         },
         currentFolderInvalidBindData: function () {
-            let data = this.$store.state['highway']['graphyBind'][this.currentPath.path] || [];
+            let data = this.$store.state['graphy']['bind']['data'][this.currentPath.path] || [];
             let dataById = [];
             data.map((item) => {
                 let validItem = this.currentFolderData.filter(fileItem => fileItem.id === item['Data']['docs']['id']);

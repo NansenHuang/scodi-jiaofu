@@ -129,7 +129,7 @@ export default {
             return this.$store.state['graphy']['explore']['data'][this.currentPath.path] || [];
         },
         currentFolderBindData: function () {
-            let data = this.$store.state['highway']['graphyBind'][this.currentPath.path] || [];
+            let data = this.$store.state['graphy']['bind']['data'][this.currentPath.path] || [];
             let dataById = {};
             data.map((item) => {
                 if (!dataById[item['Data']['docs']['id']]) {

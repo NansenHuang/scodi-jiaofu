@@ -65,7 +65,7 @@ export const actions = {
         let queryParams = payload.query;
         let recursive = true;
         let idField = 'id';
-        let storePath = ['highway', 'graphyBind'];
+        let storePath = ['graphy', 'bind', 'data'];
         let loadMore = payload.loadMore;
 
         let request = getRequestFunc2(context, queryFunc, queryParams, recursive, idField, storePath, loadMore,
@@ -107,10 +107,10 @@ export const mutations = {
     [ActionType.AppendRelationQueryResult] (state, payload) {
         payload['data'].map((item) => {
             let key = item['Data']['docs']['path'];
-            state['highway']['graphyBind'] = {
-                ...state['highway']['graphyBind'],
+            state['graphy']['bind']['data'] = {
+                ...state['graphy']['bind']['data'],
                 [key]: [
-                    ...(state['highway']['graphyBind'][key] || []),
+                    ...(state['graphy']['bind']['data'][key] || []),
                     item,
                 ],
             };
@@ -121,16 +121,16 @@ export const mutations = {
         payload['data'].map((item) => {
             let key = item['Data']['docs']['path'];
             if (!cleared[key]) {
-                state['highway']['graphyBind'][key] = [];
+                state['graphy']['bind']['data'][key] = [];
                 cleared[key] = true;
             }
         });
         payload['data'].map((item) => {
             let key = item['Data']['docs']['path'];
-            state['highway']['graphyBind'] = {
-                ...state['highway']['graphyBind'],
+            state['graphy']['bind']['data'] = {
+                ...state['graphy']['bind']['data'],
                 [key]: [
-                    ...state['highway']['graphyBind'][key],
+                    ...state['graphy']['bind']['data'][key],
                     item,
                 ],
             };

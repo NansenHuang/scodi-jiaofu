@@ -54,7 +54,6 @@ const initStateString = JSON.stringify({
             tunnel: [],
             overbridge: [],
         },
-        graphyBind: {},
         graphyCurrentPath: [],
         graphyLayout: LayoutType.List,
         folderSelected: {},
