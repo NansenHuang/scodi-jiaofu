@@ -91,22 +91,22 @@ export default {
             return this.currentData.filter(item => item.progress === '100');
         },
         currentPath: function () {
-            let path = this.$store.state['highway']['graphyCurrentPath'];
+            let path = this.$store.state['graphy']['explore']['path'];
             path = path[path.length - 1];
             return path;
         },
         selectedItems: function () {
-            let fileSelected = Object.keys(this.$store.state['highway']['fileSelected']).map((key) => ({
+            let fileSelected = Object.keys(this.$store.state['graphy']['explore']['fileSelected']).map((key) => ({
                 type: 'FILE',
                 id: key,
             }));
-            fileSelected = fileSelected.filter(item => this.$store.state['highway']['fileSelected'][item.id]);
+            fileSelected = fileSelected.filter(item => this.$store.state['graphy']['explore']['fileSelected'][item.id]);
 
-            let folderSelected = Object.keys(this.$store.state['highway']['folderSelected']).map((key) => ({
+            let folderSelected = Object.keys(this.$store.state['graphy']['explore']['folderSelected']).map((key) => ({
                 type: 'DIRECTORY',
                 id: key,
             }));
-            folderSelected = folderSelected.filter(item => this.$store.state['highway']['folderSelected'][item.id]);
+            folderSelected = folderSelected.filter(item => this.$store.state['graphy']['explore']['folderSelected'][item.id]);
 
             return [...fileSelected, ...folderSelected];
         },
@@ -173,7 +173,7 @@ export default {
             });
         },
         bindModel: function () {
-            this.$store.commit(ActionType.BindModels, this.selectedItems);
+            this.$store.commit(ActionType.BindModels, true);
         },
         startUpload: async function () {
             const REQUEST_AMOUNT = 50;

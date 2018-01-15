@@ -93,7 +93,7 @@ export default {
     computed: {
         bindInfo: function () {
             if (this.selected.length === 1) {
-                let data = this.$store.state['highway']['graphyBind'][this.currentPath.path] || [];
+                let data = this.$store.state['graphy']['bind']['data'][this.currentPath.path] || [];
                 let bindInfo = data.filter(item => item['Data']['docs']['id'] === this.selected[0].id);
                 return (bindInfo.length && bindInfo) || [];
             } else {
@@ -110,7 +110,7 @@ export default {
             return data;
         },
         currentFolderInvalidBindData: function () {
-            let data = this.$store.state['highway']['graphyBind'][this.currentPath.path] || [];
+            let data = this.$store.state['graphy']['bind']['data'][this.currentPath.path] || [];
             let dataById = [];
             data.map((item) => {
                 let validItem = this.currentFolderData.filter(fileItem => fileItem.id === item['Data']['docs']['id']);
@@ -131,12 +131,12 @@ export default {
             return dataById;
         },
         currentPath: function () {
-            let path = this.$store.state['highway']['graphyCurrentPath'];
+            let path = this.$store.state['graphy']['explore']['path'];
             path = path[path.length - 1];
             return path;
         },
         currentFolderData: function () {
-            return this.$store.state['highway']['graphy'][this.currentPath.path] || [];
+            return this.$store.state['graphy']['explore']['data'][this.currentPath.path] || [];
         },
         selectedInfo: function () {
             if (this.selected.length === 1) {
@@ -154,17 +154,17 @@ export default {
             }));
         },
         selected: function () {
-            let fileSelected = Object.keys(this.$store.state['highway']['fileSelected']).map((key) => ({
+            let fileSelected = Object.keys(this.$store.state['graphy']['explore']['fileSelected']).map((key) => ({
                 type: 'FILE',
                 id: key,
             }));
-            fileSelected = fileSelected.filter(item => this.$store.state['highway']['fileSelected'][item.id]);
+            fileSelected = fileSelected.filter(item => this.$store.state['graphy']['explore']['fileSelected'][item.id]);
 
-            let folderSelected = Object.keys(this.$store.state['highway']['folderSelected']).map((key) => ({
+            let folderSelected = Object.keys(this.$store.state['graphy']['explore']['folderSelected']).map((key) => ({
                 type: 'DIRECTORY',
                 id: key,
             }));
-            folderSelected = folderSelected.filter(item => this.$store.state['highway']['folderSelected'][item.id]);
+            folderSelected = folderSelected.filter(item => this.$store.state['graphy']['explore']['folderSelected'][item.id]);
 
             return [...fileSelected, ...folderSelected];
         },

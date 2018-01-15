@@ -10,7 +10,7 @@ export const actions = {
         let queryParams = payload.query;
         let recursive = true;
         let idField = 'id';
-        let storePath = ['highway', 'graphy'];
+        let storePath = ['graphy', 'explore', 'data'];
         let loadMore = payload.loadMore;
 
         let request = getRequestFunc2(context, queryFunc, queryParams, recursive, idField, storePath, loadMore,
@@ -65,7 +65,7 @@ export const actions = {
         let queryParams = payload.query;
         let recursive = true;
         let idField = 'id';
-        let storePath = ['highway', 'graphyBind'];
+        let storePath = ['graphy', 'bind', 'data'];
         let loadMore = payload.loadMore;
 
         let request = getRequestFunc2(context, queryFunc, queryParams, recursive, idField, storePath, loadMore,
@@ -77,10 +77,10 @@ export const actions = {
 export const mutations = {
     [ActionType.AppendFiles] (state, payload) {
         payload['data'].map((item) => {
-            state['highway']['graphy'] = {
-                ...state['highway']['graphy'],
+            state['graphy']['explore']['data'] = {
+                ...state['graphy']['explore']['data'],
                 [item['Path']]: [
-                    ...(state['highway']['graphy'][item['Path']] || []),
+                    ...(state['graphy']['explore']['data'][item['Path']] || []),
                     item,
                 ],
             };
@@ -90,15 +90,15 @@ export const mutations = {
         let cleared = {};
         payload['data'].map((item) => {
             if (!cleared[item['Path']]) {
-                state['highway']['graphy'][item['Path']] = [];
+                state['graphy']['explore']['data'][item['Path']] = [];
                 cleared[item['Path']] = true;
             }
         });
         payload['data'].map((item) => {
-            state['highway']['graphy'] = {
-                ...state['highway']['graphy'],
+            state['graphy']['explore']['data'] = {
+                ...state['graphy']['explore']['data'],
                 [item['Path']]: [
-                    ...state['highway']['graphy'][item['Path']],
+                    ...state['graphy']['explore']['data'][item['Path']],
                     item,
                 ],
             };
@@ -107,10 +107,10 @@ export const mutations = {
     [ActionType.AppendRelationQueryResult] (state, payload) {
         payload['data'].map((item) => {
             let key = item['Data']['docs']['path'];
-            state['highway']['graphyBind'] = {
-                ...state['highway']['graphyBind'],
+            state['graphy']['bind']['data'] = {
+                ...state['graphy']['bind']['data'],
                 [key]: [
-                    ...(state['highway']['graphyBind'][key] || []),
+                    ...(state['graphy']['bind']['data'][key] || []),
                     item,
                 ],
             };
@@ -121,37 +121,37 @@ export const mutations = {
         payload['data'].map((item) => {
             let key = item['Data']['docs']['path'];
             if (!cleared[key]) {
-                state['highway']['graphyBind'][key] = [];
+                state['graphy']['bind']['data'][key] = [];
                 cleared[key] = true;
             }
         });
         payload['data'].map((item) => {
             let key = item['Data']['docs']['path'];
-            state['highway']['graphyBind'] = {
-                ...state['highway']['graphyBind'],
+            state['graphy']['bind']['data'] = {
+                ...state['graphy']['bind']['data'],
                 [key]: [
-                    ...state['highway']['graphyBind'][key],
+                    ...state['graphy']['bind']['data'][key],
                     item,
                 ],
             };
         });
     },
     [ActionType.AppendPath] (state, payload) {
-        state['highway']['graphyCurrentPath'].push(payload);
+        state['graphy']['explore']['path'].push(payload);
     },
     [ActionType.SetPath] (state, payload) {
-        state['highway']['graphyCurrentPath'] = [...payload];
+        state['graphy']['explore']['path'] = [...payload];
     },
     [ActionType.SetFolderSelection] (state, payload) {
-        state['highway']['folderSelected'] = payload;
+        state['graphy']['explore']['folderSelected'] = payload;
     },
     [ActionType.SetFileSelection] (state, payload) {
-        state['highway']['fileSelected'] = payload;
+        state['graphy']['explore']['fileSelected'] = payload;
     },
     [ActionType.BindModels] (state, payload) {
-        state['highway']['bindToModels'] = payload;
+        state['graphy']['bind']['ing'] = Boolean(payload);
     },
     [ActionType.SetLayout] (state, payload) {
-        state['highway']['graphyLayout'] = payload;
+        state['graphy']['explore']['layout'] = payload;
     },
 };

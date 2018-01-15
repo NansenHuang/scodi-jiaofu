@@ -100,36 +100,50 @@ export default {
     },
     computed: {
         layout: function () {
-            return this.$store.state['highway']['graphyLayout'];
+            return this.$store.state['graphy']['explore']['layout'];
         },
         layoutString: function () {
             return this.layout === LayoutType.Grid ? 'grid' : 'list';
         },
         currentDataToBind: function () {
-            return (this.$store.state['highway']['bindToModels'] && this.$store.state['highway']['bindToModels'].map(item => {
+            let fileSelected = Object.keys(this.$store.state['graphy']['explore']['fileSelected']).map((key) => ({
+                type: 'FILE',
+                id: key,
+            }));
+            fileSelected = fileSelected.filter(item => this.$store.state['graphy']['explore']['fileSelected'][item.id]);
+
+            let folderSelected = Object.keys(this.$store.state['graphy']['explore']['folderSelected']).map((key) => ({
+                type: 'DIRECTORY',
+                id: key,
+            }));
+            folderSelected = folderSelected.filter(item => this.$store.state['graphy']['explore']['folderSelected'][item.id]);
+            let dataToBind = this.$store.state['graphy']['bind']['ing']
+                ? [...fileSelected, ...folderSelected]
+                : [];
+            return dataToBind.map(item => {
                 let dataItem = this.currentFolderData.find(i => i.id === item.id);
                 return {
                     ...item,
                     name: dataItem ? dataItem['Alias'] : '',
                     type: this.$t(item['type']),
                 };
-            })) || [];
+            });
         },
         displayBindPanel: {
             get: function () {
-                return Boolean(this.$store.state['highway']['bindToModels']);
+                return this.$store.state['graphy']['bind']['ing'];
             },
             set: function (val) {
                 if (!val) {
-                    this.$store.commit(ActionType.BindModels, null);
+                    this.$store.commit(ActionType.BindModels, false);
                 };
             },
         },
         currentFolderData: function () {
-            return this.$store.state['highway']['graphy'][this.currentPath.path] || [];
+            return this.$store.state['graphy']['explore']['data'][this.currentPath.path] || [];
         },
         currentFolderBindData: function () {
-            let data = this.$store.state['highway']['graphyBind'][this.currentPath.path] || [];
+            let data = this.$store.state['graphy']['bind']['data'][this.currentPath.path] || [];
             let dataById = {};
             data.map((item) => {
                 if (!dataById[item['Data']['docs']['id']]) {
@@ -140,12 +154,12 @@ export default {
             return dataById;
         },
         currentPath: function () {
-            let path = this.$store.state['highway']['graphyCurrentPath'];
+            let path = this.$store.state['graphy']['explore']['path'];
             path = path[path.length - 1];
             return path;
         },
         parentFolders: function () {
-            return this.$store.state['highway']['graphyCurrentPath'].map(item => ({
+            return this.$store.state['graphy']['explore']['path'].map(item => ({
                 name: item.name,
                 path: item.path,
             }));
@@ -167,10 +181,10 @@ export default {
             }));
         },
         folderSelected: function () {
-            return this.$store.state['highway']['folderSelected'];
+            return this.$store.state['graphy']['explore']['folderSelected'];
         },
         fileSelected: function () {
-            return this.$store.state['highway']['fileSelected'];
+            return this.$store.state['graphy']['explore']['fileSelected'];
         },
     },
     data: function () {
@@ -213,7 +227,7 @@ export default {
         jumpToPath (val) {
             this.$store.commit(
                 ActionType.SetPath,
-                this.$store.state['highway']['graphyCurrentPath'].slice(0, val + 1)
+                this.$store.state['graphy']['explore']['path'].slice(0, val + 1)
             );
         },
         deselectAll () {
