@@ -24,10 +24,11 @@ import FieldType from 'src/config/field-type';
 // import RegionType from 'src/config/region-type';
 // import ConvertPinyin from '../shared/template/basic/convert-pinyin';
 import SinglePartComponent from 'src/components/coordinated-design/shared/template/compose/right-part';
-import TypeValue from 'src/config/type';
+import TypeConfig from './type-config';
+import SiteConfig from './site-config';
 
 export default {
-    name: 'NewAlignment',
+    name: 'AddBind',
     components: {
         TemplateAdd,
     },
@@ -59,21 +60,6 @@ export default {
         return {
             fields: [
                 {
-                    label: '类型',
-                    key: 'type',
-                    type: FieldType.Array,
-                    params: {
-                        data: Object.values(TypeValue).map(item => ({
-                            label: this.$t(item),
-                            value: item,
-                        })),
-                    },
-                },
-                {
-                    label: '部件类型',
-                    key: 'modelType',
-                },
-                {
                     label: '区段',
                     type: FieldType.Enum,
                     params: {
@@ -87,6 +73,11 @@ export default {
                             },
                         ],
                     },
+                },
+                {
+                    label: '绑定类型',
+                    key: 'type',
+                    component: TypeConfig,
                 },
                 {
                     label: '绑定路线',

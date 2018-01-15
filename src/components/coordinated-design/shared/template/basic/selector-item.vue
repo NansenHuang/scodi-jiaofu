@@ -3,7 +3,7 @@
 
 <template>
     <div>
-        <Select ref="select" v-if="dataSource && dataSource.length" v-model="selected" clearable @on-change="selectChange">
+        <Select ref="select" v-if="dataSource && dataSource.length" v-model="selected" clearable @on-change="selectChange" :multiple="multiple">
             <Option
                 v-for="item in dataSource"
                 :label="item['label']"
@@ -32,6 +32,10 @@ export default {
         dataSource: {
             type: Array,
             required: true,
+        },
+        multiple: {
+            type: Boolean,
+            default: false,
         },
     },
     computed: {},
