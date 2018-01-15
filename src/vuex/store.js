@@ -63,6 +63,24 @@ const initStateString = JSON.stringify({
         fileSelected: {},
         bindToModels: null,
     },
+    graphy: {
+        upload: {
+            queue: [],
+        },
+        explorer: {
+            data: {},
+            path: [],
+            layout: '',
+            selected: [],
+        },
+        bind: {
+            data: {},
+            status: '',
+        },
+    },
+    message: {
+        queue: [],
+    },
 });
 
 export const state = JSON.parse(initStateString);
