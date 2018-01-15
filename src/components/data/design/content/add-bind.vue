@@ -24,6 +24,7 @@ import FieldType from 'src/config/field-type';
 // import RegionType from 'src/config/region-type';
 // import ConvertPinyin from '../shared/template/basic/convert-pinyin';
 import SinglePartComponent from 'src/components/coordinated-design/shared/template/compose/right-part';
+import TypeValue from 'src/config/type';
 
 export default {
     name: 'NewAlignment',
@@ -60,6 +61,13 @@ export default {
                 {
                     label: '类型',
                     key: 'type',
+                    type: FieldType.Array,
+                    params: {
+                        data: Object.values(TypeValue).map(item => ({
+                            label: this.$t(item),
+                            value: item,
+                        })),
+                    },
                 },
                 {
                     label: '部件类型',
