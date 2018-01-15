@@ -182,10 +182,9 @@ export default {
                     break;
                 }
                 let names = this.currentData.slice(index, index + REQUEST_AMOUNT).map((item) => {
-                    let baseName = Path.basename(item.name);
                     let ext = Path.extname(item.name);
-                    let insertPos = ext ? baseName.lastIndexOf(ext) : baseName.length;
-                    let remoteName = baseName.substring(0, insertPos) + '_' + item.id + ext;
+                    let insertPos = ext ? item.name.lastIndexOf(ext) : item.name.length;
+                    let remoteName = item.name.substring(0, insertPos) + '_' + item.id + ext;
                     idToRemoteName[item.id] = remoteName;
                     return remoteName;
                 });
