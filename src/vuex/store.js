@@ -54,7 +54,6 @@ const initStateString = JSON.stringify({
             tunnel: [],
             overbridge: [],
         },
-        globalMessage: [],
         graphy: {},
         graphyBind: {},
         graphyCurrentPath: [],
@@ -101,7 +100,7 @@ export const mutations = {
         });
     },
     [ActionType.GlobalMessage] (state, payload) {
-        state['highway']['globalMessage'].push(payload);
+        state['message']['queue'].push(payload);
     },
     ...AlignmentMutations,
     ...StructureMutations,

@@ -31,7 +31,7 @@ export const mutations = {
                 // eslint-disable-next-line no-console
                 console.error(`Failed to process this chain: \n${JSON.stringify(item, null, 4)}`);
 
-                state['highway']['globalMessage'].push({
+                state['message']['queue'].push({
                     config: {
                         title: '长链未处理',
                         desc: `路线：${item['alignmentCnName']}<br/>测量桩号：${item['measureStation']}<br/>断链桩号：${item['station']}`,
@@ -43,7 +43,7 @@ export const mutations = {
             };
         });
         state['highway']['intervalTree'] = itreeObject;
-        state['highway']['globalMessage'].push({
+        state['message']['queue'].push({
             config: {
                 title: '断链数据准备完成！',
                 duration: 5,
