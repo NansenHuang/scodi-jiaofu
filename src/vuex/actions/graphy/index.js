@@ -137,10 +137,10 @@ export const mutations = {
         });
     },
     [ActionType.AppendPath] (state, payload) {
-        state['highway']['graphyCurrentPath'].push(payload);
+        state['graphy']['explore']['path'].push(payload);
     },
     [ActionType.SetPath] (state, payload) {
-        state['highway']['graphyCurrentPath'] = [...payload];
+        state['graphy']['explore']['path'] = [...payload];
     },
     [ActionType.SetFolderSelection] (state, payload) {
         state['highway']['folderSelected'] = payload;

@@ -140,12 +140,12 @@ export default {
             return dataById;
         },
         currentPath: function () {
-            let path = this.$store.state['highway']['graphyCurrentPath'];
+            let path = this.$store.state['graphy']['explore']['path'];
             path = path[path.length - 1];
             return path;
         },
         parentFolders: function () {
-            return this.$store.state['highway']['graphyCurrentPath'].map(item => ({
+            return this.$store.state['graphy']['explore']['path'].map(item => ({
                 name: item.name,
                 path: item.path,
             }));
@@ -213,7 +213,7 @@ export default {
         jumpToPath (val) {
             this.$store.commit(
                 ActionType.SetPath,
-                this.$store.state['highway']['graphyCurrentPath'].slice(0, val + 1)
+                this.$store.state['graphy']['explore']['path'].slice(0, val + 1)
             );
         },
         deselectAll () {

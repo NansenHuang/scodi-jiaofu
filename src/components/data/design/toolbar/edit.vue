@@ -91,7 +91,7 @@ export default {
             return this.currentData.filter(item => item.progress === '100');
         },
         currentPath: function () {
-            let path = this.$store.state['highway']['graphyCurrentPath'];
+            let path = this.$store.state['graphy']['explore']['path'];
             path = path[path.length - 1];
             return path;
         },
