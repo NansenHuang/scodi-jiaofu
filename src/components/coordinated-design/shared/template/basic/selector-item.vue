@@ -10,7 +10,7 @@
                 :value="item['value']"
                 :key="item['value']"></Option>
         </Select>
-        <Select ref="select" v-else></Select>
+        <Select ref="select" disabled v-else></Select>
     </div>
 </template>
 

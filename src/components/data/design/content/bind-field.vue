@@ -13,7 +13,7 @@
           <Select v-if="fieldOptions[field.key] && fieldOptions[field.key].length" v-model="fieldValues[field.key]" multiple>
             <Option v-for="item in fieldOptions[field.key]" :value="item.value" :key="item.value">{{ item.label }}</Option>
           </Select>
-          <Select v-else></Select>
+          <Select disabled v-else></Select>
         </FormItem>
       </Form>
       <Row class="margin-top-20 publish-button-con modal_foot">
