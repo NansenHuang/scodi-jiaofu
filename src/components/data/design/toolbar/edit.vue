@@ -54,8 +54,8 @@
     :closable="false"
     :mask-closable="false"
     v-model="modalVisible">
-    上传界面
-    <Table :columns="columns" :data="currentData"></Table>
+    <h3>上传界面</h3>
+    <div>{{ `共${currentData.length}个文件，已上传${currentDataFinished.length}个。` }}</div>
     <Button type="primary" @click="startUpload">上传文件</Button>
     <Button type="primary" @click="afterUpload">提交文件</Button>
     </Modal>
@@ -86,6 +86,9 @@ export default {
                 return this.selectedFiles2;
             }
             return [];
+        },
+        currentDataFinished: function () {
+            return this.currentData.filter(item => item.progress === '100');
         },
         currentPath: function () {
             let path = this.$store.state['highway']['graphyCurrentPath'];
@@ -182,10 +185,9 @@ export default {
                     break;
                 }
                 let names = this.currentData.slice(index, index + REQUEST_AMOUNT).map((item) => {
-                    let baseName = Path.basename(item.name);
                     let ext = Path.extname(item.name);
-                    let insertPos = ext ? baseName.lastIndexOf(ext) : baseName.length;
-                    let remoteName = baseName.substring(0, insertPos) + '_' + item.id + ext;
+                    let insertPos = ext ? item.name.lastIndexOf(ext) : item.name.length;
+                    let remoteName = item.name.substring(0, insertPos) + '_' + item.id + ext;
                     idToRemoteName[item.id] = remoteName;
                     return remoteName;
                 });

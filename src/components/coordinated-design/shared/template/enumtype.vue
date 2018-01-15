@@ -11,7 +11,7 @@
                 :label="item[params['displayName']]"
                 :key="item[params['id']]"></Option>
         </Select>
-        <Select ref="select" v-else></Select>
+        <Select ref="select" disabled v-else></Select>
     </div>
 </template>
 

@@ -17,11 +17,11 @@
     margin: 20px 0;
   }
   .info-item {
-    margin-bottom: 20px;
+    margin-bottom: 10px;
   }
   .info-item-title {
       font-size: 12px;
-      color: #666;
+      color: #999;
   }
   .info-item-value {
       font-size: 14px;
@@ -54,9 +54,12 @@
         <h4>绑定信息</h4>
       </div>
       <div class="info-body" v-if="bindInfo.length">
-          <div v-for="(bindItem, index) in bindInfo" :key="bindItem['id']">
-              <p>{{ index + 1 }} <Button type="text" @click="deleteBind" style="color:#57a3f3;">删除</Button></p>
-              <p>{{ JSON.stringify(bindItem['Data']['model']) }}</p>
+          <div v-for="(bindInfo, index) in bindInfoForDisplay" :key="index">
+              <p>{{ index + 1 }} <Button type="text" @click="deleteBind(index)" style="color:#57a3f3;">修改</Button></p>
+              <div class="info-item" v-for="item in bindInfo" :key="item.key">
+                <div class="info-item-title">{{item.key}}</div>
+                <div class="info-item-value">{{item.value}}</div>
+              </div>
           </div>
       </div>
 
@@ -65,9 +68,16 @@
         <h4>无效的绑定</h4>
       </div>
       <div class="info-body" v-if="!folderInfoVisible && !fileInfoVisible && currentFolderInvalidBindData.length">
-          <div v-for="(item, index) in currentFolderInvalidBindData" :key="item['id']">
-              <p>{{ index + 1 }} <Button type="text" @click="deleteInvalidBind" style="color:#57a3f3;">删除</Button></p>
-              <p>{{ JSON.stringify(item['Data']['docs']) }}</p>
+          <div v-for="(bindInfo, index) in currentFolderInvalidBindData" :key="index">
+              <p>{{ index + 1 }} <Button type="text" @click="deleteInvalidBind(index)" style="color:#57a3f3;">修改</Button></p>
+              <div class="info-item" v-for="item in bindInfo['docs']" :key="'docs' + item.key">
+                <div class="info-item-title">{{item.key}}</div>
+                <div class="info-item-value">{{item.value}}</div>
+              </div>
+              <div class="info-item" v-for="item in bindInfo['model']" :key="'model' + item.key">
+                <div class="info-item-title">{{item.key}}</div>
+                <div class="info-item-value">{{item.value}}</div>
+              </div>
           </div>
       </div>
 
@@ -76,6 +86,8 @@
 </template>
 
 <script>
+import ActionType from 'src/config/action-type';
+
 export default {
     name: 'DesignDataInfoView',
     computed: {
@@ -88,13 +100,32 @@ export default {
                 return [];
             };
         },
+        bindInfoForDisplay: function (obj) {
+            let data = this.bindInfo.map((item) => {
+                return Object.keys(item['Data']['model']).map((f) => ({
+                    key: f,
+                    value: f === 'type' ? this.$t(item['Data']['model'][f]) : item['Data']['model'][f] || '无',
+                }));
+            });
+            return data;
+        },
         currentFolderInvalidBindData: function () {
             let data = this.$store.state['highway']['graphyBind'][this.currentPath.path] || [];
             let dataById = [];
             data.map((item) => {
                 let validItem = this.currentFolderData.filter(fileItem => fileItem.id === item['Data']['docs']['id']);
                 if (!validItem.length) {
-                    dataById.push(item);
+                    dataById.push({
+                        id: item['id'],
+                        docs: Object.keys(item['Data']['docs']).map((f) => ({
+                            key: f,
+                            value: f === 'type' ? this.$t(item['Data']['docs'][f]) : item['Data']['docs'][f] || '无',
+                        })),
+                        model: Object.keys(item['Data']['model']).map((f) => ({
+                            key: f,
+                            value: f === 'type' ? this.$t(item['Data']['model'][f]) : item['Data']['model'][f] || '无',
+                        })),
+                    });
                 };
             });
             return dataById;
@@ -119,7 +150,7 @@ export default {
             let fields = Object.keys(this.selectedInfo);
             return fields.map((f) => ({
                 key: f,
-                value: this.selectedInfo[f],
+                value: this.selectedInfo[f] || '无',
             }));
         },
         selected: function () {
@@ -145,18 +176,21 @@ export default {
         }
     },
     methods: {
-        bindInfoForDisplay: function (obj) {
-            let fields = Object.keys(obj);
-            return fields.map((f) => ({
-                key: f,
-                value: obj[f],
-            }));
+        deleteBind: function (index) {
+            this.$Modal.confirm({
+                title: '确定要删除这条绑定信息吗？',
+                onOk: () => {
+                    this.$store.dispatch(ActionType.DeleteRelation, {id: this.bindInfo[index]['id']});
+                }
+            });
         },
-        deleteBind: function () {
-            
-        },
-        deleteInvalidBind: function () {
-
+        deleteInvalidBind: function (index) {
+            this.$Modal.confirm({
+                title: '确定要删除这条绑定信息吗？',
+                onOk: () => {
+                    this.$store.dispatch(ActionType.DeleteRelation, {id: this.currentFolderInvalidBindData[index]['id']});
+                }
+            });
         },
     },
     data: function () {
