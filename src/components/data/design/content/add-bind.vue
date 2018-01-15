@@ -85,49 +85,9 @@ export default {
                     component: SinglePartComponent,
                 },
                 {
-                    label: '所属工点',
-                    type: FieldType.Map,
-                    params: {
-                        arraySource: [
-                            {
-                                label: '测试',
-                                value1: 'testType',
-                                value2: 'testEnName',
-                                value3: 'testCnName',
-                            },
-                        ],
-                        storePattern: [],
-                        map: [
-                            { from: 'value1', to: 'siteType' },
-                            { from: 'value2', to: 'siteEnName' },
-                            { from: 'value3', to: 'siteCnName' },
-                        ],
-                    },
-                },
-                {
-                    label: '方向',
-                    key: 'direction',
-                    type: FieldType.Array,
-                    params: {
-                        data: [
-                            {
-                                label: '左',
-                                value: 'left',
-                            },
-                            {
-                                label: '右',
-                                value: 'right',
-                            },
-                            {
-                                label: '横向',
-                                value: 'vertical',
-                            },
-                            {
-                                label: '纵向',
-                                value: 'horizontal',
-                            },
-                        ],
-                    },
+                    label: '绑定工点',
+                    key: 'site',
+                    component: SiteConfig,
                 },
             ],
         };
