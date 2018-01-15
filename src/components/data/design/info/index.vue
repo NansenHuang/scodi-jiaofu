@@ -55,7 +55,7 @@
       </div>
       <div class="info-body" v-if="bindInfo.length">
           <div v-for="(bindInfo, index) in bindInfoForDisplay" :key="index">
-              <p>{{ index + 1 }} <Button type="text" @click="deleteBind" style="color:#57a3f3;">修改</Button></p>
+              <p>{{ index + 1 }} <Button type="text" @click="deleteBind(index)" style="color:#57a3f3;">修改</Button></p>
               <div class="info-item" v-for="item in bindInfo" :key="item.key">
                 <div class="info-item-title">{{item.key}}</div>
                 <div class="info-item-value">{{item.value}}</div>
@@ -69,7 +69,7 @@
       </div>
       <div class="info-body" v-if="!folderInfoVisible && !fileInfoVisible && currentFolderInvalidBindData.length">
           <div v-for="(bindInfo, index) in currentFolderInvalidBindData" :key="index">
-              <p>{{ index + 1 }} <Button type="text" @click="deleteInvalidBind" style="color:#57a3f3;">修改</Button></p>
+              <p>{{ index + 1 }} <Button type="text" @click="deleteInvalidBind(index)" style="color:#57a3f3;">修改</Button></p>
               <div class="info-item" v-for="item in bindInfo['docs']" :key="'docs' + item.key">
                 <div class="info-item-title">{{item.key}}</div>
                 <div class="info-item-value">{{item.value}}</div>
@@ -86,6 +86,8 @@
 </template>
 
 <script>
+import ActionType from 'src/config/action-type';
+
 export default {
     name: 'DesignDataInfoView',
     computed: {
@@ -114,6 +116,7 @@ export default {
                 let validItem = this.currentFolderData.filter(fileItem => fileItem.id === item['Data']['docs']['id']);
                 if (!validItem.length) {
                     dataById.push({
+                        id: item['id'],
                         docs: Object.keys(item['Data']['docs']).map((f) => ({
                             key: f,
                             value: f === 'type' ? this.$t(item['Data']['docs'][f]) : item['Data']['docs'][f] || '无',
@@ -173,11 +176,21 @@ export default {
         }
     },
     methods: {
-        deleteBind: function () {
-            
+        deleteBind: function (index) {
+            this.$Modal.confirm({
+                title: '确定要删除这条绑定信息吗？',
+                onOk: () => {
+                    this.$store.dispatch(ActionType.DeleteRelation, {id: this.bindInfo[index]['id']});
+                }
+            });
         },
-        deleteInvalidBind: function () {
-
+        deleteInvalidBind: function (index) {
+            this.$Modal.confirm({
+                title: '确定要删除这条绑定信息吗？',
+                onOk: () => {
+                    this.$store.dispatch(ActionType.DeleteRelation, {id: this.currentFolderInvalidBindData[index]['id']});
+                }
+            });
         },
     },
     data: function () {
