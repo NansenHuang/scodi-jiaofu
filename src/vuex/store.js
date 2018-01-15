@@ -54,8 +54,6 @@ const initStateString = JSON.stringify({
             tunnel: [],
             overbridge: [],
         },
-        folderSelected: {},
-        fileSelected: {},
     },
     graphy: {
         upload: {
@@ -65,7 +63,8 @@ const initStateString = JSON.stringify({
             data: {},
             path: [],
             layout: LayoutType.List,
-            selected: [],
+            folderSelected: {},
+            fileSelected: {},
         },
         bind: {
             data: {},

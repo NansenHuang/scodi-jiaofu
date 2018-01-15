@@ -106,17 +106,17 @@ export default {
             return this.layout === LayoutType.Grid ? 'grid' : 'list';
         },
         currentDataToBind: function () {
-            let fileSelected = Object.keys(this.$store.state['highway']['fileSelected']).map((key) => ({
+            let fileSelected = Object.keys(this.$store.state['graphy']['explore']['fileSelected']).map((key) => ({
                 type: 'FILE',
                 id: key,
             }));
-            fileSelected = fileSelected.filter(item => this.$store.state['highway']['fileSelected'][item.id]);
+            fileSelected = fileSelected.filter(item => this.$store.state['graphy']['explore']['fileSelected'][item.id]);
 
-            let folderSelected = Object.keys(this.$store.state['highway']['folderSelected']).map((key) => ({
+            let folderSelected = Object.keys(this.$store.state['graphy']['explore']['folderSelected']).map((key) => ({
                 type: 'DIRECTORY',
                 id: key,
             }));
-            folderSelected = folderSelected.filter(item => this.$store.state['highway']['folderSelected'][item.id]);
+            folderSelected = folderSelected.filter(item => this.$store.state['graphy']['explore']['folderSelected'][item.id]);
             let dataToBind = this.$store.state['graphy']['bind']['ing']
                 ? [...fileSelected, ...folderSelected]
                 : [];
@@ -181,10 +181,10 @@ export default {
             }));
         },
         folderSelected: function () {
-            return this.$store.state['highway']['folderSelected'];
+            return this.$store.state['graphy']['explore']['folderSelected'];
         },
         fileSelected: function () {
-            return this.$store.state['highway']['fileSelected'];
+            return this.$store.state['graphy']['explore']['fileSelected'];
         },
     },
     data: function () {

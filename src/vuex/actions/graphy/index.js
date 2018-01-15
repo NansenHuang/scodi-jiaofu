@@ -143,10 +143,10 @@ export const mutations = {
         state['graphy']['explore']['path'] = [...payload];
     },
     [ActionType.SetFolderSelection] (state, payload) {
-        state['highway']['folderSelected'] = payload;
+        state['graphy']['explore']['folderSelected'] = payload;
     },
     [ActionType.SetFileSelection] (state, payload) {
-        state['highway']['fileSelected'] = payload;
+        state['graphy']['explore']['fileSelected'] = payload;
     },
     [ActionType.BindModels] (state, payload) {
         state['graphy']['bind']['ing'] = Boolean(payload);
