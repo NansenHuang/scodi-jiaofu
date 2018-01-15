@@ -67,11 +67,15 @@
     v-model="displayBindPanel">
         <h3>为以下内容设置绑定信息：</h3>
         <div class="modal-content">
-            <Table :columns="columns" :data="currentDataToBind"></Table>
+            <Table :columns="columns" size="small" :data="currentDataToBind"></Table>
         </div>
         <h3>选择相应的字段值：</h3>
         <div class="modal-content">
-            <bind-field @close="displayBindPanel = false" @save="handleBind"></bind-field>
+            <add-bind
+            :update="false"
+            :active="displayBindPanel"
+            @close="displayBindPanel=false"
+            @save="handleBind"></add-bind>
         </div>
         <div slot="footer">
         </div>
@@ -84,7 +88,7 @@ import FolderIcon from './item-icon/folder.vue';
 import FileIcon from './item-icon/file.vue';
 import ActionType from 'src/config/action-type';
 import Path from 'path-browserify';
-import BindField from './bind-field';
+import AddBind from './add-bind';
 import LayoutType from 'src/config/layout-type';
 
 export default {
@@ -92,7 +96,7 @@ export default {
     components: {
         FolderIcon,
         FileIcon,
-        BindField,
+        AddBind,
     },
     computed: {
         layout: function () {
@@ -192,7 +196,6 @@ export default {
             let postData = items.map(obj => {
                 let item = this.currentFolderData.find(t => t.id === obj.id);
                 let data = {
-                    id: obj.id,
                     model: val,
                     docs: {
                         id: item && item.id,

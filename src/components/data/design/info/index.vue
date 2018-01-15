@@ -55,7 +55,7 @@
       </div>
       <div class="info-body" v-if="bindInfo.length">
           <div v-for="(bindItem, index) in bindInfo" :key="bindItem['id']">
-              <p>{{ index + 1 }} <Button type="text" @click="deleteBind" style="color:#57a3f3;">删除</Button></p>
+              <p>{{ index + 1 }} <Button type="text" @click="deleteBind" style="color:#57a3f3;">修改</Button></p>
               <p>{{ JSON.stringify(bindItem['Data']['model']) }}</p>
           </div>
       </div>
@@ -66,7 +66,7 @@
       </div>
       <div class="info-body" v-if="!folderInfoVisible && !fileInfoVisible && currentFolderInvalidBindData.length">
           <div v-for="(item, index) in currentFolderInvalidBindData" :key="item['id']">
-              <p>{{ index + 1 }} <Button type="text" @click="deleteInvalidBind" style="color:#57a3f3;">删除</Button></p>
+              <p>{{ index + 1 }} <Button type="text" @click="deleteInvalidBind" style="color:#57a3f3;">修改</Button></p>
               <p>{{ JSON.stringify(item['Data']['docs']) }}</p>
           </div>
       </div>
