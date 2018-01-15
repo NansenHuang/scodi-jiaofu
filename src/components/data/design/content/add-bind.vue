@@ -51,8 +51,16 @@ export default {
     methods: {
         saveFunc (fieldData, update = false) {
             let result = JSON.parse(JSON.stringify(fieldData));
-            result = {...result, ...result['alignment']};
+            let alignment = result['alignment'];
+            let site = result['site'];
+            let type = result['type'];
+            //
             delete result['alignment'];
+            delete result['site'];
+            delete result['type'];
+            //
+            result = {...result, ...alignment, ...site, ...type};
+            //
             this.$emit('save', result);
         },
     },
