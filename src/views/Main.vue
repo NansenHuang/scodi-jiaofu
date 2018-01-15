@@ -103,7 +103,7 @@
         },
         computed: {
             globalMessage () {
-                return this.$store.state['highway']['globalMessage'];
+                return this.$store.state['message']['queue'];
             },
             menuList () {
                 return this.$store.state.app.menuList;

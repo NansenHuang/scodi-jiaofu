@@ -54,14 +54,25 @@ const initStateString = JSON.stringify({
             tunnel: [],
             overbridge: [],
         },
-        globalMessage: [],
-        graphy: {},
-        graphyBind: {},
-        graphyCurrentPath: [],
-        graphyLayout: LayoutType.List,
-        folderSelected: {},
-        fileSelected: {},
-        bindToModels: null,
+    },
+    graphy: {
+        upload: {
+            queue: [],
+        },
+        explore: {
+            data: {},
+            path: [],
+            layout: LayoutType.List,
+            folderSelected: {},
+            fileSelected: {},
+        },
+        bind: {
+            data: {},
+            ing: false,
+        },
+    },
+    message: {
+        queue: [],
     },
 });
 
@@ -83,7 +94,7 @@ export const mutations = {
         });
     },
     [ActionType.GlobalMessage] (state, payload) {
-        state['highway']['globalMessage'].push(payload);
+        state['message']['queue'].push(payload);
     },
     ...AlignmentMutations,
     ...StructureMutations,

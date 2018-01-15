@@ -29,7 +29,7 @@ export default {
     },
     computed: {
         layout: function () {
-            return this.$store.state['highway']['graphyLayout'];
+            return this.$store.state['graphy']['explore']['layout'];
         },
     },
     methods: {
