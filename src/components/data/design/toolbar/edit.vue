@@ -50,6 +50,7 @@
       <span class="text">绑定到模型</span>
     </Button>
     <Modal
+    @on-visible-change="modalHide"
     :styles="{minWidth:'800px'}"
     :closable="false"
     :mask-closable="false"
@@ -156,6 +157,12 @@ export default {
         },
     },
     methods: {
+        modalHide: function (val) {
+            if (!val) {
+                this.selectedFiles = [];
+                this.selectedFiles2 = [];
+            };
+        },
         sendOperation: function (name) {
             console.log('用户执行了操作：', name);
         },
@@ -208,6 +215,7 @@ export default {
             let currentPath = this.currentPath.path;
             let parentFoldersObject = {};
             let filesObject = {};
+            let fileIdtoFileObj = {};
             for (let index = 0; index < this.currentData.length; index++) {
                 // 1、
                 let parentFolders = [];
@@ -255,6 +263,7 @@ export default {
                             filesObject[parrentId] = [];
                         };
 
+                        fileIdtoFileObj[fileId] = file;
                         filesObject[parrentId].push({
                             id: fileId,
                             type: 'FILE',
@@ -310,34 +319,38 @@ export default {
             });
 
             for (let i = 0; i < packages.length; i++) {
+                let files = packages[i].filter(item => item['type'] === 'FILE').map(item => fileIdtoFileObj[item.id]);
+                {
+                    // 上传文件
+                    const batchSize = 1;
+                    for (let index = 0; index < files.length; index += batchSize) {
+                        let prs = [];
+                        for (let jj = 0; jj < batchSize && jj < files.length - index; jj++) {
+                            prs.push(
+                                new Promise((resolve, reject) => {
+                                    let xhr = new XMLHttpRequest();
+                                    xhr.open('PUT', files[index + jj].putAction, true);
+                                    xhr.send(files[index + jj].file);
+                                    xhr.onload = () => {
+                                        // fileInfo.uploading = false;
+                                        if (xhr.status === 200) {
+                                            files[index + jj].progress = '100';
+                                        } else {
+                                            // files[index].progress = 'NaN';
+                                        };
+                                        resolve();
+                                    };
+                                })
+                            );
+                        };
+                        await Promise.all(prs);
+                        console.log('第' + (index + 1) + '个，共' + this.currentData.length + '个');
+                    }
+                }
+            }
+            for (let i = 0; i < packages.length; i++) {
                 let resp = await Services.Graphy.Manage.batchAddFile(Cookies.get('project'), packages[i], false);
                 console.log(resp);
-            }
-
-            // 上传文件
-            const batchSize = 3;
-            for (let index = 0; index < this.currentData.length; index += batchSize) {
-                let prs = [];
-                for (let jj = 0; jj < batchSize && jj < this.currentData.length - index; jj++) {
-                    prs.push(
-                        new Promise((resolve, reject) => {
-                            let xhr = new XMLHttpRequest();
-                            xhr.open('PUT', this.currentData[index + jj].putAction, true);
-                            xhr.send(this.currentData[index + jj].file);
-                            xhr.onload = () => {
-                                // fileInfo.uploading = false;
-                                if (xhr.status === 200) {
-                                    this.currentData[index + jj].progress = '100';
-                                } else {
-                                    // this.currentData[index].progress = 'NaN';
-                                };
-                                resolve();
-                            };
-                        })
-                    );
-                };
-                await Promise.all(prs);
-                console.log('第' + (index + 1) + '个，共' + this.currentData.length + '个');
             }
         },
     },
