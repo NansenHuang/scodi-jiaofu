@@ -56,7 +56,7 @@
     v-model="modalVisible">
     <h3>上传界面</h3>
     <div>{{ `共${currentData.length}个文件，已上传${currentDataFinished.length}个。` }}</div>
-    <Button type="primary" @click="startUpload">上传文件</Button>
+    <Button type="primary" @click="startUpload" :disabled="currentDataFinished.length !== 0">上传文件</Button>
     </Modal>
   </div>
 </template>
@@ -187,6 +187,7 @@ export default {
                     let ext = Path.extname(item.name);
                     let insertPos = ext ? item.name.lastIndexOf(ext) : item.name.length;
                     let remoteName = item.name.substring(0, insertPos) + '_' + item.id + ext;
+                    remoteName = Path.join(Cookies.get('project'), remoteName);
                     idToRemoteName[item.id] = remoteName;
                     return remoteName;
                 });
