@@ -352,6 +352,7 @@ export default {
                 let resp = await Services.Graphy.Manage.batchAddFile(Cookies.get('project'), packages[i], false);
                 console.log(resp);
             }
+            this.modalVisible = false;
         },
     },
 };

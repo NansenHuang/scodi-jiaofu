@@ -221,7 +221,15 @@ export default {
                 };
                 return data;
             });
-            this.$store.dispatch(ActionType.AddRelations, postData);
+            this.$store.dispatch(ActionType.AddRelations, postData).then(() => {
+                //
+                this.displayBindPanel = false;
+                let bindQuery = {query: {bool: {filter: []}}};
+                bindQuery.query.bool.filter.push({
+                    match: { 'Data.docs.path.keyword': this.currentPath.path }
+                });
+                this.$store.dispatch(ActionType.QueryRelation, {query: bindQuery, delay: true});
+            });
             // TODO close modal or not
         },
         jumpToPath (val) {
