@@ -45,6 +45,7 @@ export const actions = {
             payload.docs,
         );
         console.log(resp);
+        return resp;
     },
     [ActionType.AddRelations]: async function (context, payload) {
         let resp = await Services.Graphy.Relation.batchAddRelation(
@@ -52,6 +53,7 @@ export const actions = {
             payload
         );
         console.log(resp);
+        return resp;
     },
     [ActionType.DeleteRelation]: async function (context, payload) {
         let resp = await Services.Graphy.Relation.deleteRelation(
@@ -59,6 +61,7 @@ export const actions = {
             payload.id,
         );
         console.log(resp);
+        return resp;
     },
     [ActionType.QueryRelation]: async function (context, payload) {
         let queryFunc = Services.Graphy.Relation.queryRelation;

@@ -180,7 +180,14 @@ export default {
             this.$Modal.confirm({
                 title: '确定要删除这条绑定信息吗？',
                 onOk: () => {
-                    this.$store.dispatch(ActionType.DeleteRelation, {id: this.bindInfo[index]['id']});
+                    this.$store.dispatch(ActionType.DeleteRelation, {id: this.bindInfo[index]['id']}).then(() => {
+                        //
+                        let bindQuery = {query: {bool: {filter: []}}};
+                        bindQuery.query.bool.filter.push({
+                            match: { 'Data.docs.path.keyword': this.currentPath.path }
+                        });
+                        this.$store.dispatch(ActionType.QueryRelation, {query: bindQuery, delay: true});
+                    });
                 }
             });
         },
