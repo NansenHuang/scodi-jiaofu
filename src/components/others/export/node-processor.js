@@ -64,9 +64,11 @@ export default async function (type, data, state) {
                     let leftsAlongWithRight = dataItem['leftParts'].filter(item => item['alignmentID'] === rightAlignmentId);
                     let leftsSeparated = dataItem['leftParts'].filter(item => item['alignmentID'] !== rightAlignmentId);
                     // process right
-                    let itemWithRight = JSON.parse(JSON.stringify(dataItem));
-                    itemWithRight['leftParts'] = leftsAlongWithRight.length ? leftsAlongWithRight[0] : null;
-                    newData.push(itemWithRight);
+                    if (rightAlignmentId) {
+                        let itemWithRight = JSON.parse(JSON.stringify(dataItem));
+                        itemWithRight['leftParts'] = leftsAlongWithRight.length ? leftsAlongWithRight[0] : null;
+                        newData.push(itemWithRight);
+                    };
                     // process left
                     leftsSeparated.map((item) => {
                         let itemOnlyLeft = JSON.parse(JSON.stringify(dataItem));
