@@ -50,6 +50,7 @@
       <span class="text">绑定到模型</span>
     </Button>
     <Modal
+    @on-visible-change="modalHide"
     :styles="{minWidth:'800px'}"
     :closable="false"
     :mask-closable="false"
@@ -156,6 +157,12 @@ export default {
         },
     },
     methods: {
+        modalHide: function (val) {
+            if (!val) {
+                this.selectedFiles = [];
+                this.selectedFiles2 = [];
+            };
+        },
         sendOperation: function (name) {
             console.log('用户执行了操作：', name);
         },
