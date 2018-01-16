@@ -9,7 +9,7 @@
 
 <template>
   <div>
-    <Button class="toolbar-btn" type="text" @click="sendOperation('createFolder')" v-if="!selectedItems.length">
+    <!-- <Button class="toolbar-btn" type="text" @click="sendOperation('createFolder')" v-if="!selectedItems.length">
       <Icon size="16" type="ios-plus-empty"></Icon>
       <span class="text">新建文件夹</span>
     </Button>
@@ -18,7 +18,7 @@
       <file-upload v-model="selectedFiles" multiple>
         <span class="text">上传文件</span>
       </file-upload>
-    </Button>
+    </Button> -->
     <Button class="toolbar-btn" type="text" @click="sendOperation('uploadFolder')" v-if="!selectedItems.length">
       <Icon size="16" type="ios-arrow-thin-up"></Icon>
       <file-upload v-model="selectedFiles2" ref="folder-upload" multiple directory>
@@ -57,7 +57,6 @@
     <h3>上传界面</h3>
     <div>{{ `共${currentData.length}个文件，已上传${currentDataFinished.length}个。` }}</div>
     <Button type="primary" @click="startUpload">上传文件</Button>
-    <Button type="primary" @click="afterUpload">提交文件</Button>
     </Modal>
   </div>
 </template>
@@ -204,15 +203,8 @@ export default {
             for (let index = 0; index < this.currentData.length; index++) {
                 this.currentData[index]['putAction'] = remoteNameToUrl[idToRemoteName[this.currentData[index]['id']]];
             }
-            this.idToRemoteName = idToRemoteName;
-            this.remoteNameToUrl = remoteNameToUrl;
-            this.$refs['folder-upload'].active = true;
-        },
-        afterUpload: async function () {
-            let idToRemoteName = this.idToRemoteName;
-            // let remoteNameToUrl = this.remoteNameToUrl;
-            let currentPath = this.currentPath.path;
 
+            let currentPath = this.currentPath.path;
             let parentFoldersObject = {};
             let filesObject = {};
             for (let index = 0; index < this.currentData.length; index++) {
@@ -297,7 +289,7 @@ export default {
                     };
                     currentParent = Object.values(parentFoldersObject).find(item => item.id === currentParent.path);
                 };
-                if (!filesObject(folderKey)) {
+                if (!filesObject[folderKey]) {
                     console.log('当前路径下只有子文件夹：', parentFolders.map(item => item.alias).join(' \ '));
                     return;
                 };
@@ -320,112 +312,32 @@ export default {
                 let resp = await Services.Graphy.Manage.batchAddFile(Cookies.get('project'), packages[i], false);
                 console.log(resp);
             }
-            return;
-            // let existsFolder = {};
-            // for (let index = 0; index < this.currentData.length; index++) {
-            //     let file = this.currentData[index];
-            //     /**
-            //      * 1、找出每一级别父目录
-            //      * 2、遍历父目录，判断父目录是否存在于existsFolder中，不存在时创建，然后写入existsFolder
-            //      * 3、写入文件
-            //      */
-            //     // 1、
-            //     let parentFolders = [];
-            //     let path = file.name;
-            //     while (true) {
-            //         if (path === '/' || path === '.') {
-            //             break;
-            //         };
-            //         parentFolders.splice(0, 0, Path.dirname(path));
-            //         path = Path.dirname(path);
-            //     };
-            //     // 2、
-            //     let parentFoldersObject = [];
-            //     let parrentId = '';
-            //     for (let i = 0; i < parentFolders.length; i++) {
-            //         let path = parentFolders[i];
-            //         if (path === '/' || path === '.') {
-            //             parrentId = '/';
-            //             continue;
-            //         }
-            //         let id = uuidv4();
-            //         let name = uuidv4();
-            //         parentFoldersObject.push({
-            //             id: id,
-            //             type: 'DIRECTORY',
-            //             path: parrentId,
-            //             name: name,
-            //             alias: Path.basename(path),
-            //             data: JSON.stringify({id, name, parrentId}),
-            //         });
-            //         parrentId = id;
-            //     }
 
-            //     let respaa = await Services.Graphy.Manage.batchAddFile(Cookies.get('project'), parentFoldersObject, false);
-            //     console.log(respaa);
-            //     return;
-
-            //     // let paths = file.name.split('/');
-            //     // paths.splice(paths.length - 1, 1);
-            //     // let parentFolders = paths.map((folderName, index) => paths.slice(0, index + 1).join('/'));
-            //     // 2、
-            //     // eslint-disable-next-line no-inner-declarations
-            //     async function createParentFolder (path) {
-            //         if (!existsFolder.hasOwnProperty(path)) {
-            //             let father = path.lastIndexOf('/') > 0 ? (currentPath + path.substring(0, path.lastIndexOf('/'))) : currentPath;
-            //             let itself = path.lastIndexOf('/') > 0 ? path.substring(path.lastIndexOf('/') + 1) : path;
-            //             let queryParams = {
-            //                 'query': {
-            //                     'bool': {
-            //                         'filter': [
-            //                             {
-            //                                 'match': {
-            //                                     'Type.keyword': 'DIRECTORY'
-            //                                 },
-            //                             },
-            //                             {
-            //                                 'match': {
-            //                                     'Path.keyword': father,
-            //                                 },
-            //                             },
-            //                             {
-            //                                 'match': {
-            //                                     'Alias': itself,
-            //                                 },
-            //                             },
-            //                         ],
-            //                     },
-            //                 },
-            //             };
-            //             let resp = await Services.Graphy.Manage.queryFile(Cookies.get('project'), JSON.stringify(queryParams));
-            //             if (resp && resp['hits'] && resp['hits']['total']) {
-            //                 existsFolder[path] = true;
-            //                 console.log('已存在: ', resp);
-            //             } else {
-            //                 let resp = await Services.Graphy.Manage.addFile(Cookies.get('project'), 'DIRECTORY', father, itself, itself, JSON.stringify({test: 2}));
-            //                 console.log('不存在, 创建的resp: ', resp);
-            //                 if (resp['type'] === 'DIRECTORY') {
-            //                     existsFolder[path] = true;
-            //                 }
-            //             }
-            //         };
-            //     }
-            //     for (let i = 0; i < parentFolders.length; i++) {
-            //         await createParentFolder(parentFolders[i]);
-            //     };
-            //     // 3、
-            //     let fileName = file.name;
-            //     let filePath = currentPath + fileName.substring(0, fileName.lastIndexOf('/'));
-            //     fileName = fileName.substring(fileName.lastIndexOf('/') + 1);
-            //     let promise = new Promise((resolve) => {
-            //         setTimeout(() => {
-            //             resolve();
-            //         }, 500);
-            //     });
-            //     await promise;
-            //     let resp = await Services.Graphy.Manage.addFile(Cookies.get('project'), 'FILE', filePath, fileName, fileName, JSON.stringify({test: 2}));
-            //     console.log(resp);
-            // }
+            // 上传文件
+            const batchSize = 3;
+            for (let index = 0; index < this.currentData.length; index += batchSize) {
+                let prs = [];
+                for (let jj = 0; jj < batchSize && jj < this.currentData.length - index; jj++) {
+                    prs.push(
+                        new Promise((resolve, reject) => {
+                            let xhr = new XMLHttpRequest();
+                            xhr.open('PUT', this.currentData[index + jj].putAction, true);
+                            xhr.send(this.currentData[index + jj].file);
+                            xhr.onload = () => {
+                                // fileInfo.uploading = false;
+                                if (xhr.status === 200) {
+                                    this.currentData[index + jj].progress = '100';
+                                } else {
+                                    // this.currentData[index].progress = 'NaN';
+                                };
+                                resolve();
+                            };
+                        })
+                    );
+                };
+                await Promise.all(prs);
+                console.log('第' + (index + 1) + '个，共' + this.currentData.length + '个');
+            }
         },
     },
 };
