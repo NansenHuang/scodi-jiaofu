@@ -312,11 +312,10 @@ export default {
             });
 
             for (let i = 0; i < packages.length; i++) {
-                let resp = await Services.Graphy.Manage.batchAddFile(Cookies.get('project'), packages[i], false);
                 let files = packages[i].filter(item => item['type'] === 'FILE').map(item => fileIdtoFileObj[item.id]);
                 {
                     // 上传文件
-                    const batchSize = 3;
+                    const batchSize = 1;
                     for (let index = 0; index < files.length; index += batchSize) {
                         let prs = [];
                         for (let jj = 0; jj < batchSize && jj < files.length - index; jj++) {
@@ -341,6 +340,9 @@ export default {
                         console.log('第' + (index + 1) + '个，共' + this.currentData.length + '个');
                     }
                 }
+            }
+            for (let i = 0; i < packages.length; i++) {
+                let resp = await Services.Graphy.Manage.batchAddFile(Cookies.get('project'), packages[i], false);
                 console.log(resp);
             }
         },
