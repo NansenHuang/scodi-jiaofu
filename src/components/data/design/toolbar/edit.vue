@@ -297,6 +297,10 @@ export default {
                     };
                     currentParent = Object.values(parentFoldersObject).find(item => item.id === currentParent.path);
                 };
+                if (!filesObject(folderKey)) {
+                    console.log('当前路径下只有子文件夹：', parentFolders.map(item => item.alias).join(' \ '));
+                    return;
+                };
 
                 if (filesObject[folderKey].length < CAPACITY - currentPackage.length) {
                     packages[packages.length - 1] = [...packages[packages.length - 1], ...parentFolders, ...filesObject[folderKey]];
