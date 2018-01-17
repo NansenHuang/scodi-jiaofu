@@ -1551,6 +1551,98 @@ const NodeField = {
             'enable': true
         }
     ],
+    Overbridge_Model: [
+        {
+            'label': 'project',
+            'value': 'project',
+            'enable': false
+        },
+        {
+            'label': 'idx',
+            'value': 'id',
+            'enable': true
+        },
+        {
+            'label': 'section',
+            'value': 'sectionID',
+            'enable': true
+        },
+        {
+            'label': 'alignmentID',
+            'value': 'alignmentID',
+            'enable': true
+        },
+        {
+            'label': 'alignmentCnName',
+            'value': 'alignmentCnName',
+            'enable': true
+        },
+        {
+            'label': 'stationMark',
+            'value': 'stationMark',
+            'enable': true
+        },
+        {
+            'label': 'station',
+            'value': 'station',
+            'enable': true
+        },
+        {
+            'label': 'stationChain',
+            'value': 'stationChain',
+            'enable': true
+        },
+        {
+            'label': 'x',
+            'value': 'posture.x',
+            'enable': true
+        },
+        {
+            'label': 'y',
+            'value': 'posture.y',
+            'enable': true
+        },
+        {
+            'label': 'z',
+            'value': 'posture.z',
+            'enable': true
+        },
+        {
+            'label': 'angle',
+            'value': 'posture.alpha',
+            'enable': true
+        },
+        {
+            'label': 'direction',
+            'value': 'direction',
+            'enable': true
+        },
+        {
+            'label': 'leftParts',
+            'value': 'leftPartsCopy',
+            'enable': true
+        },
+        {
+            'label': 'rightParts',
+            'value': 'rightPartsCopy',
+            'enable': true
+        },
+        {
+            'label': 'desc',
+            'value': 'desc',
+            'enable': true
+        },
+        {
+            'label': 'bimFile',
+            'value': 'bimFiles',
+            'enable': true
+        },
+        {
+            'label': 'tableType',
+            'value': 'tableType',
+            'enable': true
+        }
+    ],
 };
 
 export default NodeField;
