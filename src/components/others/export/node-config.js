@@ -143,6 +143,12 @@ const Tree = [
                 fileName: 'Overbridge_Model',
                 action: Actions.LoadOverbridge,
             },
+            {
+                title: '涵洞',
+                key: 'Culvert_Model',
+                fileName: 'Culvert_Model',
+                action: Actions.LoadCulvert,
+            },
         ]
     },
 ];
