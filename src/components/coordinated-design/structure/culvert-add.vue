@@ -50,7 +50,7 @@ export default {
                 [Field.Culvert.Project]: this.currentData[Field.Culvert.Project],
                 [Field.Culvert.id]: this.currentData[Field.Culvert.id],
                 [Field.Culvert.SectionID]: this.currentData[Field.Culvert.SectionID],
-                [Field.Culvert.Angle]: this.currentData[Field.Culvert.Angle],
+                [Field.Culvert.Posture]: this.currentData[Field.Culvert.Posture],
                 [Field.Culvert.Desc]: this.currentData[Field.Culvert.Desc],
                 [Field.Culvert.BimFiles]: this.currentData[Field.Culvert.BimFiles],
                 'SinglePart': {
@@ -65,6 +65,9 @@ export default {
     },
     methods: {
         saveFunc (fieldData, update) {
+            if (!fieldData['bimFiles']) {
+                fieldData['bimFiles'] = JSON.stringify({'type': 'culverts', 'files': []});
+            };
             let data = {
                 ...fieldData,
                 [Field.CrossBlinddrain.Project]: Cookies.get('project'),
@@ -150,11 +153,6 @@ export default {
                     label: '绑定路线',
                     key: 'SinglePart',
                     component: SinglePartComponent,
-                },
-                {
-                    label: '角度',
-                    key: Field.Culvert.Angle,
-                    type: FieldType.Text,
                 },
                 {
                     label: '设计文件',
