@@ -10,13 +10,6 @@
                 v-model="rightPartObject['siteID']"
                 :dataSource="siteArray">
         </selector-item>
-        <p>选择方向</p>
-        <selector-item
-                :itemData="itemData"
-                :active="active"
-                v-model="rightPartObject['direction']"
-                :dataSource="directionArray">
-        </selector-item>
     </div>
 </template>
 
@@ -94,6 +87,9 @@
                     item['Station'] ||
                     '未命名',
                 }));
+            },
+            siteID () {
+                return this.rightPartObject['siteID'];
             },
         },
         data () {
@@ -177,6 +173,11 @@
                 if (this.active) {
                     this.$emit('input', val !== '{}' ? this.rightPartObject : undefined);
                 };
+            },
+            siteID: function (val) {
+                let selectedSite = this.siteArray.find((item) => item['value'] === val);
+                this.rightPartObject['siteType'] = this.currentType;
+                this.rightPartObject['siteCnName'] = (selectedSite && selectedSite.label) || '';
             },
         },
         created: function () {
