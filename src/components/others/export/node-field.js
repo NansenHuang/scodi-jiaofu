@@ -1740,6 +1740,153 @@ const NodeField = {
             'enable': true
         }
     ],
+    Tunnel_Model: [
+        {
+            'label': 'project',
+            'value': 'project',
+            'enable': false
+        },
+        {
+            'label': 'id',
+            'value': 'id',
+            'enable': true
+        },
+        {
+            'label': 'tunnelEnName',
+            'value': 'tunnelEnName',
+            'enable': true
+        },
+        {
+            'label': 'tunnelCnName',
+            'value': 'tunnelCnName',
+            'enable': true
+        },
+        {
+            'label': 'section',
+            'value': 'sectionID',
+            'enable': true
+        },
+        {
+            'label': 'x',
+            'value': 'posture.x',
+            'enable': true
+        },
+        {
+            'label': 'y',
+            'value': 'posture.y',
+            'enable': true
+        },
+        {
+            'label': 'z',
+            'value': 'posture.z',
+            'enable': true
+        },
+        {
+            'label': 'angle',
+            'value': 'posture.alpha',
+            'enable': true
+        },
+        {
+            'label': 'leftParts',
+            'value': 'leftPartsCopy',
+            'enable': true
+        },
+        {
+            'label': 'leftAlignmentID',
+            'value': 'leftParts.alignmentID',
+            'enable': true
+        },
+        {
+            'label': 'leftAlignmentCnName',
+            'value': 'leftParts.alignmentCnName',
+            'enable': true
+        },
+        {
+            'label': 'leftStationMark',
+            'value': 'leftParts.stationMark',
+            'enable': true
+        },
+        {
+            'label': 'leftStartStation',
+            'value': 'leftParts.startStation',
+            'enable': true
+        },
+        {
+            'label': 'leftEndStation',
+            'value': 'leftParts.endStation',
+            'enable': true
+        },
+        {
+            'label': 'leftStartStationChain',
+            'value': 'leftParts.startStationChain',
+            'enable': true
+        },
+        {
+            'label': 'leftEndStationChain',
+            'value': 'leftParts.endStationChain',
+            'enable': true
+        },
+        {
+            'label': 'rightParts',
+            'value': 'rightPartsCopy',
+            'enable': true
+        },
+        {
+            'label': 'rightAlignmentID',
+            'value': 'rightPart.alignmentID',
+            'enable': true
+        },
+        {
+            'label': 'rightAlignmentCnName',
+            'value': 'rightPart.alignmentCnName',
+            'enable': true
+        },
+        {
+            'label': 'rightStationMark',
+            'value': 'rightPart.stationMark',
+            'enable': true
+        },
+        {
+            'label': 'rightStartStation',
+            'value': 'rightPart.startStation',
+            'enable': true
+        },
+        {
+            'label': 'rightEndStation',
+            'value': 'rightPart.endStation',
+            'enable': true
+        },
+        {
+            'label': 'rightStartStationChain',
+            'value': 'rightPart.startStationChain',
+            'enable': true
+        },
+        {
+            'label': 'rightEndStationChain',
+            'value': 'rightPart.endStationChain',
+            'enable': true
+        },
+        {
+            'label': 'direction',
+            'value': 'direction',
+            'enable': true
+        },
+        {
+            'label': 'desc',
+            'value': 'desc',
+            'enable': true
+        },
+        {
+            'label': 'bimFile',
+            'value': 'bimFiles',
+            'enable': true
+        },
+        {
+            'label': 'tableType',
+            'value': 'tableType',
+            'enable': true
+        }
+    ],
 };
 
 export default NodeField;

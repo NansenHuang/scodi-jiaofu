@@ -142,6 +142,7 @@ export default async function (type, data, state) {
             });
             break;
         case 'Bridge_Model':
+        case 'Tunnel_Model':
         case 'Bridge':
         case 'Tunnel':
             srcData.map((dataItem) => {
