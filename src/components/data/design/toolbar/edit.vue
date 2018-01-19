@@ -271,7 +271,7 @@ export default {
                             name: fileName,
                             alias: Path.basename(file.name),
                             data: JSON.stringify({
-                                [GraphyField.FileData.info]: JSON.stringify({fileSize: file.size}),
+                                [GraphyField.FileData.info]: {fileSize: file.size},
                                 [GraphyField.FileData.fileType]: file.type,
                                 [GraphyField.FileData.uploadTime]: currentTime,
                                 [GraphyField.FileData.createTime]: '',
