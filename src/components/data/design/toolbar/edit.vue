@@ -21,7 +21,7 @@
     </Button> -->
     <Button class="toolbar-btn" type="text" @click="sendOperation('uploadFolder')" v-if="!selectedItems.length">
       <Icon size="16" type="ios-arrow-thin-up"></Icon>
-      <file-upload v-model="selectedFiles2" ref="folder-upload" multiple directory>
+      <file-upload v-model="selectedFiles2" ref="folder-upload" @input-filter="inputFilter" multiple directory>
         <span class="text">上传文件夹</span>
       </file-upload>
     </Button>
@@ -157,6 +157,13 @@ export default {
         },
     },
     methods: {
+        inputFilter (newFile, oldFile, prevent) {
+            if (newFile && !oldFile) {
+                if (/\.(db)$/i.test(newFile.name)) {
+                    return prevent();
+                }
+            }
+        },
         modalHide: function (val) {
             if (!val) {
                 this.selectedFiles = [];
