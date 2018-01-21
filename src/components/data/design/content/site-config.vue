@@ -19,6 +19,7 @@
     import TypeValue from 'src/config/type';
     import Utils from 'src/libs/util';
     import ActionType from 'src/config/action-type';
+    import StationUtil from 'src/libs/station';
 
     export default {
         name: 'SiteConfig',
@@ -83,8 +84,8 @@
                     value: item.id,
                     label: item['bridgeCnName'] ||
                     item['geologyCnName'] ||
-                    item['tunnelEnName'] ||
-                    item['Station'] ||
+                    item['tunnelCnName'] ||
+                    item['alignmentCnName'] + '  ' + (item['station'] && StationUtil.NumberToLetterStaion(item['station']).replace('K', item['stationMark'])) ||
                     '未命名',
                 }));
             },
