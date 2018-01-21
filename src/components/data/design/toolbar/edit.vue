@@ -293,8 +293,11 @@ export default {
                 let parentFolders = [];
                 let currentParent = parentFoldersObject[key];
                 while (true) {
+                    if (!currentParent) {
+                        break;
+                    }
                     parentFolders.splice(0, 0, currentParent);
-                    if (currentParent['path'] === '/' || currentParent['path'] === '.') {
+                    if (currentParent['path'] === '/' || currentParent['path'] === currentPath || currentParent['path'] === '.') {
                         break;
                     };
                     currentParent = Object.values(parentFoldersObject).find(item => item.id === currentParent.path);
@@ -353,6 +356,13 @@ export default {
                 console.log(resp);
             }
             this.modalVisible = false;
+
+            let queryParams = {query: {bool: {filter: []}}};
+            queryParams.query.bool.filter.push({
+                match: { 'Path.keyword': currentPath }
+            });
+            this.$store.dispatch(ActionType.LoadFiles, {query: queryParams, delay: true});
+
         },
     },
 };
