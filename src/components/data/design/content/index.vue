@@ -266,7 +266,7 @@ export default {
         },
         onSelectFolder (val) {
             this.$store.commit(ActionType.SetFileSelection, {});
-            this.$store.commit(ActionType.SetFolderSelection, {[val]: true});
+            this.$store.commit(ActionType.SetFolderSelection, { [val]: true });
             console.log('Select folder: ', val);
         },
         onAppendSelectFolder (val) {
