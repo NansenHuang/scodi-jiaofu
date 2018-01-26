@@ -125,7 +125,7 @@ export default {
                 return {
                     ...item,
                     name: dataItem ? dataItem['Alias'] : '',
-                    type: this.$t(item['type']),
+                    type: item['type'],
                 };
             });
         },

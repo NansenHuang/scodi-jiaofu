@@ -50,6 +50,7 @@ export default {
                 [Field.Overbridge.Project]: this.currentData[Field.Overbridge.Project],
                 [Field.Overbridge.id]: this.currentData[Field.Overbridge.id],
                 [Field.Overbridge.SectionID]: this.currentData[Field.Overbridge.SectionID],
+                [Field.Overbridge.Posture]: this.currentData[Field.Overbridge.Posture],
                 [Field.Overbridge.Desc]: this.currentData[Field.Overbridge.Desc],
                 [Field.Overbridge.BimFiles]: this.currentData[Field.Overbridge.BimFiles],
                 'SinglePart': {
@@ -64,6 +65,9 @@ export default {
     },
     methods: {
         saveFunc (fieldData, update) {
+            if (!fieldData['bimFiles']) {
+                fieldData['bimFiles'] = JSON.stringify({'type': 'overbridges', 'files': []});
+            };
             let data = {
                 ...fieldData,
                 [Field.Overbridge.Project]: Cookies.get('project'),

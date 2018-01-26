@@ -1,8 +1,10 @@
 import Cookies from 'js-cookie';
-import isJSON from 'is-json';
+import validate from 'validate.io';
 
 import Field from 'src/config/field';
 import Services from 'src/services';
+
+const isJSON = validate.isJSON;
 
 export default async function (type, data, state) {
     // clone data
@@ -140,6 +142,7 @@ export default async function (type, data, state) {
             });
             break;
         case 'Bridge_Model':
+        case 'Tunnel_Model':
         case 'Bridge':
         case 'Tunnel':
             srcData.map((dataItem) => {

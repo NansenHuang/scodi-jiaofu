@@ -10,7 +10,7 @@
                 v-model="rightPartObject['alignmentID']"
                 :dataSource="alignmentArray">
         </selector-item>
-        <p>起点桩号</p>
+        <p>桩号</p>
         <Input v-model.number="rightPartObject['station']"></Input>
         <chain-interval
                 :active="active"

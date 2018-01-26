@@ -137,6 +137,24 @@ const Tree = [
                 fileName: 'Bridge_Model',
                 action: Actions.LoadBridge,
             },
+            {
+                title: '天桥',
+                key: 'Overbridge_Model',
+                fileName: 'Overbridge_Model',
+                action: Actions.LoadOverbridge,
+            },
+            {
+                title: '涵洞',
+                key: 'Culvert_Model',
+                fileName: 'Culvert_Model',
+                action: Actions.LoadCulvert,
+            },
+            {
+                title: '隧道',
+                key: 'Tunnel_Model',
+                fileName: 'Tunnel_Model',
+                action: Actions.LoadTunnel,
+            },
         ]
     },
 ];

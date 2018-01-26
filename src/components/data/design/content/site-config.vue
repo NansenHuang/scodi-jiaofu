@@ -10,13 +10,6 @@
                 v-model="rightPartObject['siteID']"
                 :dataSource="siteArray">
         </selector-item>
-        <p>选择方向</p>
-        <selector-item
-                :itemData="itemData"
-                :active="active"
-                v-model="rightPartObject['direction']"
-                :dataSource="directionArray">
-        </selector-item>
     </div>
 </template>
 
@@ -26,6 +19,7 @@
     import TypeValue from 'src/config/type';
     import Utils from 'src/libs/util';
     import ActionType from 'src/config/action-type';
+    import StationUtil from 'src/libs/station';
 
     export default {
         name: 'SiteConfig',
@@ -90,10 +84,13 @@
                     value: item.id,
                     label: item['bridgeCnName'] ||
                     item['geologyCnName'] ||
-                    item['tunnelEnName'] ||
-                    item['Station'] ||
+                    item['tunnelCnName'] ||
+                    item['alignmentCnName'] + '  ' + (item['station'] && StationUtil.NumberToLetterStaion(item['station']).replace('K', item['stationMark'])) ||
                     '未命名',
                 }));
+            },
+            siteID () {
+                return this.rightPartObject['siteID'];
             },
         },
         data () {
@@ -177,6 +174,11 @@
                 if (this.active) {
                     this.$emit('input', val !== '{}' ? this.rightPartObject : undefined);
                 };
+            },
+            siteID: function (val) {
+                let selectedSite = this.siteArray.find((item) => item['value'] === val);
+                this.rightPartObject['siteType'] = this.currentType;
+                this.rightPartObject['siteCnName'] = (selectedSite && selectedSite.label) || '';
             },
         },
         created: function () {

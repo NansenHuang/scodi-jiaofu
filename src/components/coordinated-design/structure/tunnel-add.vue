@@ -48,6 +48,9 @@ export default {
     },
     methods: {
         saveFunc (fieldData, update) {
+            if (!fieldData['bimFiles']) {
+                fieldData['bimFiles'] = JSON.stringify({'type': 'tunnels', 'files': []});
+            };
             let data = {
                 ...fieldData,
                 [Field.Tunnel.Project]: Cookies.get('project'),
