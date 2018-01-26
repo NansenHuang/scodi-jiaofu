@@ -160,8 +160,8 @@ export default {
 
         selectedInfoForDisplay2: function () {
             if (this.selected.length === 1) {
-            let selectedItem = this.currentFolderData.find(item => item.id === this.selected[0].id);
-            let folderinfo = {
+                let selectedItem = this.currentFolderData.find(item => item.id === this.selected[0].id);
+                let folderinfo = {
               type: selectedItem['Type'],
               name: selectedItem['Alias'],
               id: selectedItem['ID'],
