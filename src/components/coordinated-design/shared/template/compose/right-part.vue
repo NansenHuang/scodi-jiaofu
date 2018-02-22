@@ -84,12 +84,12 @@
                     this.rightPartObject = JSON.parse(JSON.stringify(this.value || {}));
                 } else {
                     this.rightPartObject = {};
-                };
+                }
             },
             rightPartStr: function (val) {
                 if (this.active) {
                     this.$emit('input', val !== '{}' ? this.rightPartObject : undefined);
-                };
+                }
             },
             alignmentID: function (val) {
                 if (this.active) {
@@ -98,7 +98,7 @@
                     this.rightPartObject['stationMark'] = (selectedAlignment.length && selectedAlignment[0][Field.Alignment.StationMark]) || undefined;
                     // this.rightPartObject['startStation'] = undefined;
                     // this.rightPartObject['endStation'] = undefined;
-                };
+                }
             },
         },
         created: function () {
