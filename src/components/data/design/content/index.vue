@@ -74,6 +74,7 @@
             <add-bind
             :update="false"
             :active="displayBindPanel"
+            :currentData = "{sectionID: currentPathsection,alignment:{alignmentID:currentStationID[0],startStation: currentPathStartStation[0] ,endStation: currentPathEndStation[0]},type:{type: currentPathtype,modelType:currentPathtypeModel}}"
             @close="displayBindPanel=false"
             @save="handleBind"></add-bind>
         </div>
@@ -90,6 +91,8 @@ import ActionType from 'src/config/action-type';
 import Path from 'path-browserify';
 import AddBind from './add-bind';
 import LayoutType from 'src/config/layout-type';
+import TypeValue from 'src/config/type';
+import TypeModel from 'src/config/model-type';
 
 export default {
     name: 'DesignDataContent',
@@ -120,14 +123,16 @@ export default {
             let dataToBind = this.$store.state['graphy']['bind']['ing']
                 ? [...fileSelected, ...folderSelected]
                 : [];
-            return dataToBind.map(item => {
-                let dataItem = this.currentFolderData.find(i => i.id === item.id);
-                return {
-                    ...item,
-                    name: dataItem ? dataItem['Alias'] : '',
-                    type: item['type'],
-                };
-            });
+            if (dataToBind.length <= 1) {
+                return dataToBind.map(item => {
+                    let dataItem = this.currentFolderData.find(i => i.id === item.id);
+                    return {
+                        ...item,
+                        name: dataItem ? dataItem['Alias'] : '',
+                        type: item['type'],
+                    };
+                });
+            }
         },
         displayBindPanel: {
             get: function () {
@@ -136,7 +141,7 @@ export default {
             set: function (val) {
                 if (!val) {
                     this.$store.commit(ActionType.BindModels, false);
-                };
+                }
             },
         },
         currentFolderData: function () {
@@ -148,7 +153,7 @@ export default {
             data.map((item) => {
                 if (!dataById[item['Data']['docs']['id']]) {
                     dataById[item['Data']['docs']['id']] = [];
-                };
+                }
                 dataById[item['Data']['docs']['id']].push(item);
             });
             return dataById;
@@ -157,6 +162,274 @@ export default {
             let path = this.$store.state['graphy']['explore']['path'];
             path = path[path.length - 1];
             return path;
+        },
+        currentPathsection: function () {
+            let path = this.$store.state['graphy']['explore']['path'];
+            if (path.length >= 2) {
+                return path[1].name;
+            } else {
+                return path[0].name;
+            }
+        },
+        currentPathtype: function () {
+            let path = this.$store.state['graphy']['explore']['path'];
+            if (path.length >= 3) {
+                if (path[2].name === '涵洞') {
+                    return TypeValue.HanDong;
+                } else if (path[2].name === '天桥') {
+                    return TypeValue.TianQiao;
+                } else if (path[2].name === '桥梁') {
+                    return TypeValue.Qiao;
+                }
+            }
+            if (path.length >= 4) {
+                if (path[2].name === '路基' && path[3].name === '路面结构标准图') {
+                    return TypeValue.LuMian;
+                } else if (path[2].name === '路基' && path[3].name === '挡土墙工点设计图') {
+                    return TypeValue.DangQiang;
+                } else if (path[2].name === '路基' && path[3].name === '软基换填工点设计图') {
+                    return TypeValue.Rjht;
+                } else if (path[2].name === '总体' && path[3].name === '公路平面总体设计图') {
+                    return TypeValue.BianPo;
+                } else if (path[2].name === '总体' && path[3].name === '公路平面总体设计图') {
+                    return TypeValue.LuMian;
+                }
+            }
+            if (path.length >= 5) {
+                if (path[2].name === '路基' && path[3].name === '排水盲沟标准图' && path[4].name === '路基、路面排水工程设计图') {
+                    return TypeValue.MangGou;
+                } else if (path[2].name === '路基' && path[3].name === '排水盲沟标准图' && path[4].name === '陡坡路堤或填挖交界处理设计图') {
+                    return TypeValue.MangGou;
+                }
+            }
+            if (path.length >= 6) {
+                if (path[2].name === '交叉' && path[5].name === '挡墙工点设计图') {
+                    return TypeValue.DangQiang;
+                } else if (path[2].name === '交叉' && path[5].name === '挡土墙工点设计图') {
+                    return TypeValue.DangQiang;
+                } else if (path[2].name === '交叉' && path[5].name === '路面结构标准图') {
+                    return TypeValue.LuMian;
+                } else if (path[2].name === '交叉' && path[5].name === '软基换填工点设计图') {
+                    return TypeValue.Rjht;
+                }
+            }
+            if (path.length >= 7) {
+                if (path[2].name === '交叉' && path[6].name === '路基、路面排水工程设计图') {
+                    return TypeValue.MangGou;
+                } else if (path[2].name === '交叉' && path[6].name === '陡坡路堤或填挖交界处理设计图') {
+                    return TypeValue.MangGou;
+                } else if (path[2].name === '交叉' && path[6].name === '软基换填工点设计图') {
+                    return TypeValue.Rjht;
+                }
+            }
+        },
+        currentPathtypeModel: function () {
+            let path = this.$store.state['graphy']['explore']['path'];
+            if (path.length >= 4) {
+                if (path[2].name === '路基' && path[3].name === '软基换填工点设计图') {
+                    return TypeModel[TypeValue.Rjht].RJHT;
+                } else if (path[2].name === '桥梁') {
+                    return TypeModel[TypeValue.Qiao];
+                }
+            }
+            if (path.length >= 5) {
+                if (path[2].name === '路基' && path[3].name === '排水盲沟标准图' && path[4].name === '路基、路面排水工程设计图') {
+                    return TypeModel[TypeValue.MangGou].BianGouMangGou;
+                } else if (path[2].name === '路基' && path[3].name === '排水盲沟标准图' && path[4].name === '陡坡路堤或填挖交界处理设计图') {
+                    return TypeModel[TypeValue.MangGou].JiaoJieMangGou;
+                }
+            }
+            if (path.length >= 6) {
+                if (path[2].name === '交叉' && path[5].name === '软基换填工点设计图') {
+                    return TypeModel[TypeValue.Rjht].RJHT;
+                }
+            }
+            if (path.length >= 7) {
+                if (path[2].name === '交叉' && path[6].name === '路基、路面排水工程设计图') {
+                    return TypeModel[TypeValue.MangGou].BianGouMangGou;
+                } else if (path[2].name === '交叉' && path[6].name === '陡坡路堤或填挖交界处理设计图') {
+                    return TypeModel[TypeValue.MangGou].JiaoJieMangGou;
+                } else if (path[2].name === '交叉' && path[6].name === '软基换填工点设计图') {
+                    return TypeModel[TypeValue.Rjht].RJHT;
+                }
+            }
+        },
+        currentPathStartStation: function () {
+            let fileSelected = Object.keys(this.$store.state['graphy']['explore']['fileSelected']).map((key) => ({
+                type: 'FILE',
+                id: key,
+            }));
+            fileSelected = fileSelected.filter(item => this.$store.state['graphy']['explore']['fileSelected'][item.id]);
+
+            let folderSelected = Object.keys(this.$store.state['graphy']['explore']['folderSelected']).map((key) => ({
+                type: 'DIRECTORY',
+                id: key,
+            }));
+            folderSelected = folderSelected.filter(item => this.$store.state['graphy']['explore']['folderSelected'][item.id]);
+            let dataToBind = this.$store.state['graphy']['bind']['ing']
+                ? [...fileSelected, ...folderSelected]
+                : [];
+            if (dataToBind.length <= 1) {
+                return dataToBind.map(item => {
+                    let dataItem = this.currentFolderData.find(i => i.id === item.id);
+                    let path = this.$store.state['graphy']['explore']['path'];
+                    if (path.length >= 4 && path.length < 6) {
+                        if ((path[2].name === '总体' && path[3].name === '公路平面总体设计图') || (path[2].name === '路基' && path[3].name === '软基换填工点设计图')) {
+                            let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                            if (numb.length === 13) {
+                                if (numb.substr(5, 1) === '1') {
+                                    return parseFloat(numb.substr(0, 5));
+                                } else return parseFloat(numb.substr(0, 6));
+                            } else if (numb.length === 14) {
+                                return parseFloat(numb.substr(0, 6));
+                            } else if (numb.length === 12) {
+                                if (numb.substr(0, 1) !== '1') {
+                                    return parseFloat(numb.substr(0, 5));
+                                } else if (numb.substr(0, 1) !== '1' && numb.substr(5, 1) === '1') {
+                                    return parseFloat(numb.substr(0, 5));
+                                } else {
+                                    return parseFloat(numb.substr(0, 6));
+                                }
+                            } else if (numb.length === 11) {
+                                return parseFloat(numb.substr(0, 5));
+                            } else if (numb.length === 10) {
+                                return parseFloat(numb.substr(0, 5));
+                            } else if (numb.length === 15) {
+                                return parseFloat(numb.substr(0, 6));
+                            } else if (numb.length === 19) {
+                                return parseFloat(numb.substr(0, 6));
+                            } else if (numb.length === 16) {
+                                return parseFloat(numb.substr(0, 6));
+                            }
+                        } else if (path[2].name === '路基' && path[3].name === '挡土墙工点设计图') {
+                            let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                            if (path.length >= 4) {
+                                if (numb.length === 12) {
+                                    return parseFloat(numb.substr(0, 6));
+                                } else if (numb.length === 13 && numb.substr(6, 1) === '1') {
+                                    return parseFloat(numb.substr(0, 6));
+                                } else if (numb.length === 13 && numb.substr(6, 1) !== '1') {
+                                    return parseFloat(numb.substr(0, 6));
+                                } else if (numb.length === 14 && numb.substr(6, 1) === '1') {
+                                    return parseFloat(numb.substr(0, 6));
+                                } else if (numb.length === 14 && numb.substr(6, 1) !== '1') {
+                                    return parseFloat(numb.substr(0, 6));
+                                } else if (numb.length === 15) {
+                                    return parseFloat(numb.substr(0, 6));
+                                } else if (numb.length === 18) {
+                                    return parseFloat(numb.substr(0, 6));
+                                }
+                            }
+                        }
+                    } else if (path.length >= 6) {
+                        if (path[2].name === '交叉' && path[5].name === '挡墙工点设计图') {
+                            let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                            if (numb.length === 12) {
+                                return parseFloat(numb.substr(0, 6));
+                            } else if (numb.length === 11) {
+                                return parseFloat(numb.substr(0, 4));
+                            } else if (numb.length === 14) {
+                                return parseFloat(numb.substr(0, 6));
+                            } else if (numb.length === 15 && numb.substr(0, 1) === numb.substr(6, 1) && numb.substr(1, 1) === numb.substr(7, 1) && numb.substr(2, 1) === numb.substr(8, 1)) {
+                                return parseFloat(numb.substr(0, 6));
+                            } else if (numb.length === 15) {
+                                return parseFloat(numb.substr(0, 6));
+                            }
+                        } else if (path[2].name === '交叉' && path[5].name === '挡土墙工点设计图') {
+                            let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                            if (numb.length === 14) {
+                                return parseFloat(numb.substr(0, 6));
+                            } else if (numb.length === 15) {
+                                return parseFloat(numb.substr(0, 6));
+                            } else if (numb.length === 10) {
+                                return parseFloat(numb.substr(0, 4));
+                            } else if (numb.length === 8) {
+                                return parseFloat(numb.substr(0, 4));
+                            } else if (numb.length === 7) {
+                                return parseFloat(numb.substr(0, 4));
+                            }
+                        } else if (path[2].name === '交叉' && path[5].name === '软基换填工点设计图') {
+                            let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                            if (numb.length === 8) {
+                                return parseFloat(numb.substr(0, 4));
+                            }
+                        }
+                    }
+                });
+            }
+        },
+        currentStationID: function () {
+            let fileSelected = Object.keys(this.$store.state['graphy']['explore']['fileSelected']).map((key) => ({
+                type: 'FILE',
+                id: key,
+            }));
+            fileSelected = fileSelected.filter(item => this.$store.state['graphy']['explore']['fileSelected'][item.id]);
+
+            let folderSelected = Object.keys(this.$store.state['graphy']['explore']['folderSelected']).map((key) => ({
+                type: 'DIRECTORY',
+                id: key,
+            }));
+            folderSelected = folderSelected.filter(item => this.$store.state['graphy']['explore']['folderSelected'][item.id]);
+            let dataToBind = this.$store.state['graphy']['bind']['ing']
+                ? [...fileSelected, ...folderSelected]
+                : [];
+            if (dataToBind.length <= 1) {
+                return dataToBind.map(item => {
+                    let dataItem = this.currentFolderData.find(i => i.id === item.id);
+                    let path = this.$store.state['graphy']['explore']['path'];
+                    let AlignmentArray = this.$store.state['highway']['basic']['alignment'];
+                    let words = dataItem['Alias'];
+                    let patternAK = new RegExp('AK');
+                    let patternBK = new RegExp('BK');
+                    let patternCK = new RegExp('CK');
+                    let patternLK = new RegExp('LK');
+                    let patternZK = new RegExp('ZK');
+                    let patternMuChuan = new RegExp('沐川枢纽');
+                    let Stationline;
+                    if (path.length >= 4 && path.length < 6) {
+                        if (path[2].name === '总体' && path[3].name === '公路平面总体设计图' && patternZK.test(words) === false) {
+                            Stationline = AlignmentArray[54].id;
+                        } else if (path[2].name === '总体' && path[3].name === '公路平面总体设计图' && patternZK.test(words) === true) {
+                            for (let i = 9; i < 16; i++) {
+                                if ((AlignmentArray[i].startStation <= this.currentPathStartStation[0]) && (AlignmentArray[i].endStation >= this.currentPathEndStation[0])) {
+                                    Stationline = AlignmentArray[i].id;
+                                }
+                            }
+                        } else if (path[2].name === '路基' && path[3].name === '软基换填工点设计图') {
+                            Stationline = AlignmentArray[54].id;
+                        } else if (path[2].name === '路基' && path[3].name === '挡土墙工点设计图' && patternZK.test(words) === true) {
+                            for (let i = 9; i < 16; i++) {
+                                if ((AlignmentArray[i].startStation <= this.currentPathStartStation[0]) && (AlignmentArray[i].endStation >= this.currentPathEndStation[0])) {
+                                    Stationline = AlignmentArray[i].id;
+                                }
+                            }
+                        } else if (path[2].name === '路基' && path[3].name === '挡土墙工点设计图' && patternZK.test(words) === false) {
+                            Stationline = AlignmentArray[54].id;
+                        }
+                    } else if (path.length >= 6) {
+                        if (path[2].name === '交叉' && path[5].name === '挡墙工点设计图' && patternAK.test(words) === false && patternBK.test(words) === false && patternZK.test(words) === false && patternCK.test(words) === false) {
+                            Stationline = AlignmentArray[54].id;
+                        } else if (path[2].name === '交叉' && path[5].name === '挡墙工点设计图' && patternMuChuan.test(path[3].name) === true && patternAK.test(words) === true) {
+                            Stationline = AlignmentArray[33].id;
+                        } else if (path[2].name === '交叉' && path[3].name === '沐川服务区' && path[5].name === '挡土墙工点设计图' && patternBK.test(words) === true) {
+                            Stationline = AlignmentArray[25].id;
+                        } else if (path[2].name === '交叉' && (path[5].name === '挡土墙工点设计图' || path[5].name === '挡墙工点设计图') && patternZK.test(words) === true) {
+                            for (let i = 9; i < 16; i++) {
+                                if ((AlignmentArray[i].startStation <= this.currentPathStartStation[0]) && (AlignmentArray[i].endStation >= this.currentPathEndStation[0])) {
+                                    Stationline = AlignmentArray[i].id;
+                                }
+                            }
+                        } else if (path[2].name === '交叉' && path[5].name === '挡土墙工点设计图' && patternAK.test(words) === false && patternBK.test(words) === false && patternZK.test(words) === false && patternCK.test(words) === false) {
+                            Stationline = AlignmentArray[54].id;
+                        } else if (path[2].name === '交叉' && path[3].name === '沐川南互通' && path[5].name === '挡墙工点设计图' && patternCK.test(words) === true) {
+                            Stationline = AlignmentArray[22].id;
+                        } else if (path[2].name === '交叉' && path[3].name === '沐川南互通' && path[5].name === '软基换填工点设计图' && patternLK.test(words) === true) {
+                            Stationline = AlignmentArray[0].id;
+                        }
+                    }
+                    return Stationline;
+                });
+            }
         },
         parentFolders: function () {
             return this.$store.state['graphy']['explore']['path'].map(item => ({
@@ -171,6 +444,118 @@ export default {
                 date: item.Timestamp.substring(0, item.Timestamp.indexOf('T')),
                 id: item.id,
             }));
+        },
+        currentPathEndStation: function () {
+            let fileSelected = Object.keys(this.$store.state['graphy']['explore']['fileSelected']).map((key) => ({
+                type: 'FILE',
+                id: key,
+            }));
+            fileSelected = fileSelected.filter(item => this.$store.state['graphy']['explore']['fileSelected'][item.id]);
+
+            let folderSelected = Object.keys(this.$store.state['graphy']['explore']['folderSelected']).map((key) => ({
+                type: 'DIRECTORY',
+                id: key,
+            }));
+            folderSelected = folderSelected.filter(item => this.$store.state['graphy']['explore']['folderSelected'][item.id]);
+            let dataToBind = this.$store.state['graphy']['bind']['ing']
+                ? [...fileSelected, ...folderSelected]
+                : [];
+            if (dataToBind.length <= 1) {
+                return dataToBind.map(item => {
+                    let dataItem = this.currentFolderData.find(i => i.id === item.id);
+                    let path = this.$store.state['graphy']['explore']['path'];
+                    if (path.length >= 4 && path.length < 6) {
+                        if ((path[2].name === '总体' && path[3].name === '公路平面总体设计图') || (path[2].name === '路基' && path[3].name === '软基换填工点设计图')) {
+                            let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                            if (numb.length === 13) {
+                                if (numb.substr(5, 1) === '1') {
+                                    return parseFloat(numb.substr(5, 6));
+                                } else return parseFloat(numb.substr(6, 6));
+                            } else if (numb.length === 14) {
+                                if (numb.substr(0, 1) === numb.substr(7, 1) && numb.substr(1, 1) === numb.substr(8, 1)) {
+                                    return parseFloat(numb.substr(7, 6));
+                                } else {
+                                    return parseFloat(numb.substr(6, 6));
+                                }
+                            } else if (numb.length === 12) {
+                                if (numb.substr(0, 1) !== '1' && numb.substr(5, 1) !== '1') {
+                                    return parseFloat(numb.substr(5, 5));
+                                } else if (numb.substr(0, 1) !== '1' && numb.substr(5, 1) === '1') {
+                                    return parseFloat(numb.substr(5, 6));
+                                } else {
+                                    return parseFloat(numb.substr(6, 6));
+                                }
+                            } else if (numb.length === 11) {
+                                return parseFloat(numb.substr(5, 5));
+                            } else if (numb.length === 10) {
+                                return parseFloat(numb.substr(5, 5));
+                            } else if (numb.length === 15) {
+                                return parseFloat(numb.substr(6, 6));
+                            } else if (numb.length === 19) {
+                                return parseFloat(numb.substr(9, 6));
+                            } else if (numb.length === 16) {
+                                return parseFloat(numb.substr(6, 6));
+                            }
+                        } else if (path[2].name === '路基' && path[3].name === '挡土墙工点设计图') {
+                            let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                            if (path.length >= 4) {
+                                if (numb.length === 12) {
+                                    return parseFloat(numb.substr(6, 6));
+                                } else if (numb.length === 13 && numb.substr(6, 1) === '1') {
+                                    return parseFloat(numb.substr(6, 6));
+                                } else if (numb.length === 13 && numb.substr(6, 1) !== '1') {
+                                    return parseFloat(numb.substr(7, 6));
+                                } else if (numb.length === 14 && numb.substr(7, 1) === '1' && numb.substr(8, 1) === '1' && numb.substr(9, 1) !== '1') {
+                                    return parseFloat(numb.substr(7, 6));
+                                } else if (numb.length === 14 && numb.substr(6, 1) === '1') {
+                                    return parseFloat(numb.substr(6, 6));
+                                } else if (numb.length === 14 && numb.substr(6, 1) !== '1') {
+                                    return parseFloat(numb.substr(8, 6));
+                                } else if (numb.length === 15 && numb.substr(6, 1) === '1') {
+                                    return parseFloat(numb.substr(6, 6));
+                                } else if (numb.length === 15 && numb.substr(6, 1) !== '1' && numb.substr(7, 1) !== '1' && numb.substr(8, 1) !== '1') {
+                                    return parseFloat(numb.substr(9, 6));
+                                } else if (numb.length === 15 && numb.substr(6, 1) !== '1') {
+                                    return parseFloat(numb.substr(8, 6));
+                                } else if (numb.length === 18) {
+                                    return parseFloat(numb.substr(9, 6));
+                                }
+                            }
+                        }
+                    } else if (path.length >= 6) {
+                        if (path[2].name === '交叉' && path[5].name === '挡墙工点设计图') {
+                            let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                            if (numb.length === 12) {
+                                return parseFloat(numb.substr(6, 6));
+                            } else if (numb.length === 11) {
+                                return parseFloat(numb.substr(7, 4));
+                            } else if (numb.length === 15 && numb.substr(0, 1) === numb.substr(6, 1) && numb.substr(1, 1) === numb.substr(7, 1) && numb.substr(2, 1) === numb.substr(8, 1)) {
+                                return parseFloat(numb.substr(6, 6));
+                            } else if (numb.length === 15) {
+                                return parseFloat(numb.substr(9, 6));
+                            }
+                        } else if (path[2].name === '交叉' && path[5].name === '挡土墙工点设计图') {
+                            let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                            if (numb.length === 14) {
+                                return parseFloat(numb.substr(6, 6));
+                            } else if (numb.length === 15) {
+                                return parseFloat(numb.substr(6, 6));
+                            } else if (numb.length === 10) {
+                                return parseFloat(numb.substr(4, 3));
+                            } else if (numb.length === 8) {
+                                return parseFloat(numb.substr(4, 4));
+                            } else if (numb.length === 7) {
+                                return parseFloat(numb.substr(4, 3));
+                            }
+                        } else if (path[2].name === '交叉' && path[5].name === '软基换填工点设计图') {
+                            let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                            if (numb.length === 8) {
+                                return parseFloat(numb.substr(4, 4));
+                            }
+                        }
+                    }
+                });
+            }
         },
         files: function () {
             let files = this.currentFolderData.filter(item => item.Type === 'FILE');
