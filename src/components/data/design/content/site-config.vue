@@ -39,6 +39,47 @@
             },
         },
         computed: {
+            currentPathSection: function () {
+                let path = this.$store.state['graphy']['explore']['path'];
+                let LJ8 = 'LJ8';
+                let LJ9 = 'LJ9';
+                let LJ10 = 'LJ10';
+                let LJ11 = 'LJ11';
+                let LJ12 = 'LJ12';
+                let LJ13 = 'LJ13';
+                let LJ14 = 'LJ14';
+                let LJ15 = 'LJ15';
+                if (path[1] === 'LJ8') {
+                    return LJ8;
+                } else if (path[1] === 'LJ9') {
+                    return LJ9;
+                } else if (path[1] === 'LJ10') {
+                    return LJ10;
+                } else if (path[1] === 'LJ11') {
+                    return LJ11;
+                } else if (path[1] === 'LJ12') {
+                    return LJ12;
+                } else if (path[1] === 'LJ13') {
+                    return LJ13;
+                } else if (path[1] === 'LJ14') {
+                    return LJ14;
+                } else if (path[1] === 'LJ15') {
+                    return LJ15;
+                }
+            },
+            currentPathType: function () {
+                let path = this.$store.state['graphy']['explore']['path'];
+                let HANDONG = 'HANDONG';
+                let QIAOLIANG = 'QIAO';
+                let TIANQIAO = 'TIANQIAO';
+                if (path[2] === '涵洞') {
+                    return HANDONG;
+                } else if (path[2] === '桥梁') {
+                    return QIAOLIANG;
+                } else if (path[2] === '天桥') {
+                    return TIANQIAO;
+                }
+            },
             selectedSection () {
                 return this.itemData['sectionID'] || null;
             },
@@ -71,7 +112,7 @@
                         ];
                     default:
                         return [];
-                };
+                }
             },
             rightPartStr () {
                 return JSON.stringify(this.rightPartObject);
@@ -150,30 +191,32 @@
                     let queryParams = {recursive: true};
                     if (sectionID) {
                         queryParams['query'] = queryBody;
-                    };
+                    }
                     this.$store.dispatch(action, queryParams);
                     // };
-                };
+                }
             },
         },
         watch: {
             selectedSection: function (val) {
                 this.requestSite(this.currentType, val);
+                console.log('AA', val);
             },
             currentType: function (val) {
                 this.requestSite(val, this.selectedSection);
+                console.log('BB', val);
             },
             active: function (val) {
                 if (val) {
                     this.rightPartObject = JSON.parse(JSON.stringify(this.value || {}));
                 } else {
                     this.rightPartObject = {};
-                };
+                }
             },
             rightPartStr: function (val) {
                 if (this.active) {
                     this.$emit('input', val !== '{}' ? this.rightPartObject : undefined);
-                };
+                }
             },
             siteID: function (val) {
                 let selectedSite = this.siteArray.find((item) => item['value'] === val);

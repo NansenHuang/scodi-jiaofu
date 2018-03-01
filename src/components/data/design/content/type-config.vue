@@ -81,12 +81,12 @@
                     this.rightPartObject = JSON.parse(JSON.stringify(this.value || {}));
                 } else {
                     this.rightPartObject = {};
-                };
+                }
             },
             rightPartStr: function (val) {
                 if (this.active) {
                     this.$emit('input', val !== '{}' ? this.rightPartObject : undefined);
-                };
+                }
             },
         },
         created: function () {

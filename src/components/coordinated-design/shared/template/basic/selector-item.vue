@@ -48,7 +48,7 @@ export default {
         selectChange (val) {
             if (this.active) {
                 this.$emit('input', val || undefined);
-            };
+            }
         },
     },
     watch: {
@@ -57,7 +57,7 @@ export default {
                 this.selected = this.value;
             } else {
                 this.$refs['select'].clearSingleSelect();
-            };
+            }
         },
     },
     created () {

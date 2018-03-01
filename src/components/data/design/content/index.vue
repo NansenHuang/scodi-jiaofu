@@ -74,7 +74,7 @@
             <add-bind
             :update="false"
             :active="displayBindPanel"
-            :currentData = "{sectionID: currentPathsection,alignment:{alignmentID:currentStationID[0],startStation: currentPathStartStation[0] ,endStation: currentPathEndStation[0]},type:{type: currentPathtype,modelType:currentPathtypeModel}}"
+            :currentData = "{sectionID: currentPathsection,alignment:{alignmentID:currentStationID[0],startStation: currentPathStartStation[0] ,endStation: currentPathEndStation[0]},type:{type: currentPathtype,modelType:currentPathtypeModel[0]},site:{siteID:currentSiteID[0]}}"
             @close="displayBindPanel=false"
             @save="handleBind"></add-bind>
         </div>
@@ -93,6 +93,8 @@ import AddBind from './add-bind';
 import LayoutType from 'src/config/layout-type';
 import TypeValue from 'src/config/type';
 import TypeModel from 'src/config/model-type';
+import Utils from 'src/libs/util';
+import StationUtil from 'src/libs/station';
 
 export default {
     name: 'DesignDataContent',
@@ -102,6 +104,68 @@ export default {
         AddBind,
     },
     computed: {
+        currentPathSiteSection: function () {
+            let path = this.$store.state['graphy']['explore']['path'];
+            console.log('CCC', path);
+            let LJ8 = 'LJ8';
+            let LJ9 = 'LJ9';
+            let LJ10 = 'LJ10';
+            let LJ11 = 'LJ11';
+            let LJ12 = 'LJ12';
+            let LJ13 = 'LJ13';
+            let LJ14 = 'LJ14';
+            let LJ15 = 'LJ15';
+            if (path.length >= 2) {
+                if (path[1].name === 'LJ8') {
+                    return LJ8;
+                } else if (path[1].name === 'LJ9') {
+                    return LJ9;
+                } else if (path[1].name === 'LJ10') {
+                    return LJ10;
+                } else if (path[1].name === 'LJ11') {
+                    return LJ11;
+                } else if (path[1].name === 'LJ12') {
+                    return LJ12;
+                } else if (path[1].name === 'LJ13') {
+                    return LJ13;
+                } else if (path[1].name === 'LJ14') {
+                    return LJ14;
+                } else if (path[1].name === 'LJ15') {
+                    return LJ15;
+                }
+            }
+        },
+        currentPathSiteType: function () {
+            let path = this.$store.state['graphy']['explore']['path'];
+            let HANDONG = 'HANDONG';
+            let QIAOLIANG = 'QIAO';
+            let TIANQIAO = 'TIANQIAO';
+            if (path.length >= 3) {
+                if (path[2].name === '涵洞') {
+                    return HANDONG;
+                } else if (path[2].name === '桥梁') {
+                    return QIAOLIANG;
+                } else if (path[2].name === '天桥') {
+                    return TIANQIAO;
+                }
+            }
+        },
+        siteArray () {
+            let data = (this.currentPathSiteType &&
+                this.typeToStorePath[this.currentPathSiteType] &&
+                Utils.deepFind(this.$store.state, this.typeToStorePath[this.currentPathSiteType])) || [];
+            return data.map((item) => ({
+                value: item.id,
+                label: item['bridgeCnName'] ||
+                item['geologyCnName'] ||
+                item['tunnelCnName'] ||
+                item['alignmentCnName'] + '  ' + (item['station'] && StationUtil.NumberToLetterStaion(item['station']).replace('K', item['stationMark'])) ||
+                '未命名',
+            }));
+        },
+        siteID () {
+            return this.rightPartObject['siteID'];
+        },
         layout: function () {
             return this.$store.state['graphy']['explore']['layout'];
         },
@@ -224,34 +288,63 @@ export default {
             }
         },
         currentPathtypeModel: function () {
-            let path = this.$store.state['graphy']['explore']['path'];
-            if (path.length >= 4) {
-                if (path[2].name === '路基' && path[3].name === '软基换填工点设计图') {
-                    return TypeModel[TypeValue.Rjht].RJHT;
-                } else if (path[2].name === '桥梁') {
-                    return TypeModel[TypeValue.Qiao];
-                }
-            }
-            if (path.length >= 5) {
-                if (path[2].name === '路基' && path[3].name === '排水盲沟标准图' && path[4].name === '路基、路面排水工程设计图') {
-                    return TypeModel[TypeValue.MangGou].BianGouMangGou;
-                } else if (path[2].name === '路基' && path[3].name === '排水盲沟标准图' && path[4].name === '陡坡路堤或填挖交界处理设计图') {
-                    return TypeModel[TypeValue.MangGou].JiaoJieMangGou;
-                }
-            }
-            if (path.length >= 6) {
-                if (path[2].name === '交叉' && path[5].name === '软基换填工点设计图') {
-                    return TypeModel[TypeValue.Rjht].RJHT;
-                }
-            }
-            if (path.length >= 7) {
-                if (path[2].name === '交叉' && path[6].name === '路基、路面排水工程设计图') {
-                    return TypeModel[TypeValue.MangGou].BianGouMangGou;
-                } else if (path[2].name === '交叉' && path[6].name === '陡坡路堤或填挖交界处理设计图') {
-                    return TypeModel[TypeValue.MangGou].JiaoJieMangGou;
-                } else if (path[2].name === '交叉' && path[6].name === '软基换填工点设计图') {
-                    return TypeModel[TypeValue.Rjht].RJHT;
-                }
+            let fileSelected = Object.keys(this.$store.state['graphy']['explore']['fileSelected']).map((key) => ({
+                type: 'FILE',
+                id: key,
+            }));
+            fileSelected = fileSelected.filter(item => this.$store.state['graphy']['explore']['fileSelected'][item.id]);
+
+            let folderSelected = Object.keys(this.$store.state['graphy']['explore']['folderSelected']).map((key) => ({
+                type: 'DIRECTORY',
+                id: key,
+            }));
+            folderSelected = folderSelected.filter(item => this.$store.state['graphy']['explore']['folderSelected'][item.id]);
+            let dataToBind = this.$store.state['graphy']['bind']['ing']
+                ? [...fileSelected, ...folderSelected]
+                : [];
+            if (dataToBind.length <= 1) {
+                return dataToBind.map(item => {
+                    let path = this.$store.state['graphy']['explore']['path'];
+                    let dataItem = this.currentFolderData.find(i => i.id === item.id);
+                    let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                    if (path.length >= 4) {
+                        if (path[2].name === '路基' && path[3].name === '软基换填工点设计图') {
+                            return TypeModel[TypeValue.Rjht].RJHT;
+                        } else if (path[2].name === '桥梁' && numb === '2') {
+                            return TypeModel[TypeValue.Qiao].SiJieFeng;
+                        } else if (path[2].name === '桥梁' && numb === '3') {
+                            return TypeModel[TypeValue.Qiao].GaiLiang;
+                        } else if (path[2].name === '桥梁' && numb === '4') {
+                            return TypeModel[TypeValue.Qiao].QiaoDun;
+                        } else if (path[2].name === '桥梁' && numb === '5') {
+                            return TypeModel[TypeValue.Qiao].DunXiLiang;
+                        } else if (path[2].name === '桥梁' && numb === '6') {
+                            return TypeModel[TypeValue.Qiao].ChengTai;
+                        } else if (path[2].name === '桥梁' && numb === '7') {
+                            return TypeModel[TypeValue.Qiao].Zhuang;
+                        } else if (path[2].name === '桥梁' && numb === '8') {
+                            return TypeModel[TypeValue.Qiao].QiaoTai;
+                        }
+                    } else if (path.length >= 5) {
+                        if (path[2].name === '路基' && path[3].name === '排水盲沟标准图' && path[4].name === '路基、路面排水工程设计图') {
+                            return TypeModel[TypeValue.MangGou].BianGouMangGou;
+                        } else if (path[2].name === '路基' && path[3].name === '排水盲沟标准图' && path[4].name === '陡坡路堤或填挖交界处理设计图') {
+                            return TypeModel[TypeValue.MangGou].JiaoJieMangGou;
+                        }
+                    } else if (path.length >= 6) {
+                        if (path[2].name === '交叉' && path[5].name === '软基换填工点设计图') {
+                            return TypeModel[TypeValue.Rjht].RJHT;
+                        }
+                    } else if (path.length >= 7) {
+                        if (path[2].name === '交叉' && path[6].name === '路基、路面排水工程设计图') {
+                            return TypeModel[TypeValue.MangGou].BianGouMangGou;
+                        } else if (path[2].name === '交叉' && path[6].name === '陡坡路堤或填挖交界处理设计图') {
+                            return TypeModel[TypeValue.MangGou].JiaoJieMangGou;
+                        } else if (path[2].name === '交叉' && path[6].name === '软基换填工点设计图') {
+                            return TypeModel[TypeValue.Rjht].RJHT;
+                        }
+                    }
+                });
             }
         },
         currentPathStartStation: function () {
@@ -431,6 +524,60 @@ export default {
                 });
             }
         },
+        currentSiteID: function () {
+            let fileSelected = Object.keys(this.$store.state['graphy']['explore']['fileSelected']).map((key) => ({
+                type: 'FILE',
+                id: key,
+            }));
+            fileSelected = fileSelected.filter(item => this.$store.state['graphy']['explore']['fileSelected'][item.id]);
+
+            let folderSelected = Object.keys(this.$store.state['graphy']['explore']['folderSelected']).map((key) => ({
+                type: 'DIRECTORY',
+                id: key,
+            }));
+            folderSelected = folderSelected.filter(item => this.$store.state['graphy']['explore']['folderSelected'][item.id]);
+            let dataToBind = this.$store.state['graphy']['bind']['ing']
+                ? [...fileSelected, ...folderSelected]
+                : [];
+            if (dataToBind.length <= 1) {
+                return dataToBind.map(item => {
+                    let dataItem = this.currentFolderData.find(i => i.id === item.id);
+                    let reg = /[\u4e00-\u9fa5]/g;
+                    let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                    let path = this.$store.state['graphy']['explore']['path'];
+                    let CulvertSite = this.$store.state['highway']['structure']['culvert'];
+                    let OverbridgeSite = this.$store.state['highway']['structure']['overbridge'];
+                    let BridgeSite = this.$store.state['highway']['structure']['bridge'];
+                    let SiteStationId;
+                    if (path.length >= 2 && path[2].name === '涵洞') {
+                        if (CulvertSite.length > 0) {
+                            for (let i = 0; i < CulvertSite.length; i++) {
+                                if (parseFloat(numb) === CulvertSite[i].station) {
+                                    SiteStationId = CulvertSite[i].id;
+                                }
+                            }
+                        }
+                    } else if (path.length >= 4 && path[2].name === '天桥') {
+                        if (OverbridgeSite.length > 0) {
+                            for (let i = 0; i < OverbridgeSite.length; i++) {
+                                if ((parseFloat(path[3].name.replace(/[^0-9]/ig, '').substr(4, 5)) === OverbridgeSite[i].station) || (parseFloat(path[3].name.replace(/[^0-9]/ig, '').substr(4, 6)) === OverbridgeSite[i].station) || (parseFloat(path[3].name.replace(/[^0-9]/ig, '').substr(5, 6)) === OverbridgeSite[i].station)) {
+                                    SiteStationId = OverbridgeSite[i].id;
+                                }
+                            }
+                        }
+                    } else if (path.length >= 4 && path[2].name === '桥梁') {
+                        if (BridgeSite.length > 0) {
+                            for (let i = 0; i < BridgeSite.length; i++) {
+                                if (path[3].name.match(reg).join('') === BridgeSite[i].bridgeCnName) {
+                                    SiteStationId = BridgeSite[i].id;
+                                }
+                            }
+                        }
+                    }
+                    return SiteStationId;
+                });
+            }
+        },
         parentFolders: function () {
             return this.$store.state['graphy']['explore']['path'].map(item => ({
                 name: item.name,
@@ -587,10 +734,67 @@ export default {
                     title: '类型',
                     key: 'type',
                 }
-            ]
+            ],
+            rightPartObject: {},
+            typeToAction: {
+                // [TypeValue.LuMian]: ,
+                // [TypeValue.LuJian]: ,
+                // [TypeValue.BiaoXian]: ,
+                // [TypeValue.FenGeDai]: ,
+                // [TypeValue.DangQiang]: ,
+                // [TypeValue.Rjht]: ,
+                // [TypeValue.MangGou]: ,
+                // [TypeValue.BianGou]: ,
+                // [TypeValue.BianPo]: ,
+                // [TypeValue.HongXian]: ,
+                // [TypeValue.BiaoPai]: ,
+                [TypeValue.DiZhi]: ActionType.LoadGeology,
+                [TypeValue.Qiao]: ActionType.LoadBridge,
+                [TypeValue.SuiDao]: ActionType.LoadTunnel,
+                [TypeValue.HanDong]: ActionType.LoadCulvert,
+                [TypeValue.TianQiao]: ActionType.LoadOverbridge,
+            },
+            typeToStorePath: {
+                // [TypeValue.LuMian]: ,
+                // [TypeValue.LuJian]: ,
+                // [TypeValue.BiaoXian]: ,
+                // [TypeValue.FenGeDai]: ,
+                // [TypeValue.DangQiang]: ,
+                // [TypeValue.Rjht]: ,
+                // [TypeValue.MangGou]: ,
+                // [TypeValue.BianGou]: ,
+                // [TypeValue.BianPo]: ,
+                // [TypeValue.HongXian]: ,
+                // [TypeValue.BiaoPai]: ,
+                [TypeValue.DiZhi]: ['highway', 'structure', 'geology'],
+                [TypeValue.Qiao]: ['highway', 'structure', 'bridge'],
+                [TypeValue.SuiDao]: ['highway', 'structure', 'tunnel'],
+                [TypeValue.HanDong]: ['highway', 'structure', 'culvert'],
+                [TypeValue.TianQiao]: ['highway', 'structure', 'overbridge'],
+            },
         };
     },
     methods: {
+        requestSite (type, sectionID) {
+            let storePath = this.typeToStorePath[type];
+            let action = this.typeToAction[type];
+            if (storePath && action) {
+                // let data = Utils.deepFind(this.$store.state, storePath);
+                // if (!data.length) {
+                let queryBody = { 'query': { 'bool': { 'filter': [] } } };
+                queryBody['query']['bool']['filter'].push({
+                    'match': {
+                        'Data.sectionID.keyword': sectionID,
+                    },
+                });
+                let queryParams = {recursive: true};
+                if (sectionID) {
+                    queryParams['query'] = queryBody;
+                }
+                this.$store.dispatch(action, queryParams);
+                // };
+            }
+        },
         handleBind (val) {
             let items = this.currentDataToBind;
             let postData = items.map(obj => {
@@ -672,6 +876,21 @@ export default {
                 [val]: !this.fileSelected[val]
             });
             console.log('Appendselect file: ', val);
+        },
+    },
+    watch: {
+        currentPathSiteSection: function (val) {
+            this.requestSite(this.currentPathSiteType, val);
+            console.log('AAA', val);
+        },
+        currentPathSiteType: function (val) {
+            this.requestSite(val, this.currentPathSiteSection);
+            console.log('BBB', val);
+        },
+        siteID: function (val) {
+            let selectedSite = this.siteArray.find((item) => item['value'] === val);
+            this.rightPartObject['siteType'] = this.currentPathType;
+            this.rightPartObject['siteCnName'] = (selectedSite && selectedSite.label) || '';
         },
     },
     created: function () {
