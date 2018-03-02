@@ -69,6 +69,7 @@ const initStateString = JSON.stringify({
         bind: {
             data: {},
             ing: false,
+            ings: false,
         },
     },
     message: {

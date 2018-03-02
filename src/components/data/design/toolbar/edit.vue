@@ -43,11 +43,15 @@
     </Button>
     <Button class="toolbar-btn" type="text" @click="sendOperation('renameSelected')" v-if="selectedItems.length === 1">
       <Icon size="16" type="ios-compose-outline"></Icon>
-      <span class="text">重命名</span>
+      <span class="text">重命名</span>  
     </Button>
     <Button class="toolbar-btn" type="text" @click="bindModel" v-if="selectedItems.length">
       <Icon size="16" type="link"></Icon>
       <span class="text">绑定到模型</span>
+    </Button>
+    <Button class="toolbar-btn" type="text" @click="bindMultipleFilesModel" v-if="selectedItems.length">
+      <Icon size="16" type="link"></Icon>
+      <span class="text">一键多文件绑定</span>
     </Button>
     <Modal
     @on-visible-change="modalHide"
@@ -168,7 +172,7 @@ export default {
             if (!val) {
                 this.selectedFiles = [];
                 this.selectedFiles2 = [];
-            };
+            }
         },
         sendOperation: function (name) {
             console.log('用户执行了操作：', name);
@@ -187,6 +191,9 @@ export default {
         },
         bindModel: function () {
             this.$store.commit(ActionType.BindModels, true);
+        },
+        bindMultipleFilesModel: function () {
+            this.$store.commit(ActionType.BindMultipleFilesModels, true);
         },
         startUpload: async function () {
             const REQUEST_AMOUNT = 50;
@@ -214,7 +221,7 @@ export default {
                     remoteNameToUrl[item.name] = item.uri;
                 });
                 index += REQUEST_AMOUNT;
-            };
+            }
             for (let index = 0; index < this.currentData.length; index++) {
                 this.currentData[index]['putAction'] = remoteNameToUrl[idToRemoteName[this.currentData[index]['id']]];
             }
@@ -231,10 +238,10 @@ export default {
                 while (true) {
                     if (filePath === '/' || filePath === '.') {
                         break;
-                    };
+                    }
                     parentFolders.splice(0, 0, Path.dirname(filePath));
                     filePath = Path.dirname(filePath);
-                };
+                }
                 // 2、
                 let parrentId = '';
                 let currentTime = (new Date()).getTime();
@@ -268,7 +275,7 @@ export default {
                         let fileName = uuidv4();
                         if (!filesObject[parrentId]) {
                             filesObject[parrentId] = [];
-                        };
+                        }
 
                         fileIdtoFileObj[fileId] = file;
                         filesObject[parrentId].push({
@@ -306,13 +313,13 @@ export default {
                     parentFolders.splice(0, 0, currentParent);
                     if (currentParent['path'] === '/' || currentParent['path'] === currentPath || currentParent['path'] === '.') {
                         break;
-                    };
+                    }
                     currentParent = Object.values(parentFoldersObject).find(item => item.id === currentParent.path);
-                };
+                }
                 if (!filesObject[folderKey]) {
                     console.log('当前路径下只有子文件夹：', parentFolders.map(item => item.alias).join(' \ '));
                     return;
-                };
+                }
 
                 if (filesObject[folderKey].length < CAPACITY - currentPackage.length) {
                     packages[packages.length - 1] = [...packages[packages.length - 1], ...parentFolders, ...filesObject[folderKey]];
@@ -325,7 +332,7 @@ export default {
                         ]);
                         partIndex += CAPACITY;
                     }
-                };
+                }
             });
 
             for (let i = 0; i < packages.length; i++) {
@@ -347,12 +354,12 @@ export default {
                                             files[index + jj].progress = '100';
                                         } else {
                                             // files[index].progress = 'NaN';
-                                        };
+                                        }
                                         resolve();
                                     };
                                 })
                             );
-                        };
+                        }
                         await Promise.all(prs);
                         console.log('第' + (index + 1) + '个，共' + this.currentData.length + '个');
                     }

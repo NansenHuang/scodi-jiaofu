@@ -61,26 +61,26 @@
         <span>当前文件夹无内容</span>
     </div>
     <Modal
-    :styles="{minWidth:'800px'}"
-    :closable="false"
-    :mask-closable="false"
-    v-model="displayBindPanel">
-        <h3>为以下内容设置绑定信息：</h3>
-        <div class="modal-content">
-            <Table :columns="columns" size="small" :data="currentDataToBind"></Table>
-        </div>
-        <h3>选择相应的字段值：</h3>
-        <div class="modal-content">
-            <add-bind
-            :update="false"
-            :active="displayBindPanel"
-            :currentData = "{sectionID: currentPathsection,alignment:{alignmentID:currentStationID[0],startStation: currentPathStartStation[0] ,endStation: currentPathEndStation[0]},type:{type: currentPathtype,modelType:currentPathtypeModel[0]},site:{siteID:currentSiteID[0]}}"
-            @close="displayBindPanel=false"
-            @save="handleBind"></add-bind>
-        </div>
-        <div slot="footer">
-        </div>
-    </Modal>
+          :styles="{minWidth:'800px'}"
+          :closable="false"
+          :mask-closable="false"
+          v-model="displayBindPanel">
+      <h3>为以下内容设置绑定信息：</h3>
+      <div class="modal-content">
+          <Table :columns="columns" size="small" :data="currentDataToBind"></Table>
+      </div>
+      <h3>选择相应的字段值：</h3>
+      <div class="modal-content">
+          <add-bind
+                  :update="false"
+                  :active="displayBindPanel"
+                  :currentData = "{sectionID: currentPathsection,alignment:{alignmentID:currentStationID[0],startStation: currentPathStartStation[0] ,endStation: currentPathEndStation[0]},type:{type: currentPathtype,modelType:currentPathtypeModel[0]},site:{siteID:currentSiteID[0]}}"
+                  @close="displayBindPanel=false"
+                  @save="handleBind"></add-bind>
+      </div>
+      <div slot="footer">
+      </div>
+  </Modal>
   </div>
 </template>
 
@@ -568,7 +568,7 @@ export default {
                     } else if (path.length >= 4 && path[2].name === '桥梁') {
                         if (BridgeSite.length > 0) {
                             for (let i = 0; i < BridgeSite.length; i++) {
-                                if (path[3].name.match(reg).join('') === BridgeSite[i].bridgeCnName) {
+                                if (path[3].name.match(reg).join('') === BridgeSite[i].bridgeCnName.match(reg).join('')) {
                                     SiteStationId = BridgeSite[i].id;
                                 }
                             }

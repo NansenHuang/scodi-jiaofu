@@ -134,6 +134,8 @@ const ActionType = {
     //
     BindModels: 'bind_models',
     //
+    BindMultipleFilesModels: 'bind_multiple_files_models',
+    //
     AddRelation: 'add_relation',
     QueryRelation: 'query_relation',
     AppendRelationQueryResult: 'append_relation_query_result',

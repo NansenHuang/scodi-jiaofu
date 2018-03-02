@@ -154,6 +154,9 @@ export const mutations = {
     [ActionType.BindModels] (state, payload) {
         state['graphy']['bind']['ing'] = Boolean(payload);
     },
+    [ActionType.BindMultipleFilesModels] (state, payload) {
+        state['graphy']['bind']['ings'] = Boolean(payload);
+    },
     [ActionType.SetLayout] (state, payload) {
         state['graphy']['explore']['layout'] = payload;
     },

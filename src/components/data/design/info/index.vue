@@ -162,14 +162,14 @@ export default {
             if (this.selected.length === 1) {
                 let selectedItem = this.currentFolderData.find(item => item.id === this.selected[0].id);
                 let folderinfo = {
-              type: selectedItem['Type'],
-              name: selectedItem['Alias'],
-              id: selectedItem['ID'],
-              namespace: selectedItem['NameSpace'],
-              createtime: selectedItem.Timestamp.substring(0, selectedItem.Timestamp.indexOf('T')),
-            };
-             return folderinfo;
-        }
+                    type: selectedItem['Type'],
+                    name: selectedItem['Alias'],
+                    id: selectedItem['ID'],
+                    namespace: selectedItem['NameSpace'],
+                    createtime: selectedItem.Timestamp.substring(0, selectedItem.Timestamp.indexOf('T')),
+                };
+                return folderinfo;
+            }
         },
 
         selected: function () {
