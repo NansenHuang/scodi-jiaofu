@@ -60,6 +60,27 @@
         <img src="./empty_folder.svg" alt="">
         <span>当前文件夹无内容</span>
     </div>
+      <Modal
+              :styles="{minWidth:'800px'}"
+              :closable="false"
+              :mask-closable="false"
+              v-model="displayBindMultipleFilesPanel">
+          <h3>为以下内容设置绑定Bindings信息：</h3>
+          <div class="modal-content">
+              <Table :columns="columns" size="small" :data="currentDataToBind"></Table>
+          </div>
+          <h3>选择相应的字段值：</h3>
+          <div class="modal-content">
+              <add-bind
+                      :update="false"
+                      :active="displayBindMultipleFilesPanel"
+                      :currentData = "{sectionID: currentPathsection,alignment:{alignmentID:currentStationID[0],startStation: currentPathStartStation[0] ,endStation: currentPathEndStation[0]},type:{type: currentPathtype,modelType:currentPathtypeModel[0]},site:{siteID:currentSiteID[0]}}"
+                      @close="displayBindMultipleFilesPanel=false"
+                      @save="handleMultipleFilesBind "></add-bind>
+          </div>
+          <div slot="footer">
+          </div>
+      </Modal>
     <Modal
           :styles="{minWidth:'800px'}"
           :closable="false"
@@ -208,6 +229,16 @@ export default {
                 }
             },
         },
+        displayBindMultipleFilesPanel: {
+            get: function () {
+                return this.$store.state['graphy']['bind']['ings'];
+            },
+            set: function (val) {
+                if (!val) {
+                    this.$store.commit(ActionType.BindMultipleFilesModels, false);
+                }
+            },
+        },
         currentFolderData: function () {
             return this.$store.state['graphy']['explore']['data'][this.currentPath.path] || [];
         },
@@ -307,7 +338,7 @@ export default {
                     let path = this.$store.state['graphy']['explore']['path'];
                     let dataItem = this.currentFolderData.find(i => i.id === item.id);
                     let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
-                    if (path.length >= 4) {
+                    if (path.length === 4) {
                         if (path[2].name === '路基' && path[3].name === '软基换填工点设计图') {
                             return TypeModel[TypeValue.Rjht].RJHT;
                         } else if (path[2].name === '桥梁' && numb === '2') {
@@ -325,17 +356,17 @@ export default {
                         } else if (path[2].name === '桥梁' && numb === '8') {
                             return TypeModel[TypeValue.Qiao].QiaoTai;
                         }
-                    } else if (path.length >= 5) {
+                    } else if (path.length === 5) {
                         if (path[2].name === '路基' && path[3].name === '排水盲沟标准图' && path[4].name === '路基、路面排水工程设计图') {
                             return TypeModel[TypeValue.MangGou].BianGouMangGou;
                         } else if (path[2].name === '路基' && path[3].name === '排水盲沟标准图' && path[4].name === '陡坡路堤或填挖交界处理设计图') {
                             return TypeModel[TypeValue.MangGou].JiaoJieMangGou;
                         }
-                    } else if (path.length >= 6) {
+                    } else if (path.length === 6) {
                         if (path[2].name === '交叉' && path[5].name === '软基换填工点设计图') {
                             return TypeModel[TypeValue.Rjht].RJHT;
                         }
-                    } else if (path.length >= 7) {
+                    } else if (path.length === 7) {
                         if (path[2].name === '交叉' && path[6].name === '路基、路面排水工程设计图') {
                             return TypeModel[TypeValue.MangGou].BianGouMangGou;
                         } else if (path[2].name === '交叉' && path[6].name === '陡坡路堤或填挖交界处理设计图') {
@@ -813,6 +844,32 @@ export default {
             this.$store.dispatch(ActionType.AddRelations, postData).then(() => {
                 //
                 this.displayBindPanel = false;
+                let bindQuery = {query: {bool: {filter: []}}};
+                bindQuery.query.bool.filter.push({
+                    match: { 'Data.docs.path.keyword': this.currentPath.path }
+                });
+                this.$store.dispatch(ActionType.QueryRelation, {query: bindQuery, delay: true});
+            });
+            // TODO close modal or not
+        },
+        handleMultipleFilesBind (val) {
+            let items = this.currentDataToBind;
+            let postData = items.map(obj => {
+                let item = this.currentFolderData.find(t => t.id === obj.id);
+                let data = {
+                    model: val,
+                    docs: {
+                        id: item && item.id,
+                        type: obj.type,
+                        path: item && item['Path'],
+                        alias: item && item['Alias'],
+                    },
+                };
+                return data;
+            });
+            this.$store.dispatch(ActionType.AddRelations, postData).then(() => {
+                //
+                this.displayBindMultipleFilesPanel = false;
                 let bindQuery = {query: {bool: {filter: []}}};
                 bindQuery.query.bool.filter.push({
                     match: { 'Data.docs.path.keyword': this.currentPath.path }

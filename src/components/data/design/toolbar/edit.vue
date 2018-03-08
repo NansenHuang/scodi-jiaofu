@@ -51,7 +51,7 @@
     </Button>
     <Button class="toolbar-btn" type="text" @click="bindMultipleFilesModel" v-if="selectedItems.length">
       <Icon size="16" type="link"></Icon>
-      <span class="text">一键多文件绑定</span>
+      <span class="text">多文件绑定到模型</span>
     </Button>
     <Modal
     @on-visible-change="modalHide"
