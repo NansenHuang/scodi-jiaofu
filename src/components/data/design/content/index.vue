@@ -60,27 +60,6 @@
         <img src="./empty_folder.svg" alt="">
         <span>当前文件夹无内容</span>
     </div>
-      <Modal
-              :styles="{minWidth:'800px'}"
-              :closable="false"
-              :mask-closable="false"
-              v-model="displayBindMultipleFilesPanel">
-          <h3>为以下内容设置绑定Bindings信息：</h3>
-          <div class="modal-content">
-              <Table :columns="columns" size="small" :data="currentDataToBind"></Table>
-          </div>
-          <h3>选择相应的字段值：</h3>
-          <div class="modal-content">
-              <add-bind
-                      :update="false"
-                      :active="displayBindMultipleFilesPanel"
-                      :currentData = "{sectionID: currentPathsection,alignment:{alignmentID:currentStationID[0],startStation: currentPathStartStation[0] ,endStation: currentPathEndStation[0]},type:{type: currentPathtype,modelType:currentPathtypeModel[0]},site:{siteID:currentSiteID[0]}}"
-                      @close="displayBindMultipleFilesPanel=false"
-                      @save="handleMultipleFilesBind "></add-bind>
-          </div>
-          <div slot="footer">
-          </div>
-      </Modal>
     <Modal
           :styles="{minWidth:'800px'}"
           :closable="false"
@@ -91,13 +70,23 @@
           <Table :columns="columns" size="small" :data="currentDataToBind"></Table>
       </div>
       <h3>选择相应的字段值：</h3>
-      <div class="modal-content">
+      <div class="modal-content" v-for="item in currentBindData">
+          <div v-if="currentBindData.length === 1">
           <add-bind
                   :update="false"
                   :active="displayBindPanel"
-                  :currentData = "{sectionID: currentPathsection,alignment:{alignmentID:currentStationID[0],startStation: currentPathStartStation[0] ,endStation: currentPathEndStation[0]},type:{type: currentPathtype,modelType:currentPathtypeModel[0]},site:{siteID:currentSiteID[0]}}"
+                  :currentData = "{sectionID: currentPathsection,alignment:{alignmentID:currentAlignmentID[0],startStation: currentPathStartStation[0] ,endStation: currentPathEndStation[0]},type:{type: currentPathType,modelType:currentPathtypeModel[0]},site:{siteID:currentSiteID[0]}}"
                   @close="displayBindPanel=false"
                   @save="handleBind"></add-bind>
+          </div>
+          <div v-else>
+              <add-bind
+                      :update="false"
+                      :active="displayBindPanel"
+                      :currentData = "{sectionID: currentPathsection,alignment:{alignmentID:currentAlignmentID[index(item,currentBindData)],startStation: currentPathStartStation[index(item,currentBindData)] ,endStation: currentPathEndStation[index(item,currentBindData)]},type:{type: currentPathType,modelType:currentPathtypeModel[index(item,currentBindData)]},site:{siteID:currentSiteID[index(item,currentBindData)]}}"
+                      @close="displayBindPanel=false"
+                      @save="handleBind"></add-bind>
+          </div>
       </div>
       <div slot="footer">
       </div>
@@ -111,6 +100,7 @@ import FileIcon from './item-icon/file.vue';
 import ActionType from 'src/config/action-type';
 import Path from 'path-browserify';
 import AddBind from './add-bind';
+import AddBinds from './add-binds';
 import LayoutType from 'src/config/layout-type';
 import TypeValue from 'src/config/type';
 import TypeModel from 'src/config/model-type';
@@ -123,6 +113,7 @@ export default {
         FolderIcon,
         FileIcon,
         AddBind,
+        AddBinds
     },
     computed: {
         currentPathSiteSection: function () {
@@ -193,6 +184,31 @@ export default {
         layoutString: function () {
             return this.layout === LayoutType.Grid ? 'grid' : 'list';
         },
+        currentBindData: function () {
+            let fileSelected = Object.keys(this.$store.state['graphy']['explore']['fileSelected']).map((key) => ({
+                type: 'FILE',
+                id: key,
+            }));
+            fileSelected = fileSelected.filter(item => this.$store.state['graphy']['explore']['fileSelected'][item.id]);
+
+            let folderSelected = Object.keys(this.$store.state['graphy']['explore']['folderSelected']).map((key) => ({
+                type: 'DIRECTORY',
+                id: key,
+            }));
+            folderSelected = folderSelected.filter(item => this.$store.state['graphy']['explore']['folderSelected'][item.id]);
+            let dataToBind = this.$store.state['graphy']['bind']['ing']
+                ? [...fileSelected, ...folderSelected]
+                : [];
+            if (dataToBind.length <= 100) {
+                return dataToBind.map(item => {
+                    let dataItem = this.currentFolderData.find(i => i.id === item.id);
+                    return {
+                        name: dataItem ? dataItem['Alias'] : '',
+                        type: item['type'],
+                    };
+                });
+            }
+        },
         currentDataToBind: function () {
             let fileSelected = Object.keys(this.$store.state['graphy']['explore']['fileSelected']).map((key) => ({
                 type: 'FILE',
@@ -208,7 +224,7 @@ export default {
             let dataToBind = this.$store.state['graphy']['bind']['ing']
                 ? [...fileSelected, ...folderSelected]
                 : [];
-            if (dataToBind.length <= 1) {
+            if (dataToBind.length <= 100) {
                 return dataToBind.map(item => {
                     let dataItem = this.currentFolderData.find(i => i.id === item.id);
                     return {
@@ -266,9 +282,9 @@ export default {
                 return path[0].name;
             }
         },
-        currentPathtype: function () {
+        currentPathType: function () {
             let path = this.$store.state['graphy']['explore']['path'];
-            if (path.length >= 3) {
+            if (path.length === 3) {
                 if (path[2].name === '涵洞') {
                     return TypeValue.HanDong;
                 } else if (path[2].name === '天桥') {
@@ -277,7 +293,7 @@ export default {
                     return TypeValue.Qiao;
                 }
             }
-            if (path.length >= 4) {
+            if (path.length === 4) {
                 if (path[2].name === '路基' && path[3].name === '路面结构标准图') {
                     return TypeValue.LuMian;
                 } else if (path[2].name === '路基' && path[3].name === '挡土墙工点设计图') {
@@ -290,14 +306,14 @@ export default {
                     return TypeValue.LuMian;
                 }
             }
-            if (path.length >= 5) {
+            if (path.length === 5) {
                 if (path[2].name === '路基' && path[3].name === '排水盲沟标准图' && path[4].name === '路基、路面排水工程设计图') {
                     return TypeValue.MangGou;
                 } else if (path[2].name === '路基' && path[3].name === '排水盲沟标准图' && path[4].name === '陡坡路堤或填挖交界处理设计图') {
                     return TypeValue.MangGou;
                 }
             }
-            if (path.length >= 6) {
+            if (path.length === 6) {
                 if (path[2].name === '交叉' && path[5].name === '挡墙工点设计图') {
                     return TypeValue.DangQiang;
                 } else if (path[2].name === '交叉' && path[5].name === '挡土墙工点设计图') {
@@ -308,7 +324,7 @@ export default {
                     return TypeValue.Rjht;
                 }
             }
-            if (path.length >= 7) {
+            if (path.length === 7) {
                 if (path[2].name === '交叉' && path[6].name === '路基、路面排水工程设计图') {
                     return TypeValue.MangGou;
                 } else if (path[2].name === '交叉' && path[6].name === '陡坡路堤或填挖交界处理设计图') {
@@ -333,10 +349,11 @@ export default {
             let dataToBind = this.$store.state['graphy']['bind']['ing']
                 ? [...fileSelected, ...folderSelected]
                 : [];
-            if (dataToBind.length <= 1) {
+            if (dataToBind.length <= 100) {
                 return dataToBind.map(item => {
                     let path = this.$store.state['graphy']['explore']['path'];
                     let dataItem = this.currentFolderData.find(i => i.id === item.id);
+                    console.log('dataItemAA', dataItem);
                     let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
                     if (path.length === 4) {
                         if (path[2].name === '路基' && path[3].name === '软基换填工点设计图') {
@@ -393,7 +410,7 @@ export default {
             let dataToBind = this.$store.state['graphy']['bind']['ing']
                 ? [...fileSelected, ...folderSelected]
                 : [];
-            if (dataToBind.length <= 1) {
+            if (dataToBind.length <= 100) {
                 return dataToBind.map(item => {
                     let dataItem = this.currentFolderData.find(i => i.id === item.id);
                     let path = this.$store.state['graphy']['explore']['path'];
@@ -482,7 +499,64 @@ export default {
                 });
             }
         },
-        currentStationID: function () {
+        PathMainAlignment: function () {
+            if (this.$store.state['highway']['basic']['alignment'].length > 0) {
+                for (let i = 0; i < this.$store.state['highway']['basic']['alignment'].length; i++) {
+                    if (this.$store.state['highway']['basic']['alignment'][i].alignmentCnName === '主线') {
+                        return this.$store.state['highway']['basic']['alignment'][i].id;
+                    }
+                }
+            }
+        },
+        PathAKAlignment: function () {
+            if (this.$store.state['highway']['basic']['alignment'].length > 0) {
+                for (let i = 0; i < this.$store.state['highway']['basic']['alignment'].length; i++) {
+                    if (this.$store.state['highway']['basic']['alignment'][i].alignmentCnName === '沐川枢纽A匝道') {
+                        return this.$store.state['highway']['basic']['alignment'][i].id;
+                    }
+                }
+            }
+        },
+        PathBKAlignment: function () {
+            if (this.$store.state['highway']['basic']['alignment'].length > 0) {
+                for (let i = 0; i < this.$store.state['highway']['basic']['alignment'].length; i++) {
+                    if (this.$store.state['highway']['basic']['alignment'][i].alignmentCnName === '沐川服务区B匝道') {
+                        return this.$store.state['highway']['basic']['alignment'][i].id;
+                    }
+                }
+            }
+        },
+        PathCKAlignment: function () {
+            if (this.$store.state['highway']['basic']['alignment'].length > 0) {
+                for (let i = 0; i < this.$store.state['highway']['basic']['alignment'].length; i++) {
+                    if (this.$store.state['highway']['basic']['alignment'][i].alignmentCnName === '沐川南互通C匝道') {
+                        return this.$store.state['highway']['basic']['alignment'][i].id;
+                    }
+                }
+            }
+        },
+        PathLKAlignment: function () {
+            if (this.$store.state['highway']['basic']['alignment'].length > 0) {
+                for (let i = 0; i < this.$store.state['highway']['basic']['alignment'].length; i++) {
+                    if (this.$store.state['highway']['basic']['alignment'][i].alignmentCnName === '沐川南互通连接线') {
+                        return this.$store.state['highway']['basic']['alignment'][i].id;
+                    }
+                }
+            }
+        },
+        PathZKAlignment: function () {
+            let patternZK = new RegExp('左线');
+            let ZKArray = new Array();
+            if (this.$store.state['highway']['basic']['alignment'].length > 0) {
+                for (let i = 0; i < this.$store.state['highway']['basic']['alignment'].length; i++) {
+                    if (patternZK.test(this.$store.state['highway']['basic']['alignment'].alignmentCnName) === true) {
+                        ZKArray.push(this.$store.state['highway']['basic']['alignment'][i]);
+                    }
+                }
+            }
+            return ZKArray;
+        },
+        currentAlignmentID: function () {
             let fileSelected = Object.keys(this.$store.state['graphy']['explore']['fileSelected']).map((key) => ({
                 type: 'FILE',
                 id: key,
@@ -497,7 +571,7 @@ export default {
             let dataToBind = this.$store.state['graphy']['bind']['ing']
                 ? [...fileSelected, ...folderSelected]
                 : [];
-            if (dataToBind.length <= 1) {
+            if (dataToBind.length <= 100) {
                 return dataToBind.map(item => {
                     let dataItem = this.currentFolderData.find(i => i.id === item.id);
                     let path = this.$store.state['graphy']['explore']['path'];
@@ -510,45 +584,45 @@ export default {
                     let patternZK = new RegExp('ZK');
                     let patternMuChuan = new RegExp('沐川枢纽');
                     let Stationline;
-                    if (path.length >= 4 && path.length < 6) {
+                    if (path.length === 4) {
                         if (path[2].name === '总体' && path[3].name === '公路平面总体设计图' && patternZK.test(words) === false) {
-                            Stationline = AlignmentArray[54].id;
+                            Stationline = this.PathMainAlignment;
                         } else if (path[2].name === '总体' && path[3].name === '公路平面总体设计图' && patternZK.test(words) === true) {
-                            for (let i = 9; i < 16; i++) {
-                                if ((AlignmentArray[i].startStation <= this.currentPathStartStation[0]) && (AlignmentArray[i].endStation >= this.currentPathEndStation[0])) {
-                                    Stationline = AlignmentArray[i].id;
+                            for (let i = 0; i < this.PathZKAlignment.length; i++) {
+                                if ((this.PathZKAlignment[i].startStation <= this.currentPathStartStation[0]) && (this.PathZKAlignment[i].endStation >= this.currentPathEndStation[0])) {
+                                    Stationline = this.PathZKAlignment[i].id;
                                 }
                             }
                         } else if (path[2].name === '路基' && path[3].name === '软基换填工点设计图') {
-                            Stationline = AlignmentArray[54].id;
+                            Stationline = this.PathMainAlignment;
                         } else if (path[2].name === '路基' && path[3].name === '挡土墙工点设计图' && patternZK.test(words) === true) {
-                            for (let i = 9; i < 16; i++) {
-                                if ((AlignmentArray[i].startStation <= this.currentPathStartStation[0]) && (AlignmentArray[i].endStation >= this.currentPathEndStation[0])) {
-                                    Stationline = AlignmentArray[i].id;
+                            for (let i = 0; i < this.PathZKAlignment.length; i++) {
+                                if ((this.PathZKAlignment[i].startStation <= this.currentPathStartStation[0]) && (this.PathZKAlignment[i].endStation >= this.currentPathEndStation[0])) {
+                                    Stationline = this.PathZKAlignment[i].id;
                                 }
                             }
                         } else if (path[2].name === '路基' && path[3].name === '挡土墙工点设计图' && patternZK.test(words) === false) {
-                            Stationline = AlignmentArray[54].id;
+                            Stationline = this.PathMainAlignment;
                         }
-                    } else if (path.length >= 6) {
+                    } else if (path.length === 6) {
                         if (path[2].name === '交叉' && path[5].name === '挡墙工点设计图' && patternAK.test(words) === false && patternBK.test(words) === false && patternZK.test(words) === false && patternCK.test(words) === false) {
-                            Stationline = AlignmentArray[54].id;
+                            Stationline = this.PathMainAlignment;
                         } else if (path[2].name === '交叉' && path[5].name === '挡墙工点设计图' && patternMuChuan.test(path[3].name) === true && patternAK.test(words) === true) {
-                            Stationline = AlignmentArray[33].id;
+                            Stationline = this.PathAKAlignment;
                         } else if (path[2].name === '交叉' && path[3].name === '沐川服务区' && path[5].name === '挡土墙工点设计图' && patternBK.test(words) === true) {
-                            Stationline = AlignmentArray[25].id;
+                            Stationline = this.PathBKAlignment;
                         } else if (path[2].name === '交叉' && (path[5].name === '挡土墙工点设计图' || path[5].name === '挡墙工点设计图') && patternZK.test(words) === true) {
-                            for (let i = 9; i < 16; i++) {
+                            for (let i = 21; i < 28; i++) {
                                 if ((AlignmentArray[i].startStation <= this.currentPathStartStation[0]) && (AlignmentArray[i].endStation >= this.currentPathEndStation[0])) {
                                     Stationline = AlignmentArray[i].id;
                                 }
                             }
                         } else if (path[2].name === '交叉' && path[5].name === '挡土墙工点设计图' && patternAK.test(words) === false && patternBK.test(words) === false && patternZK.test(words) === false && patternCK.test(words) === false) {
-                            Stationline = AlignmentArray[54].id;
+                            Stationline = this.PathMainAlignment;
                         } else if (path[2].name === '交叉' && path[3].name === '沐川南互通' && path[5].name === '挡墙工点设计图' && patternCK.test(words) === true) {
-                            Stationline = AlignmentArray[22].id;
+                            Stationline = this.PathCKAlignment;
                         } else if (path[2].name === '交叉' && path[3].name === '沐川南互通' && path[5].name === '软基换填工点设计图' && patternLK.test(words) === true) {
-                            Stationline = AlignmentArray[0].id;
+                            Stationline = this.PathLKAlignment;
                         }
                     }
                     return Stationline;
@@ -570,7 +644,7 @@ export default {
             let dataToBind = this.$store.state['graphy']['bind']['ing']
                 ? [...fileSelected, ...folderSelected]
                 : [];
-            if (dataToBind.length <= 1) {
+            if (dataToBind.length <= 100) {
                 return dataToBind.map(item => {
                     let dataItem = this.currentFolderData.find(i => i.id === item.id);
                     let reg = /[\u4e00-\u9fa5]/g;
@@ -638,7 +712,7 @@ export default {
             let dataToBind = this.$store.state['graphy']['bind']['ing']
                 ? [...fileSelected, ...folderSelected]
                 : [];
-            if (dataToBind.length <= 1) {
+            if (dataToBind.length <= 100) {
                 return dataToBind.map(item => {
                     let dataItem = this.currentFolderData.find(i => i.id === item.id);
                     let path = this.$store.state['graphy']['explore']['path'];
@@ -915,6 +989,11 @@ export default {
             this.$store.commit(ActionType.SetFolderSelection, { [val]: true });
             console.log('Select folder: ', val);
         },
+        onSelectFile (val) {
+            this.$store.commit(ActionType.SetFolderSelection, {});
+            this.$store.commit(ActionType.SetFileSelection, {[val]: true});
+            console.log('Select file: ', val);
+        },
         onAppendSelectFolder (val) {
             this.$store.commit(ActionType.SetFolderSelection, {
                 ...this.folderSelected,
@@ -922,17 +1001,19 @@ export default {
             });
             console.log('Appendselect folder: ', val);
         },
-        onSelectFile (val) {
-            this.$store.commit(ActionType.SetFolderSelection, {});
-            this.$store.commit(ActionType.SetFileSelection, {[val]: true});
-            console.log('Select file: ', val);
-        },
         onAppendSelectFile (val) {
             this.$store.commit(ActionType.SetFileSelection, {
                 ...this.fileSelected,
                 [val]: !this.fileSelected[val]
             });
             console.log('Appendselect file: ', val);
+        },
+        index: function (current, obj) {
+            for (let i = 0; i < obj.length; i++) {
+                if (obj[i] === current) {
+                    return i;
+                }
+            }
         },
     },
     watch: {
@@ -969,3 +1050,4 @@ export default {
     },
 };
 </script>
+
