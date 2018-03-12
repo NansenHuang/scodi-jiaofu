@@ -508,7 +508,7 @@ export default {
                 }
             }
         },
-        PathAKAlignment: function () {
+        PathAkAlignment: function () {
             if (this.$store.state['highway']['basic']['alignment'].length > 0) {
                 for (let i = 0; i < this.$store.state['highway']['basic']['alignment'].length; i++) {
                     if (this.$store.state['highway']['basic']['alignment'][i].alignmentCnName === '沐川枢纽A匝道') {
@@ -517,7 +517,7 @@ export default {
                 }
             }
         },
-        PathBKAlignment: function () {
+        PathBkAlignment: function () {
             if (this.$store.state['highway']['basic']['alignment'].length > 0) {
                 for (let i = 0; i < this.$store.state['highway']['basic']['alignment'].length; i++) {
                     if (this.$store.state['highway']['basic']['alignment'][i].alignmentCnName === '沐川服务区B匝道') {
@@ -526,7 +526,7 @@ export default {
                 }
             }
         },
-        PathCKAlignment: function () {
+        PathCkAlignment: function () {
             if (this.$store.state['highway']['basic']['alignment'].length > 0) {
                 for (let i = 0; i < this.$store.state['highway']['basic']['alignment'].length; i++) {
                     if (this.$store.state['highway']['basic']['alignment'][i].alignmentCnName === '沐川南互通C匝道') {
@@ -535,7 +535,7 @@ export default {
                 }
             }
         },
-        PathLKAlignment: function () {
+        PathLkAlignment: function () {
             if (this.$store.state['highway']['basic']['alignment'].length > 0) {
                 for (let i = 0; i < this.$store.state['highway']['basic']['alignment'].length; i++) {
                     if (this.$store.state['highway']['basic']['alignment'][i].alignmentCnName === '沐川南互通连接线') {
@@ -544,17 +544,17 @@ export default {
                 }
             }
         },
-        PathZKAlignment: function () {
-            let patternZK = new RegExp('左线');
-            let ZKArray = new Array();
+        PathZkAlignment: function () {
+            let PatternZk = new RegExp('左线');
+            let ZkArray = [];
             if (this.$store.state['highway']['basic']['alignment'].length > 0) {
                 for (let i = 0; i < this.$store.state['highway']['basic']['alignment'].length; i++) {
-                    if (patternZK.test(this.$store.state['highway']['basic']['alignment'].alignmentCnName) === true) {
-                        ZKArray.push(this.$store.state['highway']['basic']['alignment'][i]);
+                    if (PatternZk.test(this.$store.state['highway']['basic']['alignment'][i].alignmentCnName) === true) {
+                        ZkArray.push(this.$store.state['highway']['basic']['alignment'][i]);
                     }
                 }
             }
-            return ZKArray;
+            return ZkArray;
         },
         currentAlignmentID: function () {
             let fileSelected = Object.keys(this.$store.state['graphy']['explore']['fileSelected']).map((key) => ({
@@ -575,57 +575,56 @@ export default {
                 return dataToBind.map(item => {
                     let dataItem = this.currentFolderData.find(i => i.id === item.id);
                     let path = this.$store.state['graphy']['explore']['path'];
-                    let AlignmentArray = this.$store.state['highway']['basic']['alignment'];
                     let words = dataItem['Alias'];
-                    let patternAK = new RegExp('AK');
-                    let patternBK = new RegExp('BK');
-                    let patternCK = new RegExp('CK');
-                    let patternLK = new RegExp('LK');
-                    let patternZK = new RegExp('ZK');
-                    let patternMuChuan = new RegExp('沐川枢纽');
-                    let Stationline;
+                    let PatternAk = new RegExp('AK');
+                    let PatternBk = new RegExp('BK');
+                    let PatternCk = new RegExp('CK');
+                    let PatternLk = new RegExp('LK');
+                    let PatternZk = new RegExp('ZK');
+                    let PatternMuChuan = new RegExp('沐川枢纽');
+                    let StationLine;
                     if (path.length === 4) {
-                        if (path[2].name === '总体' && path[3].name === '公路平面总体设计图' && patternZK.test(words) === false) {
-                            Stationline = this.PathMainAlignment;
-                        } else if (path[2].name === '总体' && path[3].name === '公路平面总体设计图' && patternZK.test(words) === true) {
-                            for (let i = 0; i < this.PathZKAlignment.length; i++) {
-                                if ((this.PathZKAlignment[i].startStation <= this.currentPathStartStation[0]) && (this.PathZKAlignment[i].endStation >= this.currentPathEndStation[0])) {
-                                    Stationline = this.PathZKAlignment[i].id;
+                        if (path[2].name === '总体' && path[3].name === '公路平面总体设计图' && PatternZk.test(words) === false) {
+                            StationLine = this.PathMainAlignment;
+                        } else if (path[2].name === '总体' && path[3].name === '公路平面总体设计图' && PatternZk.test(words) === true) {
+                            for (let i = 0; i < this.PathZkAlignment.length; i++) {
+                                if ((this.PathZkAlignment[i].startStation <= this.currentPathStartStation[0]) && (this.PathZkAlignment[i].endStation >= this.currentPathEndStation[0])) {
+                                    StationLine = this.PathZkAlignment[i].id;
                                 }
                             }
                         } else if (path[2].name === '路基' && path[3].name === '软基换填工点设计图') {
-                            Stationline = this.PathMainAlignment;
-                        } else if (path[2].name === '路基' && path[3].name === '挡土墙工点设计图' && patternZK.test(words) === true) {
-                            for (let i = 0; i < this.PathZKAlignment.length; i++) {
-                                if ((this.PathZKAlignment[i].startStation <= this.currentPathStartStation[0]) && (this.PathZKAlignment[i].endStation >= this.currentPathEndStation[0])) {
-                                    Stationline = this.PathZKAlignment[i].id;
+                            StationLine = this.PathMainAlignment;
+                        } else if (path[2].name === '路基' && path[3].name === '挡土墙工点设计图' && PatternZk.test(words) === true) {
+                            for (let i = 0; i < this.PathZkAlignment.length; i++) {
+                                if ((this.PathZkAlignment[i].startStation <= this.currentPathStartStation[0]) && (this.PathZkAlignment[i].endStation >= this.currentPathEndStation[0])) {
+                                    StationLine = this.PathZkAlignment[i].id;
                                 }
                             }
-                        } else if (path[2].name === '路基' && path[3].name === '挡土墙工点设计图' && patternZK.test(words) === false) {
-                            Stationline = this.PathMainAlignment;
+                        } else if (path[2].name === '路基' && path[3].name === '挡土墙工点设计图' && PatternZk.test(words) === false) {
+                            StationLine = this.PathMainAlignment;
                         }
                     } else if (path.length === 6) {
-                        if (path[2].name === '交叉' && path[5].name === '挡墙工点设计图' && patternAK.test(words) === false && patternBK.test(words) === false && patternZK.test(words) === false && patternCK.test(words) === false) {
-                            Stationline = this.PathMainAlignment;
-                        } else if (path[2].name === '交叉' && path[5].name === '挡墙工点设计图' && patternMuChuan.test(path[3].name) === true && patternAK.test(words) === true) {
-                            Stationline = this.PathAKAlignment;
-                        } else if (path[2].name === '交叉' && path[3].name === '沐川服务区' && path[5].name === '挡土墙工点设计图' && patternBK.test(words) === true) {
-                            Stationline = this.PathBKAlignment;
-                        } else if (path[2].name === '交叉' && (path[5].name === '挡土墙工点设计图' || path[5].name === '挡墙工点设计图') && patternZK.test(words) === true) {
-                            for (let i = 21; i < 28; i++) {
-                                if ((AlignmentArray[i].startStation <= this.currentPathStartStation[0]) && (AlignmentArray[i].endStation >= this.currentPathEndStation[0])) {
-                                    Stationline = AlignmentArray[i].id;
+                        if (path[2].name === '交叉' && path[5].name === '挡墙工点设计图' && PatternAk.test(words) === false && PatternBk.test(words) === false && PatternZk.test(words) === false && PatternCk.test(words) === false) {
+                            StationLine = this.PathMainAlignment;
+                        } else if (path[2].name === '交叉' && path[5].name === '挡墙工点设计图' && PatternMuChuan.test(path[3].name) === true && PatternAk.test(words) === true) {
+                            StationLine = this.PathAkAlignment;
+                        } else if (path[2].name === '交叉' && path[3].name === '沐川服务区' && path[5].name === '挡土墙工点设计图' && PatternBk.test(words) === true) {
+                            StationLine = this.PathBkAlignment;
+                        } else if (path[2].name === '交叉' && (path[5].name === '挡土墙工点设计图' || path[5].name === '挡墙工点设计图') && PatternZk.test(words) === true) {
+                            for (let i = 0; i < this.PathZkAlignment.length; i++) {
+                                if ((this.PathZkAlignment[i].startStation <= this.currentPathStartStation[0]) && (this.PathZkAlignment[i].endStation >= this.currentPathEndStation[0])) {
+                                    StationLine = this.PathZkAlignment[i].id;
                                 }
                             }
-                        } else if (path[2].name === '交叉' && path[5].name === '挡土墙工点设计图' && patternAK.test(words) === false && patternBK.test(words) === false && patternZK.test(words) === false && patternCK.test(words) === false) {
-                            Stationline = this.PathMainAlignment;
-                        } else if (path[2].name === '交叉' && path[3].name === '沐川南互通' && path[5].name === '挡墙工点设计图' && patternCK.test(words) === true) {
-                            Stationline = this.PathCKAlignment;
-                        } else if (path[2].name === '交叉' && path[3].name === '沐川南互通' && path[5].name === '软基换填工点设计图' && patternLK.test(words) === true) {
-                            Stationline = this.PathLKAlignment;
+                        } else if (path[2].name === '交叉' && path[5].name === '挡土墙工点设计图' && PatternAk.test(words) === false && PatternBk.test(words) === false && PatternZk.test(words) === false && PatternCk.test(words) === false) {
+                            StationLine = this.PathMainAlignment;
+                        } else if (path[2].name === '交叉' && path[3].name === '沐川南互通' && path[5].name === '挡墙工点设计图' && PatternCk.test(words) === true) {
+                            StationLine = this.PathCkAlignment;
+                        } else if (path[2].name === '交叉' && path[3].name === '沐川南互通' && path[5].name === '软基换填工点设计图' && PatternLk.test(words) === true) {
+                            StationLine = this.PathLkAlignment;
                         }
                     }
-                    return Stationline;
+                    return StationLine;
                 });
             }
         },
