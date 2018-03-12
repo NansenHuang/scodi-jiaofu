@@ -117,11 +117,9 @@ export default {
     },
     computed: {
         bindInfo: function () {
-             {
-                let data = this.$store.state['graphy']['bind']['data'][this.currentPath.path] || [];
-                let bindInfo = data.filter(item => item['Data']['docs']['id'] === this.selected[0].id);
-                return (bindInfo.length && bindInfo) || [];
-            }
+            let data = this.$store.state['graphy']['bind']['data'][this.currentPath.path] || [];
+            let bindInfo = data.filter(item => item['Data']['docs']['id'] === this.selected[0].id);
+            return (bindInfo.length && bindInfo) || [];
         },
         selected: function () {
             let fileSelected = Object.keys(this.$store.state['graphy']['explore']['fileSelected']).map((key) => ({
