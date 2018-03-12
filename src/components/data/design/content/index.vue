@@ -71,21 +71,21 @@
       </div>
       <h3>选择相应的字段值：</h3>
       <div class="modal-content" v-for="item in currentBindData">
-          <div v-if="currentBindData.length === 1">
+          <div v-if="index(item,currentBindData) === (currentBindData.length - 1)">
           <add-bind
                   :update="false"
                   :active="displayBindPanel"
-                  :currentData = "{sectionID: currentPathsection,alignment:{alignmentID:currentAlignmentID[0],startStation: currentPathStartStation[0] ,endStation: currentPathEndStation[0]},type:{type: currentPathType,modelType:currentPathtypeModel[0]},site:{siteID:currentSiteID[0]}}"
+                  :currentData = "{sectionID: currentPathsection,alignment:{alignmentID:currentAlignmentID[index(item,currentBindData)],startStation: currentPathStartStation[index(item,currentBindData)] ,endStation: currentPathEndStation[index(item,currentBindData)]},type:{type: currentPathType,modelType:currentPathtypeModel[index(item,currentBindData)]},site:{siteID:currentSiteID[index(item,currentBindData)]}}"
                   @close="displayBindPanel=false"
                   @save="handleBind"></add-bind>
           </div>
           <div v-else>
-              <add-bind
+              <add-binds
                       :update="false"
                       :active="displayBindPanel"
                       :currentData = "{sectionID: currentPathsection,alignment:{alignmentID:currentAlignmentID[index(item,currentBindData)],startStation: currentPathStartStation[index(item,currentBindData)] ,endStation: currentPathEndStation[index(item,currentBindData)]},type:{type: currentPathType,modelType:currentPathtypeModel[index(item,currentBindData)]},site:{siteID:currentSiteID[index(item,currentBindData)]}}"
                       @close="displayBindPanel=false"
-                      @save="handleBind"></add-bind>
+                      @save="handleBind"></add-binds>
           </div>
       </div>
       <div slot="footer">
@@ -116,6 +116,28 @@ export default {
         AddBinds
     },
     computed: {
+        bindInfo: function () {
+             {
+                let data = this.$store.state['graphy']['bind']['data'][this.currentPath.path] || [];
+                let bindInfo = data.filter(item => item['Data']['docs']['id'] === this.selected[0].id);
+                return (bindInfo.length && bindInfo) || [];
+            }
+        },
+        selected: function () {
+            let fileSelected = Object.keys(this.$store.state['graphy']['explore']['fileSelected']).map((key) => ({
+                type: 'FILE',
+                id: key,
+            }));
+            fileSelected = fileSelected.filter(item => this.$store.state['graphy']['explore']['fileSelected'][item.id]);
+
+            let folderSelected = Object.keys(this.$store.state['graphy']['explore']['folderSelected']).map((key) => ({
+                type: 'DIRECTORY',
+                id: key,
+            }));
+            folderSelected = folderSelected.filter(item => this.$store.state['graphy']['explore']['folderSelected'][item.id]);
+
+            return [...fileSelected, ...folderSelected];
+        },
         currentPathSiteSection: function () {
             let path = this.$store.state['graphy']['explore']['path'];
             console.log('CCC', path);
@@ -300,15 +322,17 @@ export default {
                     return TypeValue.DangQiang;
                 } else if (path[2].name === '路基' && path[3].name === '软基换填工点设计图') {
                     return TypeValue.Rjht;
-                } else if (path[2].name === '总体' && path[3].name === '公路平面总体设计图') {
+                } else if (path[2].name === '总体' && path[3].name === '公路平面总体设计图' && !this.bindInfo.length) {
                     return TypeValue.BianPo;
-                } else if (path[2].name === '总体' && path[3].name === '公路平面总体设计图') {
+                } else if (path[2].name === '总体' && path[3].name === '公路平面总体设计图' && this.bindInfo.length) {
                     return TypeValue.LuMian;
                 }
             }
             if (path.length === 5) {
-                if (path[2].name === '路基' && path[3].name === '排水盲沟标准图' && path[4].name === '路基、路面排水工程设计图') {
+                if (path[2].name === '路基' && path[3].name === '排水盲沟标准图' && path[4].name === '路基、路面排水工程设计图' && !this.bindInfo.length) {
                     return TypeValue.MangGou;
+                } else if (path[2].name === '路基' && path[3].name === '排水盲沟标准图' && path[4].name === '路基、路面排水工程设计图' && this.bindInfo.length) {
+                    return TypeValue.BianGou;
                 } else if (path[2].name === '路基' && path[3].name === '排水盲沟标准图' && path[4].name === '陡坡路堤或填挖交界处理设计图') {
                     return TypeValue.MangGou;
                 }
@@ -374,7 +398,7 @@ export default {
                             return TypeModel[TypeValue.Qiao].QiaoTai;
                         }
                     } else if (path.length === 5) {
-                        if (path[2].name === '路基' && path[3].name === '排水盲沟标准图' && path[4].name === '路基、路面排水工程设计图') {
+                        if (path[2].name === '路基' && path[3].name === '排水盲沟标准图' && path[4].name === '路基、路面排水工程设计图' && !this.bindInfo.length) {
                             return TypeModel[TypeValue.MangGou].BianGouMangGou;
                         } else if (path[2].name === '路基' && path[3].name === '排水盲沟标准图' && path[4].name === '陡坡路堤或填挖交界处理设计图') {
                             return TypeModel[TypeValue.MangGou].JiaoJieMangGou;

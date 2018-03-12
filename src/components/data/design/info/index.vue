@@ -102,7 +102,7 @@ export default {
                 return (bindInfo.length && bindInfo) || [];
             } else {
                 return [];
-            };
+            }
         },
         bindInfoForDisplay: function (obj) {
             let data = this.bindInfo.map((item) => {
@@ -171,7 +171,6 @@ export default {
                 return folderinfo;
             }
         },
-
         selected: function () {
             let fileSelected = Object.keys(this.$store.state['graphy']['explore']['fileSelected']).map((key) => ({
                 type: 'FILE',

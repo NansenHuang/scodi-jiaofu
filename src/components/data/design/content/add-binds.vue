@@ -3,7 +3,7 @@
 
 <template>
   <div>
-      <template-add
+      <template-adds
           :active="active"
           :update="update"
           :currentData="currentData"
@@ -11,12 +11,12 @@
           :save="saveFunc"
           :deleteItemAction="''"
           @close="() => {this.$emit('close')}"
-      ></template-add>
+      ></template-adds>
   </div>
 </template>
 
 <script>
-import TemplateAdd from 'src/components/coordinated-design/shared/template-add.vue';
+import TemplateAdds from 'src/components/coordinated-design/shared/template-adds.vue';
 import Field from 'src/config/field';
 import FieldType from 'src/config/field-type';
 // import ActionType from 'src/config/action-type.js';
@@ -28,9 +28,9 @@ import TypeConfig from './type-config';
 import SiteConfig from './site-config';
 
 export default {
-    name: 'AddBind',
+    name: 'AddBinds',
     components: {
-        TemplateAdd,
+        TemplateAdds,
     },
     props: {
         active: {
