@@ -219,15 +219,13 @@ export default {
             let dataToBind = this.$store.state['graphy']['bind']['ing']
                 ? [...fileSelected, ...folderSelected]
                 : [];
-            if (dataToBind.length <= 100) {
-                return dataToBind.map(item => {
-                    let dataItem = this.currentFolderData.find(i => i.id === item.id);
-                    return {
-                        name: dataItem ? dataItem['Alias'] : '',
-                        type: item['type'],
-                    };
-                });
-            }
+            return dataToBind.map(item => {
+                let dataItem = this.currentFolderData.find(i => i.id === item.id);
+                return {
+                    name: dataItem ? dataItem['Alias'] : '',
+                    type: item['type'],
+                };
+            });
         },
         currentDataToBind: function () {
             let fileSelected = Object.keys(this.$store.state['graphy']['explore']['fileSelected']).map((key) => ({
@@ -244,16 +242,14 @@ export default {
             let dataToBind = this.$store.state['graphy']['bind']['ing']
                 ? [...fileSelected, ...folderSelected]
                 : [];
-            if (dataToBind.length <= 100) {
-                return dataToBind.map(item => {
-                    let dataItem = this.currentFolderData.find(i => i.id === item.id);
-                    return {
-                        ...item,
-                        name: dataItem ? dataItem['Alias'] : '',
-                        type: item['type'],
-                    };
-                });
-            }
+            return dataToBind.map(item => {
+                let dataItem = this.currentFolderData.find(i => i.id === item.id);
+                return {
+                    ...item,
+                    name: dataItem ? dataItem['Alias'] : '',
+                    type: item['type'],
+                };
+            });
         },
         displayBindPanel: {
             get: function () {
@@ -307,14 +303,15 @@ export default {
             if (path.length === 3) {
                 if (path[2].name === '涵洞') {
                     return TypeValue.HanDong;
+                }
+            } else if (path.length === 4) {
+                if (path[2].name === '涵洞') {
+                    return TypeValue.HanDong;
                 } else if (path[2].name === '天桥') {
                     return TypeValue.TianQiao;
                 } else if (path[2].name === '桥梁') {
                     return TypeValue.Qiao;
-                }
-            }
-            if (path.length === 4) {
-                if (path[2].name === '路基' && path[3].name === '路面结构标准图') {
+                } else if (path[2].name === '路基' && path[3].name === '路面结构标准图') {
                     return TypeValue.LuMian;
                 } else if (path[2].name === '路基' && path[3].name === '挡土墙工点设计图') {
                     return TypeValue.DangQiang;
@@ -347,8 +344,10 @@ export default {
                 }
             }
             if (path.length === 7) {
-                if (path[2].name === '交叉' && path[6].name === '路基、路面排水工程设计图') {
+                if (path[2].name === '交叉' && path[6].name === '路基、路面排水工程设计图' && !this.bindInfo.length) {
                     return TypeValue.MangGou;
+                } else if (path[2].name === '交叉' && path[6].name === '路基、路面排水工程设计图' && this.bindInfo.length) {
+                    return TypeValue.BianGou;
                 } else if (path[2].name === '交叉' && path[6].name === '陡坡路堤或填挖交界处理设计图') {
                     return TypeValue.MangGou;
                 } else if (path[2].name === '交叉' && path[6].name === '软基换填工点设计图') {
@@ -380,8 +379,10 @@ export default {
                     if (path.length === 4) {
                         if (path[2].name === '路基' && path[3].name === '软基换填工点设计图') {
                             return TypeModel[TypeValue.Rjht].RJHT;
-                        } else if (path[2].name === '桥梁' && numb === '2') {
+                        } else if (path[2].name === '桥梁' && numb === '2' && !this.bindInfo.length) {
                             return TypeModel[TypeValue.Qiao].SiJieFeng;
+                        } else if (path[2].name === '桥梁' && numb === '2' && this.bindInfo.length) {
+                            return TypeModel[TypeValue.Qiao].TLiang;
                         } else if (path[2].name === '桥梁' && numb === '3') {
                             return TypeModel[TypeValue.Qiao].GaiLiang;
                         } else if (path[2].name === '桥梁' && numb === '4') {
@@ -406,7 +407,7 @@ export default {
                             return TypeModel[TypeValue.Rjht].RJHT;
                         }
                     } else if (path.length === 7) {
-                        if (path[2].name === '交叉' && path[6].name === '路基、路面排水工程设计图') {
+                        if (path[2].name === '交叉' && path[6].name === '路基、路面排水工程设计图' && !this.bindInfo.length) {
                             return TypeModel[TypeValue.MangGou].BianGouMangGou;
                         } else if (path[2].name === '交叉' && path[6].name === '陡坡路堤或填挖交界处理设计图') {
                             return TypeModel[TypeValue.MangGou].JiaoJieMangGou;
