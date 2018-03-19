@@ -75,6 +75,12 @@ export default {
             data: {},
         };
     },
+    computed: {
+        result: function () {
+            return JSON.stringify(this.data);
+        },
+    },
+
     methods: {
         getComponent (type) {
             switch (type) {
@@ -132,6 +138,12 @@ export default {
                 this.data = {};
             }
         },
+        result: function (val) {
+            if (val) {
+                this.save(this.data, this.update);
+            }
+        },
+
     },
     created: function () {
         this.data = JSON.parse(JSON.stringify(this.currentData));

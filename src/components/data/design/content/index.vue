@@ -73,6 +73,8 @@
       <div class="modal-content" v-for="item in currentBindData">
           <div v-if="index(item,currentBindData) === (currentBindData.length - 1)">
           <add-bind
+                  nameabc="testabcpoint"
+                  :currentBindData="{sectionID: currentPathsection,alignment:{alignmentID:currentAlignmentID[index(item,currentBindData)],startStation: currentPathStartStation[index(item,currentBindData)] ,endStation: currentPathEndStation[index(item,currentBindData)]},type:{type: currentPathType,modelType:currentPathtypeModel[index(item,currentBindData)]},site:{siteID:currentSiteID[index(item,currentBindData)]}}"
                   :update="false"
                   :active="displayBindPanel"
                   :currentData = "{sectionID: currentPathsection,alignment:{alignmentID:currentAlignmentID[index(item,currentBindData)],startStation: currentPathStartStation[index(item,currentBindData)] ,endStation: currentPathEndStation[index(item,currentBindData)]},type:{type: currentPathType,modelType:currentPathtypeModel[index(item,currentBindData)]},site:{siteID:currentSiteID[index(item,currentBindData)]}}"
@@ -80,20 +82,22 @@
                   @save="handleBind"></add-bind>
           </div>
           <div v-else>
-              <add-binds
+              <add-bind
+                      nameabc="testabcpoint"
+                      :currentBindData="{sectionID: currentPathsection,alignment:{alignmentID:currentAlignmentID[index(item,currentBindData)],startStation: currentPathStartStation[index(item,currentBindData)] ,endStation: currentPathEndStation[index(item,currentBindData)]},type:{type: currentPathType,modelType:currentPathtypeModel[index(item,currentBindData)]},site:{siteID:currentSiteID[index(item,currentBindData)]}}"
                       :update="false"
                       :active="displayBindPanel"
                       :currentData = "{sectionID: currentPathsection,alignment:{alignmentID:currentAlignmentID[index(item,currentBindData)],startStation: currentPathStartStation[index(item,currentBindData)] ,endStation: currentPathEndStation[index(item,currentBindData)]},type:{type: currentPathType,modelType:currentPathtypeModel[index(item,currentBindData)]},site:{siteID:currentSiteID[index(item,currentBindData)]}}"
                       @close="displayBindPanel=false"
-                      @save="handleBind"></add-binds>
+                      @save="handleBind"></add-bind>
           </div>
       </div>
+        <Button @save="handleBindValue" style="width:90px;">保存</Button>
       <div slot="footer">
       </div>
   </Modal>
   </div>
 </template>
-
 <script>
 import FolderIcon from './item-icon/folder.vue';
 import FileIcon from './item-icon/file.vue';
@@ -891,7 +895,9 @@ export default {
                 // };
             }
         },
-        handleBind (val) {
+        handleBind (val, val2) {
+            console.log('new data:', val, val2);
+            return;
             let items = this.currentDataToBind;
             let postData = items.map(obj => {
                 let item = this.currentFolderData.find(t => t.id === obj.id);
@@ -917,12 +923,12 @@ export default {
             });
             // TODO close modal or not
         },
-        handleMultipleFilesBind (val) {
+        handleBindValue (val, val2) {
             let items = this.currentDataToBind;
             let postData = items.map(obj => {
                 let item = this.currentFolderData.find(t => t.id === obj.id);
                 let data = {
-                    model: val,
+                    model: val2,
                     docs: {
                         id: item && item.id,
                         type: obj.type,
@@ -934,7 +940,7 @@ export default {
             });
             this.$store.dispatch(ActionType.AddRelations, postData).then(() => {
                 //
-                this.displayBindMultipleFilesPanel = false;
+                this.displayBindPanel = false;
                 let bindQuery = {query: {bool: {filter: []}}};
                 bindQuery.query.bool.filter.push({
                     match: { 'Data.docs.path.keyword': this.currentPath.path }

@@ -41,12 +41,24 @@ export default {
             type: Boolean,
             required: true,
         },
+        name: {
+            type: String
+        },
+        nameabc: {
+            type: String
+        },
         currentData: {
             type: Object,
             default: function () {
                 return {};
             },
         },
+        currentBindData: {
+            type: Object,
+            default: function () {
+                return {};
+            }
+        }
     },
     methods: {
         saveFunc (fieldData, update = false) {
@@ -61,7 +73,7 @@ export default {
             //
             result = {...result, ...alignment, ...site, ...type};
             //
-            this.$emit('save', result);
+            this.$emit('save', result, this.nameabc);
         },
     },
     data () {
