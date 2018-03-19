@@ -136,37 +136,6 @@ export default {
 
             return [...fileSelected, ...folderSelected];
         },
-        currentPathSiteSection: function () {
-            let path = this.$store.state['graphy']['explore']['path'];
-            console.log('CCC', path);
-            let LJ8 = 'LJ8';
-            let LJ9 = 'LJ9';
-            let LJ10 = 'LJ10';
-            let LJ11 = 'LJ11';
-            let LJ12 = 'LJ12';
-            let LJ13 = 'LJ13';
-            let LJ14 = 'LJ14';
-            let LJ15 = 'LJ15';
-            if (path.length >= 2) {
-                if (path[1].name === 'LJ8') {
-                    return LJ8;
-                } else if (path[1].name === 'LJ9') {
-                    return LJ9;
-                } else if (path[1].name === 'LJ10') {
-                    return LJ10;
-                } else if (path[1].name === 'LJ11') {
-                    return LJ11;
-                } else if (path[1].name === 'LJ12') {
-                    return LJ12;
-                } else if (path[1].name === 'LJ13') {
-                    return LJ13;
-                } else if (path[1].name === 'LJ14') {
-                    return LJ14;
-                } else if (path[1].name === 'LJ15') {
-                    return LJ15;
-                }
-            }
-        },
         currentPathSiteType: function () {
             let path = this.$store.state['graphy']['explore']['path'];
             let HANDONG = 'HANDONG';
