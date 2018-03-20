@@ -73,7 +73,7 @@
       <div class="modal-content" v-for="item in currentBindData">
           <div v-if="index(item,currentBindData) === (currentBindData.length - 1)">
           <add-bind
-                  nameabc="testabcpoint"
+                  :nameabc="currentDataToBind[index(item,currentBindData)].name"
                   :currentBindData="{sectionID: currentPathsection,alignment:{alignmentID:currentAlignmentID[index(item,currentBindData)],startStation: currentPathStartStation[index(item,currentBindData)] ,endStation: currentPathEndStation[index(item,currentBindData)]},type:{type: currentPathType,modelType:currentPathtypeModel[index(item,currentBindData)]},site:{siteID:currentSiteID[index(item,currentBindData)]}}"
                   :update="false"
                   :active="displayBindPanel"
@@ -83,7 +83,7 @@
           </div>
           <div v-else>
               <add-bind
-                      nameabc="testabcpoint"
+                      :nameabc="currentDataToBind[index(item,currentBindData)].name"
                       :currentBindData="{sectionID: currentPathsection,alignment:{alignmentID:currentAlignmentID[index(item,currentBindData)],startStation: currentPathStartStation[index(item,currentBindData)] ,endStation: currentPathEndStation[index(item,currentBindData)]},type:{type: currentPathType,modelType:currentPathtypeModel[index(item,currentBindData)]},site:{siteID:currentSiteID[index(item,currentBindData)]}}"
                       :update="false"
                       :active="displayBindPanel"
@@ -92,7 +92,10 @@
                       @save="handleBind"></add-bind>
           </div>
       </div>
-        <Button @save="handleBindValue" style="width:90px;">保存</Button>
+        <div>
+        <Button @click="handleBindValue" style="width:90px;">保存</Button>
+        <Button @click="displayBindPanel=false" style="width:90px;">退出</Button>
+        </div>
       <div slot="footer">
       </div>
   </Modal>
@@ -231,6 +234,7 @@ export default {
             set: function (val) {
                 if (!val) {
                     this.$store.commit(ActionType.BindModels, false);
+                    this.objectData = {};
                 }
             },
         },
@@ -836,6 +840,7 @@ export default {
                 }
             ],
             rightPartObject: {},
+            objectData: {},
             typeToAction: {
                 // [TypeValue.LuMian]: ,
                 // [TypeValue.LuJian]: ,
@@ -897,57 +902,35 @@ export default {
         },
         handleBind (val, val2) {
             console.log('new data:', val, val2);
-            return;
-            let items = this.currentDataToBind;
-            let postData = items.map(obj => {
-                let item = this.currentFolderData.find(t => t.id === obj.id);
-                let data = {
-                    model: val,
-                    docs: {
-                        id: item && item.id,
-                        type: obj.type,
-                        path: item && item['Path'],
-                        alias: item && item['Alias'],
-                    },
-                };
-                return data;
-            });
-            this.$store.dispatch(ActionType.AddRelations, postData).then(() => {
-                //
-                this.displayBindPanel = false;
-                let bindQuery = {query: {bool: {filter: []}}};
-                bindQuery.query.bool.filter.push({
-                    match: { 'Data.docs.path.keyword': this.currentPath.path }
-                });
-                this.$store.dispatch(ActionType.QueryRelation, {query: bindQuery, delay: true});
-            });
-            // TODO close modal or not
+            this.objectData[val2] = val;
         },
-        handleBindValue (val, val2) {
+
+        handleBindValue () {
             let items = this.currentDataToBind;
-            let postData = items.map(obj => {
-                let item = this.currentFolderData.find(t => t.id === obj.id);
-                let data = {
-                    model: val2,
-                    docs: {
-                        id: item && item.id,
-                        type: obj.type,
-                        path: item && item['Path'],
-                        alias: item && item['Alias'],
-                    },
-                };
-                return data;
-            });
-            this.$store.dispatch(ActionType.AddRelations, postData).then(() => {
-                //
-                this.displayBindPanel = false;
-                let bindQuery = {query: {bool: {filter: []}}};
-                bindQuery.query.bool.filter.push({
-                    match: { 'Data.docs.path.keyword': this.currentPath.path }
+                let postData = items.map(obj => {
+                    let item = this.currentFolderData.find(t => t.id === obj.id);
+                    let data = {
+                        model: this.objectData,
+                        docs: {
+                            id: item && item.id,
+                            type: obj.type,
+                            path: item && item['Path'],
+                            alias: item && item['Alias'],
+                        },
+                    };
+                    return data;
                 });
-                this.$store.dispatch(ActionType.QueryRelation, {query: bindQuery, delay: true});
-            });
-            // TODO close modal or not
+                this.$store.dispatch(ActionType.AddRelations, postData).then(() => {
+                    //
+                    this.displayBindPanel = false;
+                    let bindQuery = {query: {bool: {filter: []}}};
+                    bindQuery.query.bool.filter.push({
+                        match: {'Data.docs.path.keyword': this.currentPath.path}
+                    });
+                    this.$store.dispatch(ActionType.QueryRelation, {query: bindQuery, delay: true});
+                    this.objectData = {};
+                });
+                // TODO close modal or not
         },
         jumpToPath (val) {
             this.$store.commit(
