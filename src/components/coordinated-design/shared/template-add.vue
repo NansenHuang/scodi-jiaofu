@@ -139,9 +139,7 @@ export default {
             }
         },
         result: function (val) {
-            if (val) {
-                this.save(this.data, this.update);
-            }
+            this.save(this.data, this.update);
         },
 
     },
