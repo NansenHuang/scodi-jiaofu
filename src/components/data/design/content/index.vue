@@ -93,7 +93,7 @@
           </div>
       </div>
         <div>
-        <Button @click="handleBindValue" style="width:90px;">保存</Button>
+        <Button @click="handleBindValue" style="width:90px;">绑定</Button>
         <Button @click="displayBindPanel=false" style="width:90px;">退出</Button>
         </div>
       <div slot="footer">
@@ -900,7 +900,6 @@ export default {
             console.log('new data:', val, val2);
             this.objectData[val2] = val;
         },
-
         handleBindValue () {
             let items = this.currentDataToBind;
             let postData = items.map(obj => {

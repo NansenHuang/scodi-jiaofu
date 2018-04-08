@@ -139,9 +139,11 @@ export default {
             }
         },
         result: function (val) {
-            this.save(this.data, this.update);
-        },
-
+            console.log('resultval', val);
+            if (val) {
+                this.save(this.data, this.update);
+            }
+        }
     },
     created: function () {
         this.data = JSON.parse(JSON.stringify(this.currentData));
