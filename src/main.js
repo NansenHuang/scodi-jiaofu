@@ -9,8 +9,8 @@ import 'iview/dist/styles/iview.css';
 import VueI18n from 'vue-i18n';
 import util from '@/libs/util';
 
-import Cherry from 'src/libs/cherry.js';
-Cherry.init('http://118.114.253.52:8497/pomelo/rest');
+import Cherry from '../src/libs/cherry.js';
+Cherry.init('http://171.221.240.73:8497/pomelo/rest');
 // Cherry.init('http://192.168.199.158:1339/pomelo/rest');
 
 Vue.use(VueI18n);
