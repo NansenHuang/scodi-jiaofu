@@ -173,7 +173,6 @@
             rightPartStr: function (val) {
                 if (this.active) {
                     this.$emit('input', val !== '{}' ? this.rightPartObject : undefined);
-                    console.log('inputval', this.rightPartObject);
                 }
             },
             siteID: function (val) {
@@ -181,8 +180,6 @@
                     let selectedSite = this.siteArray.find((item) => item['value'] === val);
                     this.rightPartObject['siteType'] = this.currentType || undefined;
                     this.rightPartObject['siteCnName'] = (selectedSite && selectedSite.label) || undefined;
-                    console.log('siteType', this.rightPartObject['siteType']);
-                    console.log('siteCnName', this.rightPartObject['siteCnName']);
                 }
             },
         },

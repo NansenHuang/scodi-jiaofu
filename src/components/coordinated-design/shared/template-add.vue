@@ -20,13 +20,14 @@
               </component>
           </FormItem>
       </Form>
-      <Row class="margin-top-20 publish-button-con" style="width:100%;display:inline-flex;justify-content:flex-end;">
+     <!-- <Row class="margin-top-20 publish-button-con" style="width:100%;display:inline-flex;justify-content:flex-end;">
           <Button v-if="this.update" icon="android-delete" @click="handleDelete" style="width:90px;margin-right: 64px;" type="error">删除</Button>
           <span class="publish-button">
               <Button icon="ios-checkmark" @click="handleSave" style="width:90px;" :type="this.update?'success':'primary'">{{this.update?'更新':'保存'}}</Button>
               <Button @click="close" style="width:90px;">关闭</Button>
           </span>
-      </Row>
+      </Row> -->
+      <hr class="hr1" />
   </div>
 </template>
 

@@ -53,12 +53,6 @@ export default {
                 return {};
             },
         },
-        currentBindData: {
-            type: Object,
-            default: function () {
-                return {};
-            }
-        }
     },
     methods: {
         saveFunc (fieldData, update = false) {

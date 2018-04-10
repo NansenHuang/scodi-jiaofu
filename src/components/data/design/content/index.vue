@@ -78,25 +78,14 @@
       </div>
       <h3>选择相应的字段值：</h3>
       <div class="modal-content" v-for="item in currentBindData">
-          <div v-if="index(item,currentBindData) === (currentBindData.length - 1)">
+          <div>
           <add-bind
                   :nameabc="currentDataToBind[index(item,currentBindData)].name"
-                  :currentBindData="{sectionID: currentPathsection,alignment:{alignmentID:currentAlignmentID[index(item,currentBindData)],startStation: currentPathStartStation[index(item,currentBindData)] ,endStation: currentPathEndStation[index(item,currentBindData)]},type:{type: currentPathType,modelType:currentPathtypeModel[index(item,currentBindData)]},site:{siteID:currentSiteID[index(item,currentBindData)]}}"
                   :update="false"
                   :active="displayBindPanel"
                   :currentData = "{sectionID: currentPathsection,alignment:{alignmentID:currentAlignmentID[index(item,currentBindData)],startStation: currentPathStartStation[index(item,currentBindData)] ,endStation: currentPathEndStation[index(item,currentBindData)]},type:{type: currentPathType,modelType:currentPathtypeModel[index(item,currentBindData)]},site:{siteID:currentSiteID[index(item,currentBindData)],siteType: currentSiteType}}"
                   @close="displayBindPanel=false"
-                  @save="handleBind"></add-bind>T
-          </div>
-          <div v-else>
-              <add-bind
-                      :nameabc="currentDataToBind[index(item,currentBindData)].name"
-                      :currentBindData="{sectionID: currentPathsection,alignment:{alignmentID:currentAlignmentID[index(item,currentBindData)],startStation: currentPathStartStation[index(item,currentBindData)] ,endStation: currentPathEndStation[index(item,currentBindData)]},type:{type: currentPathType,modelType:currentPathtypeModel[index(item,currentBindData)]},site:{siteID:currentSiteID[index(item,currentBindData)]}}"
-                      :update="false"
-                      :active="displayBindPanel"
-                      :currentData = "{sectionID: currentPathsection,alignment:{alignmentID:currentAlignmentID[index(item,currentBindData)],startStation: currentPathStartStation[index(item,currentBindData)] ,endStation: currentPathEndStation[index(item,currentBindData)]},type:{type: currentPathType,modelType:currentPathtypeModel[index(item,currentBindData)]},site:{siteID:currentSiteID[index(item,currentBindData)],siteType: currentSiteType}}"
-                      @close="displayBindPanel=false"
-                      @save="handleBind"></add-bind>
+                  @save="handleBind"></add-bind>
           </div>
       </div>
         <div class="modal-button">
@@ -814,7 +803,7 @@ export default {
         currentSiteType: function () {
             let path = this.$store.state['graphy']['explore']['path'];
             let currentSiteType;
-            if (path[2].name === '涵洞' || path[2].name === '天桥') {
+            if (path[2].name === '涵洞' || path[2].name === '天桥' || path[2].name === '桥梁') {
                 currentSiteType = '';
             }
             return currentSiteType;
