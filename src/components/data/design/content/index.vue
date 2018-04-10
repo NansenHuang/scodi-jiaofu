@@ -37,6 +37,13 @@
 .modal-content {
     margin: 20px 0;
 }
+.modal-button {
+   display:flex;
+   justify-content:flex-end;
+}
+.modal-button1 {
+    margin-right:4px;
+}
 </style>
 
 <template>
@@ -77,9 +84,9 @@
                   :currentBindData="{sectionID: currentPathsection,alignment:{alignmentID:currentAlignmentID[index(item,currentBindData)],startStation: currentPathStartStation[index(item,currentBindData)] ,endStation: currentPathEndStation[index(item,currentBindData)]},type:{type: currentPathType,modelType:currentPathtypeModel[index(item,currentBindData)]},site:{siteID:currentSiteID[index(item,currentBindData)]}}"
                   :update="false"
                   :active="displayBindPanel"
-                  :currentData = "{sectionID: currentPathsection,alignment:{alignmentID:currentAlignmentID[index(item,currentBindData)],startStation: currentPathStartStation[index(item,currentBindData)] ,endStation: currentPathEndStation[index(item,currentBindData)]},type:{type: currentPathType,modelType:currentPathtypeModel[index(item,currentBindData)]},site:{siteID:currentSiteID[index(item,currentBindData)]}}"
+                  :currentData = "{sectionID: currentPathsection,alignment:{alignmentID:currentAlignmentID[index(item,currentBindData)],startStation: currentPathStartStation[index(item,currentBindData)] ,endStation: currentPathEndStation[index(item,currentBindData)]},type:{type: currentPathType,modelType:currentPathtypeModel[index(item,currentBindData)]},site:{siteID:currentSiteID[index(item,currentBindData)],siteType: currentSiteType}}"
                   @close="displayBindPanel=false"
-                  @save="handleBind"></add-bind>
+                  @save="handleBind"></add-bind>T
           </div>
           <div v-else>
               <add-bind
@@ -87,13 +94,13 @@
                       :currentBindData="{sectionID: currentPathsection,alignment:{alignmentID:currentAlignmentID[index(item,currentBindData)],startStation: currentPathStartStation[index(item,currentBindData)] ,endStation: currentPathEndStation[index(item,currentBindData)]},type:{type: currentPathType,modelType:currentPathtypeModel[index(item,currentBindData)]},site:{siteID:currentSiteID[index(item,currentBindData)]}}"
                       :update="false"
                       :active="displayBindPanel"
-                      :currentData = "{sectionID: currentPathsection,alignment:{alignmentID:currentAlignmentID[index(item,currentBindData)],startStation: currentPathStartStation[index(item,currentBindData)] ,endStation: currentPathEndStation[index(item,currentBindData)]},type:{type: currentPathType,modelType:currentPathtypeModel[index(item,currentBindData)]},site:{siteID:currentSiteID[index(item,currentBindData)]}}"
+                      :currentData = "{sectionID: currentPathsection,alignment:{alignmentID:currentAlignmentID[index(item,currentBindData)],startStation: currentPathStartStation[index(item,currentBindData)] ,endStation: currentPathEndStation[index(item,currentBindData)]},type:{type: currentPathType,modelType:currentPathtypeModel[index(item,currentBindData)]},site:{siteID:currentSiteID[index(item,currentBindData)],siteType: currentSiteType}}"
                       @close="displayBindPanel=false"
                       @save="handleBind"></add-bind>
           </div>
       </div>
-        <div>
-        <Button @click="handleBindValue" style="width:90px;">绑定</Button>
+        <div class="modal-button">
+        <Button icon="ios-checkmark" @click="handleBindValue" style="width:90px;" :type="'primary'" class="modal-button1">绑定</Button>
         <Button @click="displayBindPanel=false" style="width:90px;">退出</Button>
         </div>
       <div slot="footer">
@@ -803,6 +810,14 @@ export default {
                     }
                 });
             }
+        },
+        currentSiteType: function () {
+            let path = this.$store.state['graphy']['explore']['path'];
+            let currentSiteType;
+            if (path[2].name === '涵洞' || path[2].name === '天桥') {
+                currentSiteType = '';
+            }
+            return currentSiteType;
         },
         files: function () {
             let files = this.currentFolderData.filter(item => item.Type === 'FILE');

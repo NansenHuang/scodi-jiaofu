@@ -39,19 +39,6 @@
             },
         },
         computed: {
-            currentPathType: function () {
-                let path = this.$store.state['graphy']['explore']['path'];
-                let HANDONG = 'HANDONG';
-                let QIAOLIANG = 'QIAO';
-                let TIANQIAO = 'TIANQIAO';
-                if (path[2] === '涵洞') {
-                    return HANDONG;
-                } else if (path[2] === '桥梁') {
-                    return QIAOLIANG;
-                } else if (path[2] === '天桥') {
-                    return TIANQIAO;
-                }
-            },
             selectedSection () {
                 return this.itemData['sectionID'] || null;
             },
@@ -172,11 +159,9 @@
         watch: {
             selectedSection: function (val) {
                 this.requestSite(this.currentType, val);
-                console.log('AASelected', val);
             },
             currentType: function (val) {
                 this.requestSite(val, this.selectedSection);
-                console.log('BBType', val);
             },
             active: function (val) {
                 if (val) {
@@ -188,6 +173,7 @@
             rightPartStr: function (val) {
                 if (this.active) {
                     this.$emit('input', val !== '{}' ? this.rightPartObject : undefined);
+                    console.log('inputval', this.rightPartObject);
                 }
             },
             siteID: function (val) {
@@ -195,6 +181,8 @@
                     let selectedSite = this.siteArray.find((item) => item['value'] === val);
                     this.rightPartObject['siteType'] = this.currentType || undefined;
                     this.rightPartObject['siteCnName'] = (selectedSite && selectedSite.label) || undefined;
+                    console.log('siteType', this.rightPartObject['siteType']);
+                    console.log('siteCnName', this.rightPartObject['siteCnName']);
                 }
             },
         },
