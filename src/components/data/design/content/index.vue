@@ -812,6 +812,11 @@ export default {
             }
             return currentSiteType;
         },
+        currentAlignmentCnName: function () {
+            let currentAlignCnName;
+            currentAlignCnName = '左线Z1(公路院）';
+            return currentAlignCnName;
+        },
         files: function () {
             let files = this.currentFolderData.filter(item => item.Type === 'FILE');
             return files.map((item) => ({
@@ -906,7 +911,7 @@ export default {
         },
         handleBind (val, val2) {
             console.log('new data:', val, val2);
-            if (val.siteType !== '') {
+            if (val.siteType !== '' && val.alignmentCnName) {
                 this.objectData[val2] = val;
             }
         },
