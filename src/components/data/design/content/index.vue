@@ -911,7 +911,9 @@ export default {
         },
         handleBind (val, val2) {
             console.log('new data:', val, val2);
-            if (val.siteType !== '') {
+            if (val.siteType && val.siteType !== '') {
+                this.objectData[val2] = val;
+            } else if (val.alignmentCnName) {
                 this.objectData[val2] = val;
             }
         },
