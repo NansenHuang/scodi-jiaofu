@@ -671,7 +671,11 @@ export default {
                         }
                     }
                 }
-                return SiteStationId;
+                if (SiteStationId !== null) {
+                    return SiteStationId;
+                } else {
+                    return SiteStationId === null;
+                }
             });
         },
         parentFolders: function () {
@@ -902,7 +906,9 @@ export default {
         },
         handleBind (val, val2) {
             console.log('new data:', val, val2);
-            this.objectData[val2] = val;
+            if (val.siteType !== '') {
+                this.objectData[val2] = val;
+            }
         },
         handleBindValue () {
             let items = this.currentDataToBind;
