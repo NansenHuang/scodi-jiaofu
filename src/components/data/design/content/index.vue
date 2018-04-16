@@ -106,6 +106,11 @@ import AddBind from './add-bind';
 import AddBinds from './add-binds';
 import LayoutType from 'src/config/layout-type';
 import TypeValue from 'src/config/type';
+import Path2Name from 'src/config/Path2Name';
+import Path3Name from 'src/config/Path3Name';
+import Path4Name from 'src/config/Path4Name';
+import Path5Name from 'src/config/Path5Name';
+import Path6Name from 'src/config/Path6Name';
 import TypeModel from 'src/config/model-type';
 import Utils from 'src/libs/util';
 import StationUtil from 'src/libs/station';
@@ -141,16 +146,16 @@ export default {
         },
         currentPathSiteType: function () {
             let path = this.$store.state['graphy']['explore']['path'];
-            let HANDONG = 'HANDONG';
-            let QIAOLIANG = 'QIAO';
-            let TIANQIAO = 'TIANQIAO';
+            let PatternHanDong = new RegExp(Path2Name.HanDong);
+            let PatternQiaoLiang = new RegExp(Path2Name.QiaoLiang);
+            let PatternTianQiao = new RegExp(Path2Name.TianQiao);
             if (path.length >= 3) {
-                if (path[2].name === '涵洞') {
-                    return HANDONG;
-                } else if (path[2].name === '桥梁') {
-                    return QIAOLIANG;
-                } else if (path[2].name === '天桥') {
-                    return TIANQIAO;
+                if (PatternHanDong.test(path[2].name) === true) {
+                    return TypeValue.HanDong;
+                } else if (PatternQiaoLiang.test(path[2].name) === true) {
+                    return TypeValue.Qiao;
+                } else if (PatternTianQiao.test(path[2].name) === true) {
+                    return TypeValue.TianQiao;
                 }
             }
         },
@@ -273,57 +278,77 @@ export default {
         },
         currentPathType: function () {
             let path = this.$store.state['graphy']['explore']['path'];
+            let PatternHanDong = new RegExp(Path2Name.HanDong);
+            let PatternQiaoLiang = new RegExp(Path2Name.QiaoLiang);
+            let PatternTianQiao = new RegExp(Path2Name.TianQiao);
+            let PatternLuJi = new RegExp(Path2Name.LuJi);
+            let PatternZongTi = new RegExp(Path2Name.ZongTi);
+            let PatternJiaoCha = new RegExp(Path2Name.JiaoCha);
+            let PatternLuMianJieGou = new RegExp(Path3Name.LuMianJieGou);
+            let PatternDangTuQiang = new RegExp(Path3Name.DangTuQiang);
+            let PatternRuanJiHuanTian = new RegExp(Path3Name.RuanJiHuanTian);
+            let PatternGongLuPingMian = new RegExp(Path3Name.GongLuPingMian);
+            let PatternPaiShuiMangGou = new RegExp(Path3Name.PaiShuiMangGou);
+            let PatternLuJiLuMianPaiShui = new RegExp(Path4Name.LuJiLuMianPaiShui);
+            let PatternDouPoLuDi = new RegExp(Path4Name.DouPoLuDi);
+            let Pattern5DangQiang = new RegExp(Path5Name.DangQiang);
+            let Pattern5DangTuQiang = new RegExp(Path5Name.DangTuQiang);
+            let Pattern5LuMianJieGou = new RegExp(Path5Name.LuMianJieGou);
+            let Pattern5RuanJiHuanTian = new RegExp(Path5Name.RuanJiHuanTian);
+            let Pattern6LuJiLuMianPaiShui = new RegExp(Path6Name.LuJiLuMianPaiShui);
+            let Pattern6DouPoLuDi = new RegExp(Path6Name.DouPoLuDi);
+            let Pattern6RuanJiHuanTian = new RegExp(Path6Name.RuanJiHuanTian);
             if (path.length === 3) {
-                if (path[2].name === '涵洞') {
+                if (PatternHanDong.test(path[2].name) === true) {
                     return TypeValue.HanDong;
                 }
             } else if (path.length === 4) {
-                if (path[2].name === '涵洞') {
+                if (PatternHanDong.test(path[2].name) === true) {
                     return TypeValue.HanDong;
-                } else if (path[2].name === '天桥') {
+                } else if (PatternTianQiao.test(path[2].name) === true) {
                     return TypeValue.TianQiao;
-                } else if (path[2].name === '桥梁') {
+                } else if (PatternQiaoLiang.test(path[2].name) === true) {
                     return TypeValue.Qiao;
-                } else if (path[2].name === '路基' && path[3].name === '路面结构标准图') {
+                } else if (PatternLuJi.test(path[2].name) === true && PatternLuMianJieGou.test(path[3].name) === true) {
                     return TypeValue.LuMian;
-                } else if (path[2].name === '路基' && path[3].name === '挡土墙工点设计图') {
+                } else if (PatternLuJi.test(path[2].name) === true && PatternDangTuQiang.test(path[3].name) === true) {
                     return TypeValue.DangQiang;
-                } else if (path[2].name === '路基' && path[3].name === '软基换填工点设计图') {
+                } else if (PatternLuJi.test(path[2].name) === true && PatternRuanJiHuanTian.test(path[3].name) === true) {
                     return TypeValue.Rjht;
-                } else if (path[2].name === '总体' && path[3].name === '公路平面总体设计图' && !this.bindInfo.length) {
+                } else if (PatternZongTi.test(path[2].name) === true && PatternGongLuPingMian.test(path[3].name) === true && !this.bindInfo.length) {
                     return TypeValue.BianPo;
-                } else if (path[2].name === '总体' && path[3].name === '公路平面总体设计图' && this.bindInfo.length) {
+                } else if (PatternZongTi.test(path[2].name) === true && PatternGongLuPingMian.test(path[3].name) === true && this.bindInfo.length) {
                     return TypeValue.LuMian;
                 }
             }
             if (path.length === 5) {
-                if (path[2].name === '路基' && path[3].name === '排水盲沟标准图' && path[4].name === '路基、路面排水工程设计图' && !this.bindInfo.length) {
+                if (PatternLuJi.test(path[2].name) === true && PatternPaiShuiMangGou.test(path[3].name) === true && PatternLuJiLuMianPaiShui.test(path[4].name) === true && !this.bindInfo.length) {
                     return TypeValue.MangGou;
-                } else if (path[2].name === '路基' && path[3].name === '排水盲沟标准图' && path[4].name === '路基、路面排水工程设计图' && this.bindInfo.length) {
+                } else if (PatternLuJi.test(path[2].name) === true && PatternPaiShuiMangGou.test(path[3].name) === true && PatternLuJiLuMianPaiShui.test(path[4].name) === true && this.bindInfo.length) {
                     return TypeValue.BianGou;
-                } else if (path[2].name === '路基' && path[3].name === '排水盲沟标准图' && path[4].name === '陡坡路堤或填挖交界处理设计图') {
+                } else if (PatternLuJi.test(path[2].name) === true && PatternPaiShuiMangGou.test(path[3].name) === true && PatternDouPoLuDi.test(path[4].name) === true) {
                     return TypeValue.MangGou;
                 }
             }
             if (path.length === 6) {
-                if (path[2].name === '交叉' && path[5].name === '挡墙工点设计图') {
+                if (PatternJiaoCha.test(path[2].name) === true && Pattern5DangQiang.test(path[5].name) === true) {
                     return TypeValue.DangQiang;
-                } else if (path[2].name === '交叉' && path[5].name === '挡土墙工点设计图') {
+                } else if (PatternJiaoCha.test(path[2].name) === true && Pattern5DangTuQiang.test(path[5].name) === true) {
                     return TypeValue.DangQiang;
-                } else if (path[2].name === '交叉' && path[5].name === '路面结构标准图') {
+                } else if (PatternJiaoCha.test(path[2].name) === true && Pattern5LuMianJieGou.test(path[5].name) === true) {
                     return TypeValue.LuMian;
-                } else if (path[2].name === '交叉' && path[5].name === '软基换填工点设计图') {
+                } else if (PatternJiaoCha.test(path[2].name) === true && Pattern5RuanJiHuanTian.test(path[5].name) === true) {
                     return TypeValue.Rjht;
                 }
             }
             if (path.length === 7) {
-                if (path[2].name === '交叉' && path[6].name === '路基、路面排水工程设计图' && !this.bindInfo.length) {
+                if (PatternJiaoCha.test(path[2].name) === true && Pattern6LuJiLuMianPaiShui.test(path[6].name) === true && !this.bindInfo.length) {
                     return TypeValue.MangGou;
-                } else if (path[2].name === '交叉' && path[6].name === '路基、路面排水工程设计图' && this.bindInfo.length) {
+                } else if (PatternJiaoCha.test(path[2].name) === true && Pattern6LuJiLuMianPaiShui.test(path[6].name) === true && this.bindInfo.length) {
                     return TypeValue.BianGou;
-                } else if (path[2].name === '交叉' && path[6].name === '陡坡路堤或填挖交界处理设计图') {
+                } else if (PatternJiaoCha.test(path[2].name) === true && Pattern6DouPoLuDi.test(path[6].name) === true) {
                     return TypeValue.MangGou;
-                } else if (path[2].name === '交叉' && path[6].name === '软基换填工点设计图') {
+                } else if (PatternJiaoCha.test(path[2].name) === true && Pattern6RuanJiHuanTian.test(path[6].name) === true) {
                     return TypeValue.Rjht;
                 }
             }
@@ -349,42 +374,62 @@ export default {
                     let dataItem = this.currentFolderData.find(i => i.id === item.id);
                     console.log('dataItemAA', dataItem);
                     let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                    let PatternHanDong = new RegExp(Path2Name.HanDong);
+                    let PatternQiaoLiang = new RegExp(Path2Name.QiaoLiang);
+                    let PatternTianQiao = new RegExp(Path2Name.TianQiao);
+                    let PatternLuJi = new RegExp(Path2Name.LuJi);
+                    let PatternZongTi = new RegExp(Path2Name.ZongTi);
+                    let PatternJiaoCha = new RegExp(Path2Name.JiaoCha);
+                    let PatternLuMianJieGou = new RegExp(Path3Name.LuMianJieGou);
+                    let PatternDangTuQiang = new RegExp(Path3Name.DangTuQiang);
+                    let PatternRuanJiHuanTian = new RegExp(Path3Name.RuanJiHuanTian);
+                    let PatternGongLuPingMian = new RegExp(Path3Name.GongLuPingMian);
+                    let PatternPaiShuiMangGou = new RegExp(Path3Name.PaiShuiMangGou);
+                    let PatternLuJiLuMianPaiShui = new RegExp(Path4Name.LuJiLuMianPaiShui);
+                    let PatternDouPoLuDi = new RegExp(Path4Name.DouPoLuDi);
+                    let Pattern5DangQiang = new RegExp(Path5Name.DangQiang);
+                    let Pattern5DangTuQiang = new RegExp(Path5Name.DangTuQiang);
+                    let Pattern5LuMianJieGou = new RegExp(Path5Name.LuMianJieGou);
+                    let Pattern5RuanJiHuanTian = new RegExp(Path5Name.RuanJiHuanTian);
+                    let Pattern6LuJiLuMianPaiShui = new RegExp(Path6Name.LuJiLuMianPaiShui);
+                    let Pattern6DouPoLuDi = new RegExp(Path6Name.DouPoLuDi);
+                    let Pattern6RuanJiHuanTian = new RegExp(Path6Name.RuanJiHuanTian);
                     if (path.length === 4) {
-                        if (path[2].name === '路基' && path[3].name === '软基换填工点设计图') {
+                        if (PatternLuJi.test(path[2].name) === true && PatternRuanJiHuanTian.test(path[3].name) === true) {
                             return TypeModel[TypeValue.Rjht].RJHT;
-                        } else if (path[2].name === '桥梁' && numb === '2' && !this.bindInfo.length) {
+                        } else if (PatternQiaoLiang.test(path[2].name) === true && numb === '2' && !this.bindInfo.length) {
                             return TypeModel[TypeValue.Qiao].SiJieFeng;
-                        } else if (path[2].name === '桥梁' && numb === '2' && this.bindInfo.length) {
+                        } else if (PatternQiaoLiang.test(path[2].name) === true && numb === '2' && this.bindInfo.length) {
                             return TypeModel[TypeValue.Qiao].TLiang;
-                        } else if (path[2].name === '桥梁' && numb === '3') {
+                        } else if (PatternQiaoLiang.test(path[2].name) === true && numb === '3') {
                             return TypeModel[TypeValue.Qiao].GaiLiang;
-                        } else if (path[2].name === '桥梁' && numb === '4') {
+                        } else if (PatternQiaoLiang.test(path[2].name) === true && numb === '4') {
                             return TypeModel[TypeValue.Qiao].QiaoDun;
-                        } else if (path[2].name === '桥梁' && numb === '5') {
+                        } else if (PatternQiaoLiang.test(path[2].name) === true && numb === '5') {
                             return TypeModel[TypeValue.Qiao].DunXiLiang;
-                        } else if (path[2].name === '桥梁' && numb === '6') {
+                        } else if (PatternQiaoLiang.test(path[2].name) === true && numb === '6') {
                             return TypeModel[TypeValue.Qiao].ChengTai;
-                        } else if (path[2].name === '桥梁' && numb === '7') {
+                        } else if (PatternQiaoLiang.test(path[2].name) === true && numb === '7') {
                             return TypeModel[TypeValue.Qiao].Zhuang;
-                        } else if (path[2].name === '桥梁' && numb === '8') {
+                        } else if (PatternQiaoLiang.test(path[2].name) === true && numb === '8') {
                             return TypeModel[TypeValue.Qiao].QiaoTai;
                         }
                     } else if (path.length === 5) {
-                        if (path[2].name === '路基' && path[3].name === '排水盲沟标准图' && path[4].name === '路基、路面排水工程设计图' && !this.bindInfo.length) {
+                        if (PatternLuJi.test(path[2].name) === true && PatternPaiShuiMangGou.test(path[3].name) === true && PatternLuJiLuMianPaiShui.test(path[4].name) === true && !this.bindInfo.length) {
                             return TypeModel[TypeValue.MangGou].BianGouMangGou;
-                        } else if (path[2].name === '路基' && path[3].name === '排水盲沟标准图' && path[4].name === '陡坡路堤或填挖交界处理设计图') {
+                        } else if (PatternLuJi.test(path[2].name) === true && PatternPaiShuiMangGou.test(path[3].name) === true && PatternDouPoLuDi.test(path[4].name) === true) {
                             return TypeModel[TypeValue.MangGou].JiaoJieMangGou;
                         }
                     } else if (path.length === 6) {
-                        if (path[2].name === '交叉' && path[5].name === '软基换填工点设计图') {
+                        if (PatternJiaoCha.test(path[2].name) === true && Pattern5RuanJiHuanTian.test(path[5].name) === true) {
                             return TypeModel[TypeValue.Rjht].RJHT;
                         }
                     } else if (path.length === 7) {
-                        if (path[2].name === '交叉' && path[6].name === '路基、路面排水工程设计图' && !this.bindInfo.length) {
+                        if (PatternJiaoCha.test(path[2].name) === true && Pattern6LuJiLuMianPaiShui.test(path[6].name) === true && !this.bindInfo.length) {
                             return TypeModel[TypeValue.MangGou].BianGouMangGou;
-                        } else if (path[2].name === '交叉' && path[6].name === '陡坡路堤或填挖交界处理设计图') {
+                        } else if (PatternJiaoCha.test(path[2].name) === true && Pattern6DouPoLuDi.test(path[6].name) === true) {
                             return TypeModel[TypeValue.MangGou].JiaoJieMangGou;
-                        } else if (path[2].name === '交叉' && path[6].name === '软基换填工点设计图') {
+                        } else if (PatternJiaoCha.test(path[2].name) === true && Pattern6RuanJiHuanTian.test(path[6].name) === true) {
                             return TypeModel[TypeValue.Rjht].RJHT;
                         }
                     }
@@ -409,8 +454,28 @@ export default {
             return dataToBind.map(item => {
                 let dataItem = this.currentFolderData.find(i => i.id === item.id);
                 let path = this.$store.state['graphy']['explore']['path'];
+                let PatternHanDong = new RegExp(Path2Name.HanDong);
+                let PatternQiaoLiang = new RegExp(Path2Name.QiaoLiang);
+                let PatternTianQiao = new RegExp(Path2Name.TianQiao);
+                let PatternLuJi = new RegExp(Path2Name.LuJi);
+                let PatternZongTi = new RegExp(Path2Name.ZongTi);
+                let PatternJiaoCha = new RegExp(Path2Name.JiaoCha);
+                let PatternLuMianJieGou = new RegExp(Path3Name.LuMianJieGou);
+                let PatternDangTuQiang = new RegExp(Path3Name.DangTuQiang);
+                let PatternRuanJiHuanTian = new RegExp(Path3Name.RuanJiHuanTian);
+                let PatternGongLuPingMian = new RegExp(Path3Name.GongLuPingMian);
+                let PatternPaiShuiMangGou = new RegExp(Path3Name.PaiShuiMangGou);
+                let PatternLuJiLuMianPaiShui = new RegExp(Path4Name.LuJiLuMianPaiShui);
+                let PatternDouPoLuDi = new RegExp(Path4Name.DouPoLuDi);
+                let Pattern5DangQiang = new RegExp(Path5Name.DangQiang);
+                let Pattern5DangTuQiang = new RegExp(Path5Name.DangTuQiang);
+                let Pattern5LuMianJieGou = new RegExp(Path5Name.LuMianJieGou);
+                let Pattern5RuanJiHuanTian = new RegExp(Path5Name.RuanJiHuanTian);
+                let Pattern6LuJiLuMianPaiShui = new RegExp(Path6Name.LuJiLuMianPaiShui);
+                let Pattern6DouPoLuDi = new RegExp(Path6Name.DouPoLuDi);
+                let Pattern6RuanJiHuanTian = new RegExp(Path6Name.RuanJiHuanTian);
                 if (path.length >= 4 && path.length < 6) {
-                    if ((path[2].name === '总体' && path[3].name === '公路平面总体设计图') || (path[2].name === '路基' && path[3].name === '软基换填工点设计图')) {
+                    if ((PatternZongTi.test(path[2].name) === true && PatternGongLuPingMian.test(path[3].name) === true) || (PatternLuJi.test(path[2].name) === true && PatternRuanJiHuanTian.test(path[3].name) === true)) {
                         let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
                         if (numb.length === 13) {
                             if (numb.substr(5, 1) === '1') {
@@ -437,7 +502,7 @@ export default {
                         } else if (numb.length === 16) {
                             return parseFloat(numb.substr(0, 6));
                         }
-                    } else if (path[2].name === '路基' && path[3].name === '挡土墙工点设计图') {
+                    } else if (PatternLuJi.test(path[2].name) === true && PatternDangTuQiang.test(path[3].name) === true) {
                         let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
                         if (path.length >= 4) {
                             if (numb.length === 12) {
@@ -458,7 +523,7 @@ export default {
                         }
                     }
                 } else if (path.length >= 6) {
-                    if (path[2].name === '交叉' && path[5].name === '挡墙工点设计图') {
+                    if (PatternJiaoCha.test(path[2].name) === true && Pattern5DangQiang.test(path[5].name) === true) {
                         let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
                         if (numb.length === 12) {
                             return parseFloat(numb.substr(0, 6));
@@ -471,7 +536,7 @@ export default {
                         } else if (numb.length === 15) {
                             return parseFloat(numb.substr(0, 6));
                         }
-                    } else if (path[2].name === '交叉' && path[5].name === '挡土墙工点设计图') {
+                    } else if (PatternJiaoCha.test(path[2].name) === true && Pattern5DangTuQiang.test(path[5].name) === true) {
                         let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
                         if (numb.length === 14) {
                             return parseFloat(numb.substr(0, 6));
@@ -484,7 +549,7 @@ export default {
                         } else if (numb.length === 7) {
                             return parseFloat(numb.substr(0, 4));
                         }
-                    } else if (path[2].name === '交叉' && path[5].name === '软基换填工点设计图') {
+                    } else if (PatternJiaoCha.test(path[2].name) === true && Pattern5RuanJiHuanTian.test(path[5].name) === true) {
                         let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
                         if (numb.length === 8) {
                             return parseFloat(numb.substr(0, 4));
@@ -577,10 +642,32 @@ export default {
                     let PatternZk = new RegExp('ZK');
                     let PatternMuChuan = new RegExp('沐川枢纽');
                     let StationLine;
+                    let PatternHanDong = new RegExp(Path2Name.HanDong);
+                    let PatternQiaoLiang = new RegExp(Path2Name.QiaoLiang);
+                    let PatternTianQiao = new RegExp(Path2Name.TianQiao);
+                    let PatternLuJi = new RegExp(Path2Name.LuJi);
+                    let PatternZongTi = new RegExp(Path2Name.ZongTi);
+                    let PatternJiaoCha = new RegExp(Path2Name.JiaoCha);
+                    let PatternMuChuanFuWu = new RegExp(Path3Name.MuChuanFuWu);
+                    let PatternLuMianJieGou = new RegExp(Path3Name.LuMianJieGou);
+                    let PatternDangTuQiang = new RegExp(Path3Name.DangTuQiang);
+                    let PatternRuanJiHuanTian = new RegExp(Path3Name.RuanJiHuanTian);
+                    let PatternGongLuPingMian = new RegExp(Path3Name.GongLuPingMian);
+                    let PatternPaiShuiMangGou = new RegExp(Path3Name.PaiShuiMangGou);
+                    let PatternMuChuanNanHuTong = new RegExp(Path3Name.MUChuanNanHuTong);
+                    let PatternLuJiLuMianPaiShui = new RegExp(Path4Name.LuJiLuMianPaiShui);
+                    let PatternDouPoLuDi = new RegExp(Path4Name.DouPoLuDi);
+                    let Pattern5DangQiang = new RegExp(Path5Name.DangQiang);
+                    let Pattern5DangTuQiang = new RegExp(Path5Name.DangTuQiang);
+                    let Pattern5LuMianJieGou = new RegExp(Path5Name.LuMianJieGou);
+                    let Pattern5RuanJiHuanTian = new RegExp(Path5Name.RuanJiHuanTian);
+                    let Pattern6LuJiLuMianPaiShui = new RegExp(Path6Name.LuJiLuMianPaiShui);
+                    let Pattern6DouPoLuDi = new RegExp(Path6Name.DouPoLuDi);
+                    let Pattern6RuanJiHuanTian = new RegExp(Path6Name.RuanJiHuanTian);
                     if (path.length === 4) {
-                        if (path[2].name === '总体' && path[3].name === '公路平面总体设计图' && PatternZk.test(words) === false) {
+                        if (PatternZongTi.test(path[2].name) === true && PatternGongLuPingMian.test(path[3].name) === true && PatternZk.test(words) === false) {
                             StationLine = this.PathMainAlignment;
-                        } else if (path[2].name === '总体' && path[3].name === '公路平面总体设计图' && PatternZk.test(words) === true) {
+                        } else if (PatternZongTi.test(path[2].name) === true && PatternGongLuPingMian.test(path[3].name) === true && PatternZk.test(words) === true) {
                             for (let i = 0; i < this.PathZkAlignment.length; i++) {
                                 if ((this.PathZkAlignment[i].startStation <= this.currentPathStartStation[0]) && (this.PathZkAlignment[i].endStation >= this.currentPathEndStation[0])) {
                                     StationLine = this.PathZkAlignment[i].id;
@@ -588,35 +675,35 @@ export default {
                                     StationLine = this.PathMainAlignment;
                                 }
                             }
-                        } else if (path[2].name === '路基' && path[3].name === '软基换填工点设计图') {
+                        } else if (PatternLuJi.test(path[2].name) === true && PatternRuanJiHuanTian.test(path[3].name) === true) {
                             StationLine = this.PathMainAlignment;
-                        } else if (path[2].name === '路基' && path[3].name === '挡土墙工点设计图' && PatternZk.test(words) === true) {
+                        } else if (PatternLuJi.test(path[2].name) === true && PatternDangTuQiang.test(path[3].name) === true && PatternZk.test(words) === true) {
                             for (let i = 0; i < this.PathZkAlignment.length; i++) {
                                 if ((this.PathZkAlignment[i].startStation <= this.currentPathStartStation[0]) && (this.PathZkAlignment[i].endStation >= this.currentPathEndStation[0])) {
                                     StationLine = this.PathZkAlignment[i].id;
                                 }
                             }
-                        } else if (path[2].name === '路基' && path[3].name === '挡土墙工点设计图' && PatternZk.test(words) === false) {
+                        } else if (PatternLuJi.test(path[2].name) && PatternDangTuQiang.test(path[3].name) && PatternZk.test(words) === false) {
                             StationLine = this.PathMainAlignment;
                         }
                     } else if (path.length === 6) {
-                        if (path[2].name === '交叉' && path[5].name === '挡墙工点设计图' && PatternAk.test(words) === false && PatternBk.test(words) === false && PatternZk.test(words) === false && PatternCk.test(words) === false) {
+                        if (PatternJiaoCha.test(path[2].name) === true && Pattern5DangQiang.test(path[5].name) === true && PatternAk.test(words) === false && PatternBk.test(words) === false && PatternZk.test(words) === false && PatternCk.test(words) === false) {
                             StationLine = this.PathMainAlignment;
-                        } else if (path[2].name === '交叉' && path[5].name === '挡墙工点设计图' && PatternMuChuan.test(path[3].name) === true && PatternAk.test(words) === true) {
+                        } else if (PatternJiaoCha.test(path[2].name) === true && Pattern5DangQiang.test(path[5].name) === true && PatternMuChuan.test(path[3].name) === true && PatternAk.test(words) === true) {
                             StationLine = this.PathAkAlignment;
-                        } else if (path[2].name === '交叉' && path[3].name === '沐川服务区' && path[5].name === '挡土墙工点设计图' && PatternBk.test(words) === true) {
+                        } else if (PatternJiaoCha.test(path[2].name) === true && PatternMuChuanFuWu.test(path[3].name) === true && Pattern5DangTuQiang.test(path[5].name) === true && PatternBk.test(words) === true) {
                             StationLine = this.PathBkAlignment;
-                        } else if (path[2].name === '交叉' && (path[5].name === '挡土墙工点设计图' || path[5].name === '挡墙工点设计图') && PatternZk.test(words) === true) {
+                        } else if (PatternJiaoCha.test(path[2].name) === true && (Pattern5DangTuQiang.test(path[5].name) === true || Pattern5DangQiang.test(path[5].name) === true) && PatternZk.test(words) === true) {
                             for (let i = 0; i < this.PathZkAlignment.length; i++) {
                                 if ((this.PathZkAlignment[i].startStation <= this.currentPathStartStation[0]) && (this.PathZkAlignment[i].endStation >= this.currentPathEndStation[0])) {
                                     StationLine = this.PathZkAlignment[i].id;
                                 }
                             }
-                        } else if (path[2].name === '交叉' && path[5].name === '挡土墙工点设计图' && PatternAk.test(words) === false && PatternBk.test(words) === false && PatternZk.test(words) === false && PatternCk.test(words) === false) {
+                        } else if (PatternJiaoCha.test(path[2].name) === true && Pattern5DangTuQiang.test(path[5].name) === true && PatternAk.test(words) === false && PatternBk.test(words) === false && PatternZk.test(words) === false && PatternCk.test(words) === false) {
                             StationLine = this.PathMainAlignment;
-                        } else if (path[2].name === '交叉' && path[3].name === '沐川南互通' && path[5].name === '挡墙工点设计图' && PatternCk.test(words) === true) {
+                        } else if (PatternJiaoCha.test(path[2].name) === true && PatternMuChuanNanHuTong.test(path[3].name) === true && Pattern5DangQiang.test(path[5].name) === true && PatternCk.test(words) === true) {
                             StationLine = this.PathCkAlignment;
-                        } else if (path[2].name === '交叉' && path[3].name === '沐川南互通' && path[5].name === '软基换填工点设计图' && PatternLk.test(words) === true) {
+                        } else if (PatternJiaoCha.test(path[2].name) === true && PatternMuChuanNanHuTong.test(path[3].name) === true && Pattern5RuanJiHuanTian.test(path[5].name) === true && PatternLk.test(words) === true) {
                             StationLine = this.PathLkAlignment;
                         }
                     }
@@ -648,7 +735,29 @@ export default {
                 let OverbridgeSite = this.$store.state['highway']['structure']['overbridge'];
                 let BridgeSite = this.$store.state['highway']['structure']['bridge'];
                 let SiteStationId;
-                if (path.length >= 2 && path[2].name === '涵洞') {
+                let PatternHanDong = new RegExp(Path2Name.HanDong);
+                let PatternQiaoLiang = new RegExp(Path2Name.QiaoLiang);
+                let PatternTianQiao = new RegExp(Path2Name.TianQiao);
+                let PatternLuJi = new RegExp(Path2Name.LuJi);
+                let PatternZongTi = new RegExp(Path2Name.ZongTi);
+                let PatternJiaoCha = new RegExp(Path2Name.JiaoCha);
+                let PatternMuChuanFuWu = new RegExp(Path3Name.MuChuanFuWu);
+                let PatternLuMianJieGou = new RegExp(Path3Name.LuMianJieGou);
+                let PatternDangTuQiang = new RegExp(Path3Name.DangTuQiang);
+                let PatternRuanJiHuanTian = new RegExp(Path3Name.RuanJiHuanTian);
+                let PatternGongLuPingMian = new RegExp(Path3Name.GongLuPingMian);
+                let PatternPaiShuiMangGou = new RegExp(Path3Name.PaiShuiMangGou);
+                let PatternMuChuanNanHuTong = new RegExp(Path3Name.MUChuanNanHuTong);
+                let PatternLuJiLuMianPaiShui = new RegExp(Path4Name.LuJiLuMianPaiShui);
+                let PatternDouPoLuDi = new RegExp(Path4Name.DouPoLuDi);
+                let Pattern5DangQiang = new RegExp(Path5Name.DangQiang);
+                let Pattern5DangTuQiang = new RegExp(Path5Name.DangTuQiang);
+                let Pattern5LuMianJieGou = new RegExp(Path5Name.LuMianJieGou);
+                let Pattern5RuanJiHuanTian = new RegExp(Path5Name.RuanJiHuanTian);
+                let Pattern6LuJiLuMianPaiShui = new RegExp(Path6Name.LuJiLuMianPaiShui);
+                let Pattern6DouPoLuDi = new RegExp(Path6Name.DouPoLuDi);
+                let Pattern6RuanJiHuanTian = new RegExp(Path6Name.RuanJiHuanTian);
+                if (path.length >= 2 && PatternHanDong.test(path[2].name) === true) {
                     if (CulvertSite.length > 0) {
                         for (let i = 0; i < CulvertSite.length; i++) {
                             if (Math.abs(parseFloat(numb) - CulvertSite[i].station) < 1) {
@@ -656,7 +765,7 @@ export default {
                             }
                         }
                     }
-                } else if (path.length >= 4 && path[2].name === '天桥') {
+                } else if (path.length >= 4 && PatternTianQiao.test(path[2].name) === true) {
                     if (OverbridgeSite.length > 0) {
                         for (let i = 0; i < OverbridgeSite.length; i++) {
                             if ((parseFloat(path[3].name.replace(/[^0-9]/ig, '').substr(4, 5)) === OverbridgeSite[i].station) || (parseFloat(path[3].name.replace(/[^0-9]/ig, '').substr(4, 6)) === OverbridgeSite[i].station) || (parseFloat(path[3].name.replace(/[^0-9]/ig, '').substr(5, 6)) === OverbridgeSite[i].station)) {
@@ -664,7 +773,7 @@ export default {
                             }
                         }
                     }
-                } else if (path.length >= 4 && path[2].name === '桥梁') {
+                } else if (path.length >= 4 && PatternQiaoLiang.test(path[2].name) === true) {
                     if (BridgeSite.length > 0) {
                         for (let i = 0; i < BridgeSite.length; i++) {
                             if (path[3].name.match(reg).join('') === BridgeSite[i].bridgeCnName.match(reg).join('')) {
@@ -712,9 +821,31 @@ export default {
             if (dataToBind.length <= 100) {
                 return dataToBind.map(item => {
                     let dataItem = this.currentFolderData.find(i => i.id === item.id);
+                    let PatternHanDong = new RegExp(Path2Name.HanDong);
+                    let PatternQiaoLiang = new RegExp(Path2Name.QiaoLiang);
+                    let PatternTianQiao = new RegExp(Path2Name.TianQiao);
+                    let PatternLuJi = new RegExp(Path2Name.LuJi);
+                    let PatternZongTi = new RegExp(Path2Name.ZongTi);
+                    let PatternJiaoCha = new RegExp(Path2Name.JiaoCha);
+                    let PatternMuChuanFuWu = new RegExp(Path3Name.MuChuanFuWu);
+                    let PatternLuMianJieGou = new RegExp(Path3Name.LuMianJieGou);
+                    let PatternDangTuQiang = new RegExp(Path3Name.DangTuQiang);
+                    let PatternRuanJiHuanTian = new RegExp(Path3Name.RuanJiHuanTian);
+                    let PatternGongLuPingMian = new RegExp(Path3Name.GongLuPingMian);
+                    let PatternPaiShuiMangGou = new RegExp(Path3Name.PaiShuiMangGou);
+                    let PatternMuChuanNanHuTong = new RegExp(Path3Name.MUChuanNanHuTong);
+                    let PatternLuJiLuMianPaiShui = new RegExp(Path4Name.LuJiLuMianPaiShui);
+                    let PatternDouPoLuDi = new RegExp(Path4Name.DouPoLuDi);
+                    let Pattern5DangQiang = new RegExp(Path5Name.DangQiang);
+                    let Pattern5DangTuQiang = new RegExp(Path5Name.DangTuQiang);
+                    let Pattern5LuMianJieGou = new RegExp(Path5Name.LuMianJieGou);
+                    let Pattern5RuanJiHuanTian = new RegExp(Path5Name.RuanJiHuanTian);
+                    let Pattern6LuJiLuMianPaiShui = new RegExp(Path6Name.LuJiLuMianPaiShui);
+                    let Pattern6DouPoLuDi = new RegExp(Path6Name.DouPoLuDi);
+                    let Pattern6RuanJiHuanTian = new RegExp(Path6Name.RuanJiHuanTian);
                     let path = this.$store.state['graphy']['explore']['path'];
                     if (path.length >= 4 && path.length < 6) {
-                        if ((path[2].name === '总体' && path[3].name === '公路平面总体设计图') || (path[2].name === '路基' && path[3].name === '软基换填工点设计图')) {
+                        if ((PatternZongTi.test(path[2].name) === true && PatternGongLuPingMian.test(path[3].name) === true) || (PatternLuJi.test(path[2].name) === true && PatternRuanJiHuanTian.test(path[3].name) === true)) {
                             let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
                             if (numb.length === 13) {
                                 if (numb.substr(5, 1) === '1') {
@@ -745,7 +876,7 @@ export default {
                             } else if (numb.length === 16) {
                                 return parseFloat(numb.substr(6, 6));
                             }
-                        } else if (path[2].name === '路基' && path[3].name === '挡土墙工点设计图') {
+                        } else if (PatternLuJi.test(path[2].name) === true && PatternDangTuQiang.test(path[3].name) === true) {
                             let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
                             if (path.length >= 4) {
                                 if (numb.length === 12) {
@@ -772,7 +903,7 @@ export default {
                             }
                         }
                     } else if (path.length >= 6) {
-                        if (path[2].name === '交叉' && path[5].name === '挡墙工点设计图') {
+                        if (PatternJiaoCha.test(path[2].name) === true && Pattern5DangQiang.test(path[5].name) === true) {
                             let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
                             if (numb.length === 12) {
                                 return parseFloat(numb.substr(6, 6));
@@ -783,7 +914,7 @@ export default {
                             } else if (numb.length === 15) {
                                 return parseFloat(numb.substr(9, 6));
                             }
-                        } else if (path[2].name === '交叉' && path[5].name === '挡土墙工点设计图') {
+                        } else if (PatternJiaoCha.test(path[2].name) === true && Pattern5DangTuQiang(path[5].name) === true) {
                             let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
                             if (numb.length === 14) {
                                 return parseFloat(numb.substr(6, 6));
@@ -796,7 +927,7 @@ export default {
                             } else if (numb.length === 7) {
                                 return parseFloat(numb.substr(4, 3));
                             }
-                        } else if (path[2].name === '交叉' && path[5].name === '软基换填工点设计图') {
+                        } else if (PatternJiaoCha.test(path[2].name) === true && Pattern5RuanJiHuanTian.test(path[5].name) === true) {
                             let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
                             if (numb.length === 8) {
                                 return parseFloat(numb.substr(4, 4));
@@ -809,7 +940,10 @@ export default {
         currentSiteType: function () {
             let path = this.$store.state['graphy']['explore']['path'];
             let currentSiteType;
-            if (path[2].name === '涵洞' || path[2].name === '天桥' || path[2].name === '桥梁') {
+            let PatternHanDong = new RegExp(Path2Name.HanDong);
+            let PatternQiaoLiang = new RegExp(Path2Name.QiaoLiang);
+            let PatternTianQiao = new RegExp(Path2Name.TianQiao);
+            if (PatternHanDong.test(path[2].name) === true || PatternTianQiao.test(path[2].name) === true || PatternQiaoLiang.test(path[2].name) === true) {
                 currentSiteType = '';
             }
             return currentSiteType;
@@ -914,7 +1048,7 @@ export default {
                 console.log('newdatasite', val, val2);
             } else if (val.alignmentCnName) {
                 this.objectData[val2] = val;
-            } else if (val.type && (path[2].name !== '天桥' && path[2].name !== '总体' && path[2].name !== '涵洞')) {
+            } else if (val.type && (path[2].name !== Path2Name.TianQiao && path[2].name !== Path2Name.ZongTi && path[2].name !== Path2Name.HanDong)) {
                 this.objectData[val2] = val;
             } else if (!val.siteType) {
                 this.objectData[val2] = [];
@@ -952,6 +1086,8 @@ export default {
                         this.objectData = {};
                     });
                 // TODO close modal or not
+                } else if (postData[i].model === []) {
+                    return;
                 }
             }
         },
