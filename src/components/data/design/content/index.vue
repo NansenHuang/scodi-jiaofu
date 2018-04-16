@@ -584,6 +584,8 @@ export default {
                             for (let i = 0; i < this.PathZkAlignment.length; i++) {
                                 if ((this.PathZkAlignment[i].startStation <= this.currentPathStartStation[0]) && (this.PathZkAlignment[i].endStation >= this.currentPathEndStation[0])) {
                                     StationLine = this.PathZkAlignment[i].id;
+                                } else if (i === (this.PathZkAlignment.length - 1) && !StationLine) {
+                                    StationLine = this.PathMainAlignment;
                                 }
                             }
                         } else if (path[2].name === '路基' && path[3].name === '软基换填工点设计图') {
@@ -649,7 +651,7 @@ export default {
                 if (path.length >= 2 && path[2].name === '涵洞') {
                     if (CulvertSite.length > 0) {
                         for (let i = 0; i < CulvertSite.length; i++) {
-                            if (parseFloat(numb) === CulvertSite[i].station) {
+                            if (Math.abs(parseFloat(numb) - CulvertSite[i].station) < 1) {
                                 SiteStationId = CulvertSite[i].id;
                             }
                         }
@@ -812,11 +814,6 @@ export default {
             }
             return currentSiteType;
         },
-        currentAlignmentCnName: function () {
-            let currentAlignCnName;
-            currentAlignCnName = '左线Z1(公路院）';
-            return currentAlignCnName;
-        },
         files: function () {
             let files = this.currentFolderData.filter(item => item.Type === 'FILE');
             return files.map((item) => ({
@@ -910,39 +907,53 @@ export default {
             }
         },
         handleBind (val, val2) {
+            let path = this.$store.state['graphy']['explore']['path'];
             console.log('new data:', val, val2);
             if (val.siteType && val.siteType !== '') {
                 this.objectData[val2] = val;
+                console.log('newdatasite', val, val2);
             } else if (val.alignmentCnName) {
                 this.objectData[val2] = val;
+            } else if (val.type && (path[2].name !== '天桥' && path[2].name !== '总体' && path[2].name !== '涵洞')) {
+                this.objectData[val2] = val;
+            } else if (!val.siteType) {
+                this.objectData[val2] = [];
             }
         },
         handleBindValue () {
             let items = this.currentDataToBind;
             let postData = items.map(obj => {
                 let item = this.currentFolderData.find(t => t.id === obj.id);
-                let data = {
-                    model: this.objectData[item['Alias']],
-                    docs: {
-                        id: item && item.id,
-                        type: obj.type,
-                        path: item && item['Path'],
-                        alias: item && item['Alias'],
-                    },
-                };
-                return data;
+                console.log('dataAlias', this.objectData[item['Alias']]);
+                if (this.objectData[item['Alias']] !== []) {
+                    let data = {
+                        model: this.objectData[item['Alias']],
+                        docs: {
+                            id: item && item.id,
+                            type: obj.type,
+                            path: item && item['Path'],
+                            alias: item && item['Alias'],
+                        },
+                    };
+                    return data;
+                }
             });
-            this.$store.dispatch(ActionType.AddRelations, postData).then(() => {
-                //
-                this.displayBindPanel = false;
-                let bindQuery = {query: {bool: {filter: []}}};
-                bindQuery.query.bool.filter.push({
-                    match: {'Data.docs.path.keyword': this.currentPath.path}
-                });
-                this.$store.dispatch(ActionType.QueryRelation, {query: bindQuery, delay: true});
-                this.objectData = {};
-            });
-            // TODO close modal or not
+            console.log('postDataAA', postData);
+            for (let i = 0; i < postData.length; i++) {
+                if (postData[i].model !== []) {
+                    this.$store.dispatch(ActionType.AddRelations, [postData[i]]).then(() => {
+                    //
+                        this.displayBindPanel = false;
+                        let bindQuery = {query: {bool: {filter: []}}};
+                        bindQuery.query.bool.filter.push({
+                            match: {'Data.docs.path.keyword': this.currentPath.path}
+                        });
+                        this.$store.dispatch(ActionType.QueryRelation, {query: bindQuery, delay: true});
+                        this.objectData = {};
+                    });
+                // TODO close modal or not
+                }
+            }
         },
         jumpToPath (val) {
             this.$store.commit(
