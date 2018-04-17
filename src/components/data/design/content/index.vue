@@ -914,7 +914,7 @@ export default {
                             } else if (numb.length === 15) {
                                 return parseFloat(numb.substr(9, 6));
                             }
-                        } else if (PatternJiaoCha.test(path[2].name) && Pattern5DangTuQiang(path[5].name)) {
+                        } else if (PatternJiaoCha.test(path[2].name) && Pattern5DangTuQiang.test(path[5].name)) {
                             let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
                             if (numb.length === 14) {
                                 return parseFloat(numb.substr(6, 6));
