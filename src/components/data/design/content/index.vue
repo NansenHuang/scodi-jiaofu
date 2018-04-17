@@ -149,14 +149,13 @@ export default {
             let PatternHanDong = new RegExp(Path2Name.HanDong);
             let PatternQiaoLiang = new RegExp(Path2Name.QiaoLiang);
             let PatternTianQiao = new RegExp(Path2Name.TianQiao);
-            if (path.length >= 3) {
-                if (PatternHanDong.test(path[2].name)) {
-                    return TypeValue.HanDong;
-                } else if (PatternQiaoLiang.test(path[2].name)) {
-                    return TypeValue.Qiao;
-                } else if (PatternTianQiao.test(path[2].name)) {
-                    return TypeValue.TianQiao;
-                }
+            let pathmap = path.map(item => item.name);
+            if (PatternHanDong.test(pathmap.join(''))) {
+                return TypeValue.HanDong;
+            } else if (PatternQiaoLiang.test(pathmap.join(''))) {
+                return TypeValue.Qiao;
+            } else if (PatternTianQiao.test(pathmap.join(''))) {
+                return TypeValue.TianQiao;
             }
         },
         siteArray () {
@@ -298,59 +297,45 @@ export default {
             let Pattern6LuJiLuMianPaiShui = new RegExp(Path6Name.LuJiLuMianPaiShui);
             let Pattern6DouPoLuDi = new RegExp(Path6Name.DouPoLuDi);
             let Pattern6RuanJiHuanTian = new RegExp(Path6Name.RuanJiHuanTian);
-            if (path.length === 3) {
-                if (PatternHanDong.test(path[2].name)) {
-                    return TypeValue.HanDong;
-                }
-            } else if (path.length === 4) {
-                if (PatternHanDong.test(path[2].name)) {
-                    return TypeValue.HanDong;
-                } else if (PatternTianQiao.test(path[2].name)) {
-                    return TypeValue.TianQiao;
-                } else if (PatternQiaoLiang.test(path[2].name)) {
-                    return TypeValue.Qiao;
-                } else if (PatternLuJi.test(path[2].name) && PatternLuMianJieGou.test(path[3].name)) {
-                    return TypeValue.LuMian;
-                } else if (PatternLuJi.test(path[2].name) && PatternDangTuQiang.test(path[3].name)) {
-                    return TypeValue.DangQiang;
-                } else if (PatternLuJi.test(path[2].name) && PatternRuanJiHuanTian.test(path[3].name)) {
-                    return TypeValue.Rjht;
-                } else if (PatternZongTi.test(path[2].name) && PatternGongLuPingMian.test(path[3].name) && !this.bindInfo.length) {
-                    return TypeValue.BianPo;
-                } else if (PatternZongTi.test(path[2].name) && PatternGongLuPingMian.test(path[3].name) && this.bindInfo.length) {
-                    return TypeValue.LuMian;
-                }
-            }
-            if (path.length === 5) {
-                if (PatternLuJi.test(path[2].name) && PatternPaiShuiMangGou.test(path[3].name) && PatternLuJiLuMianPaiShui.test(path[4].name) && !this.bindInfo.length) {
-                    return TypeValue.MangGou;
-                } else if (PatternLuJi.test(path[2].name) && PatternPaiShuiMangGou.test(path[3].name) && PatternLuJiLuMianPaiShui.test(path[4].name) && this.bindInfo.length) {
-                    return TypeValue.BianGou;
-                } else if (PatternLuJi.test(path[2].name) && PatternPaiShuiMangGou.test(path[3].name) && PatternDouPoLuDi.test(path[4].name)) {
-                    return TypeValue.MangGou;
-                }
-            }
-            if (path.length === 6) {
-                if (PatternJiaoCha.test(path[2].name) && Pattern5DangQiang.test(path[5].name)) {
-                    return TypeValue.DangQiang;
-                } else if (PatternJiaoCha.test(path[2].name) && Pattern5DangTuQiang.test(path[5].name)) {
-                    return TypeValue.DangQiang;
-                } else if (PatternJiaoCha.test(path[2].name) && Pattern5LuMianJieGou.test(path[5].name)) {
-                    return TypeValue.LuMian;
-                } else if (PatternJiaoCha.test(path[2].name) && Pattern5RuanJiHuanTian.test(path[5].name)) {
-                    return TypeValue.Rjht;
-                }
-            }
-            if (path.length === 7) {
-                if (PatternJiaoCha.test(path[2].name) && Pattern6LuJiLuMianPaiShui.test(path[6].name) && !this.bindInfo.length) {
-                    return TypeValue.MangGou;
-                } else if (PatternJiaoCha.test(path[2].name) && Pattern6LuJiLuMianPaiShui.test(path[6].name) && this.bindInfo.length) {
-                    return TypeValue.BianGou;
-                } else if (PatternJiaoCha.test(path[2].name) && Pattern6DouPoLuDi.test(path[6].name)) {
-                    return TypeValue.MangGou;
-                } else if (PatternJiaoCha.test(path[2].name) && Pattern6RuanJiHuanTian.test(path[6].name)) {
-                    return TypeValue.Rjht;
-                }
+            let pathmap = path.map(item => item.name);
+            if (PatternHanDong.test(pathmap.join(''))) {
+                return TypeValue.HanDong;
+            } else if (PatternTianQiao.test(pathmap.join(''))) {
+                return TypeValue.TianQiao;
+            } else if (PatternQiaoLiang.test(pathmap.join(''))) {
+                return TypeValue.Qiao;
+            } else if (PatternLuJi.test(pathmap.join('')) && PatternLuMianJieGou.test(pathmap.join(''))) {
+                return TypeValue.LuMian;
+            } else if (PatternLuJi.test(pathmap.join('')) && PatternDangTuQiang.test(pathmap.join(''))) {
+                return TypeValue.DangQiang;
+            } else if (PatternLuJi.test(pathmap.join('')) && PatternRuanJiHuanTian.test(pathmap.join(''))) {
+                return TypeValue.Rjht;
+            } else if (PatternZongTi.test(pathmap.join('')) && PatternGongLuPingMian.test(pathmap.join('')) && !this.bindInfo.length) {
+                return TypeValue.BianPo;
+            } else if (PatternZongTi.test(pathmap.join('')) && PatternGongLuPingMian.test(pathmap.join('')) && this.bindInfo.length) {
+                return TypeValue.LuMian;
+            } else if (PatternLuJi.test(pathmap.join('')) && PatternPaiShuiMangGou.test(pathmap.join('')) && PatternLuJiLuMianPaiShui.test(pathmap.join('')) && !this.bindInfo.length) {
+                return TypeValue.MangGou;
+            } else if (PatternLuJi.test(pathmap.join('')) && PatternPaiShuiMangGou.test(pathmap.join('')) && PatternLuJiLuMianPaiShui.test(pathmap.join('')) && this.bindInfo.length) {
+                return TypeValue.BianGou;
+            } else if (PatternLuJi.test(pathmap.join('')) && PatternPaiShuiMangGou.test(pathmap.join('')) && PatternDouPoLuDi.test(pathmap.join(''))) {
+                return TypeValue.MangGou;
+            } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern5DangQiang.test(pathmap.join(''))) {
+                return TypeValue.DangQiang;
+            } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern5DangTuQiang.test(pathmap.join(''))) {
+                return TypeValue.DangQiang;
+            } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern5LuMianJieGou.test(pathmap.join(''))) {
+                return TypeValue.LuMian;
+            } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern5RuanJiHuanTian.test(pathmap.join(''))) {
+                return TypeValue.Rjht;
+            } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern6LuJiLuMianPaiShui.test(pathmap.join('')) && !this.bindInfo.length) {
+                return TypeValue.MangGou;
+            } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern6LuJiLuMianPaiShui.test(pathmap.join('')) && this.bindInfo.length) {
+                return TypeValue.BianGou;
+            } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern6DouPoLuDi.test(pathmap.join(''))) {
+                return TypeValue.MangGou;
+            } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern6RuanJiHuanTian.test(pathmap.join(''))) {
+                return TypeValue.Rjht;
             }
         },
         currentPathtypeModel: function () {
@@ -394,44 +379,37 @@ export default {
                     let Pattern6LuJiLuMianPaiShui = new RegExp(Path6Name.LuJiLuMianPaiShui);
                     let Pattern6DouPoLuDi = new RegExp(Path6Name.DouPoLuDi);
                     let Pattern6RuanJiHuanTian = new RegExp(Path6Name.RuanJiHuanTian);
-                    if (path.length === 4) {
-                        if (PatternLuJi.test(path[2].name) && PatternRuanJiHuanTian.test(path[3].name)) {
-                            return TypeModel[TypeValue.Rjht].RJHT;
-                        } else if (PatternQiaoLiang.test(path[2].name) && numb === '2' && !this.bindInfo.length) {
-                            return TypeModel[TypeValue.Qiao].SiJieFeng;
-                        } else if (PatternQiaoLiang.test(path[2].name) && numb === '2' && this.bindInfo.length) {
-                            return TypeModel[TypeValue.Qiao].TLiang;
-                        } else if (PatternQiaoLiang.test(path[2].name) && numb === '3') {
-                            return TypeModel[TypeValue.Qiao].GaiLiang;
-                        } else if (PatternQiaoLiang.test(path[2].name) && numb === '4') {
-                            return TypeModel[TypeValue.Qiao].QiaoDun;
-                        } else if (PatternQiaoLiang.test(path[2].name) && numb === '5') {
-                            return TypeModel[TypeValue.Qiao].DunXiLiang;
-                        } else if (PatternQiaoLiang.test(path[2].name) && numb === '6') {
-                            return TypeModel[TypeValue.Qiao].ChengTai;
-                        } else if (PatternQiaoLiang.test(path[2].name) && numb === '7') {
-                            return TypeModel[TypeValue.Qiao].Zhuang;
-                        } else if (PatternQiaoLiang.test(path[2].name) && numb === '8') {
-                            return TypeModel[TypeValue.Qiao].QiaoTai;
-                        }
-                    } else if (path.length === 5) {
-                        if (PatternLuJi.test(path[2].name) && PatternPaiShuiMangGou.test(path[3].name) && PatternLuJiLuMianPaiShui.test(path[4].name) && !this.bindInfo.length) {
-                            return TypeModel[TypeValue.MangGou].BianGouMangGou;
-                        } else if (PatternLuJi.test(path[2].name) && PatternPaiShuiMangGou.test(path[3].name) && PatternDouPoLuDi.test(path[4].name)) {
-                            return TypeModel[TypeValue.MangGou].JiaoJieMangGou;
-                        }
-                    } else if (path.length === 6) {
-                        if (PatternJiaoCha.test(path[2].name) && Pattern5RuanJiHuanTian.test(path[5].name)) {
-                            return TypeModel[TypeValue.Rjht].RJHT;
-                        }
-                    } else if (path.length === 7) {
-                        if (PatternJiaoCha.test(path[2].name) && Pattern6LuJiLuMianPaiShui.test(path[6].name) && !this.bindInfo.length) {
-                            return TypeModel[TypeValue.MangGou].BianGouMangGou;
-                        } else if (PatternJiaoCha.test(path[2].name) && Pattern6DouPoLuDi.test(path[6].name)) {
-                            return TypeModel[TypeValue.MangGou].JiaoJieMangGou;
-                        } else if (PatternJiaoCha.test(path[2].name) && Pattern6RuanJiHuanTian.test(path[6].name)) {
-                            return TypeModel[TypeValue.Rjht].RJHT;
-                        }
+                    let pathmap = path.map(item => item.name);
+                    if (PatternLuJi.test(pathmap.join('')) && PatternRuanJiHuanTian.test(pathmap.join(''))) {
+                        return TypeModel[TypeValue.Rjht].RJHT;
+                    } else if (PatternQiaoLiang.test(pathmap.join('')) && numb === '2' && !this.bindInfo.length) {
+                        return TypeModel[TypeValue.Qiao].SiJieFeng;
+                    } else if (PatternQiaoLiang.test(pathmap.join('')) && numb === '2' && this.bindInfo.length) {
+                        return TypeModel[TypeValue.Qiao].TLiang;
+                    } else if (PatternQiaoLiang.test(pathmap.join('')) && numb === '3') {
+                        return TypeModel[TypeValue.Qiao].GaiLiang;
+                    } else if (PatternQiaoLiang.test(pathmap.join('')) && numb === '4') {
+                        return TypeModel[TypeValue.Qiao].QiaoDun;
+                    } else if (PatternQiaoLiang.test(pathmap.join('')) && numb === '5') {
+                        return TypeModel[TypeValue.Qiao].DunXiLiang;
+                    } else if (PatternQiaoLiang.test(pathmap.join('')) && numb === '6') {
+                        return TypeModel[TypeValue.Qiao].ChengTai;
+                    } else if (PatternQiaoLiang.test(pathmap.join('')) && numb === '7') {
+                        return TypeModel[TypeValue.Qiao].Zhuang;
+                    } else if (PatternQiaoLiang.test(pathmap.join('')) && numb === '8') {
+                        return TypeModel[TypeValue.Qiao].QiaoTai;
+                    } else if (PatternLuJi.test(pathmap.join('')) && PatternPaiShuiMangGou.test(pathmap.join('')) && PatternLuJiLuMianPaiShui.test(pathmap.join('')) && !this.bindInfo.length) {
+                        return TypeModel[TypeValue.MangGou].BianGouMangGou;
+                    } else if (PatternLuJi.test(pathmap.join('')) && PatternPaiShuiMangGou.test(pathmap.join('')) && PatternDouPoLuDi.test(pathmap.join(''))) {
+                        return TypeModel[TypeValue.MangGou].JiaoJieMangGou;
+                    } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern5RuanJiHuanTian.test(pathmap.join(''))) {
+                        return TypeModel[TypeValue.Rjht].RJHT;
+                    } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern6LuJiLuMianPaiShui.test(pathmap.join('')) && !this.bindInfo.length) {
+                        return TypeModel[TypeValue.MangGou].BianGouMangGou;
+                    } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern6DouPoLuDi.test(pathmap.join(''))) {
+                        return TypeModel[TypeValue.MangGou].JiaoJieMangGou;
+                    } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern6RuanJiHuanTian.test(pathmap.join(''))) {
+                        return TypeModel[TypeValue.Rjht].RJHT;
                     }
                 });
             }
@@ -474,86 +452,81 @@ export default {
                 let Pattern6LuJiLuMianPaiShui = new RegExp(Path6Name.LuJiLuMianPaiShui);
                 let Pattern6DouPoLuDi = new RegExp(Path6Name.DouPoLuDi);
                 let Pattern6RuanJiHuanTian = new RegExp(Path6Name.RuanJiHuanTian);
-                if (path.length >= 4 && path.length < 6) {
-                    if ((PatternZongTi.test(path[2].name) && PatternGongLuPingMian.test(path[3].name)) || (PatternLuJi.test(path[2].name) && PatternRuanJiHuanTian.test(path[3].name))) {
-                        let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
-                        if (numb.length === 13) {
-                            if (numb.substr(5, 1) === '1') {
-                                return parseFloat(numb.substr(0, 5));
-                            } else return parseFloat(numb.substr(0, 6));
-                        } else if (numb.length === 14) {
-                            return parseFloat(numb.substr(0, 6));
-                        } else if (numb.length === 12) {
-                            if (numb.substr(0, 1) !== '1') {
-                                return parseFloat(numb.substr(0, 5));
-                            } else if (numb.substr(0, 1) !== '1' && numb.substr(5, 1) === '1') {
-                                return parseFloat(numb.substr(0, 5));
-                            } else {
-                                return parseFloat(numb.substr(0, 6));
-                            }
-                        } else if (numb.length === 11) {
+                let pathmap = path.map(item => item.name);
+                if ((PatternZongTi.test(pathmap.join('')) && PatternGongLuPingMian.test(pathmap.join(''))) || (PatternLuJi.test(pathmap.join('')) && PatternRuanJiHuanTian.test(pathmap.join('')))) {
+                    let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                    if (numb.length === 13) {
+                        if (numb.substr(5, 1) === '1') {
                             return parseFloat(numb.substr(0, 5));
-                        } else if (numb.length === 10) {
+                        } else return parseFloat(numb.substr(0, 6));
+                    } else if (numb.length === 14) {
+                        return parseFloat(numb.substr(0, 6));
+                    } else if (numb.length === 12) {
+                        if (numb.substr(0, 1) !== '1') {
                             return parseFloat(numb.substr(0, 5));
-                        } else if (numb.length === 15) {
-                            return parseFloat(numb.substr(0, 6));
-                        } else if (numb.length === 19) {
-                            return parseFloat(numb.substr(0, 6));
-                        } else if (numb.length === 16) {
+                        } else if (numb.substr(0, 1) !== '1' && numb.substr(5, 1) === '1') {
+                            return parseFloat(numb.substr(0, 5));
+                        } else {
                             return parseFloat(numb.substr(0, 6));
                         }
-                    } else if (PatternLuJi.test(path[2].name) && PatternDangTuQiang.test(path[3].name)) {
-                        let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
-                        if (path.length >= 4) {
-                            if (numb.length === 12) {
-                                return parseFloat(numb.substr(0, 6));
-                            } else if (numb.length === 13 && numb.substr(6, 1) === '1') {
-                                return parseFloat(numb.substr(0, 6));
-                            } else if (numb.length === 13 && numb.substr(6, 1) !== '1') {
-                                return parseFloat(numb.substr(0, 6));
-                            } else if (numb.length === 14 && numb.substr(6, 1) === '1') {
-                                return parseFloat(numb.substr(0, 6));
-                            } else if (numb.length === 14 && numb.substr(6, 1) !== '1') {
-                                return parseFloat(numb.substr(0, 6));
-                            } else if (numb.length === 15) {
-                                return parseFloat(numb.substr(0, 6));
-                            } else if (numb.length === 18) {
-                                return parseFloat(numb.substr(0, 6));
-                            }
-                        }
+                    } else if (numb.length === 11) {
+                        return parseFloat(numb.substr(0, 5));
+                    } else if (numb.length === 10) {
+                        return parseFloat(numb.substr(0, 5));
+                    } else if (numb.length === 15) {
+                        return parseFloat(numb.substr(0, 6));
+                    } else if (numb.length === 19) {
+                        return parseFloat(numb.substr(0, 6));
+                    } else if (numb.length === 16) {
+                        return parseFloat(numb.substr(0, 6));
                     }
-                } else if (path.length >= 6) {
-                    if (PatternJiaoCha.test(path[2].name) && Pattern5DangQiang.test(path[5].name)) {
-                        let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
-                        if (numb.length === 12) {
-                            return parseFloat(numb.substr(0, 6));
-                        } else if (numb.length === 11) {
-                            return parseFloat(numb.substr(0, 4));
-                        } else if (numb.length === 14) {
-                            return parseFloat(numb.substr(0, 6));
-                        } else if (numb.length === 15 && numb.substr(0, 1) === numb.substr(6, 1) && numb.substr(1, 1) === numb.substr(7, 1) && numb.substr(2, 1) === numb.substr(8, 1)) {
-                            return parseFloat(numb.substr(0, 6));
-                        } else if (numb.length === 15) {
-                            return parseFloat(numb.substr(0, 6));
-                        }
-                    } else if (PatternJiaoCha.test(path[2].name) && Pattern5DangTuQiang.test(path[5].name)) {
-                        let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
-                        if (numb.length === 14) {
-                            return parseFloat(numb.substr(0, 6));
-                        } else if (numb.length === 15) {
-                            return parseFloat(numb.substr(0, 6));
-                        } else if (numb.length === 10) {
-                            return parseFloat(numb.substr(0, 4));
-                        } else if (numb.length === 8) {
-                            return parseFloat(numb.substr(0, 4));
-                        } else if (numb.length === 7) {
-                            return parseFloat(numb.substr(0, 4));
-                        }
-                    } else if (PatternJiaoCha.test(path[2].name) && Pattern5RuanJiHuanTian.test(path[5].name)) {
-                        let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
-                        if (numb.length === 8) {
-                            return parseFloat(numb.substr(0, 4));
-                        }
+                } else if (PatternLuJi.test(pathmap.join('')) && PatternDangTuQiang.test(pathmap.join(''))) {
+                    let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                    if (numb.length === 12) {
+                        return parseFloat(numb.substr(0, 6));
+                    } else if (numb.length === 13 && numb.substr(6, 1) === '1') {
+                        return parseFloat(numb.substr(0, 6));
+                    } else if (numb.length === 13 && numb.substr(6, 1) !== '1') {
+                        return parseFloat(numb.substr(0, 6));
+                    } else if (numb.length === 14 && numb.substr(6, 1) === '1') {
+                        return parseFloat(numb.substr(0, 6));
+                    } else if (numb.length === 14 && numb.substr(6, 1) !== '1') {
+                        return parseFloat(numb.substr(0, 6));
+                    } else if (numb.length === 15) {
+                        return parseFloat(numb.substr(0, 6));
+                    } else if (numb.length === 18) {
+                        return parseFloat(numb.substr(0, 6));
+                    }
+                } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern5DangQiang.test(pathmap.join(''))) {
+                    let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                    if (numb.length === 12) {
+                        return parseFloat(numb.substr(0, 6));
+                    } else if (numb.length === 11) {
+                        return parseFloat(numb.substr(0, 4));
+                    } else if (numb.length === 14) {
+                        return parseFloat(numb.substr(0, 6));
+                    } else if (numb.length === 15 && numb.substr(0, 1) === numb.substr(6, 1) && numb.substr(1, 1) === numb.substr(7, 1) && numb.substr(2, 1) === numb.substr(8, 1)) {
+                        return parseFloat(numb.substr(0, 6));
+                    } else if (numb.length === 15) {
+                        return parseFloat(numb.substr(0, 6));
+                    }
+                } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern5DangTuQiang.test(pathmap.join(''))) {
+                    let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                    if (numb.length === 14) {
+                        return parseFloat(numb.substr(0, 6));
+                    } else if (numb.length === 15) {
+                        return parseFloat(numb.substr(0, 6));
+                    } else if (numb.length === 10) {
+                        return parseFloat(numb.substr(0, 4));
+                    } else if (numb.length === 8) {
+                        return parseFloat(numb.substr(0, 4));
+                    } else if (numb.length === 7) {
+                        return parseFloat(numb.substr(0, 4));
+                    }
+                } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern5RuanJiHuanTian.test(pathmap.join(''))) {
+                    let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                    if (numb.length === 8) {
+                        return parseFloat(numb.substr(0, 4));
                     }
                 }
             });
@@ -664,48 +637,45 @@ export default {
                     let Pattern6LuJiLuMianPaiShui = new RegExp(Path6Name.LuJiLuMianPaiShui);
                     let Pattern6DouPoLuDi = new RegExp(Path6Name.DouPoLuDi);
                     let Pattern6RuanJiHuanTian = new RegExp(Path6Name.RuanJiHuanTian);
-                    if (path.length === 4) {
-                        if (PatternZongTi.test(path[2].name) && PatternGongLuPingMian.test(path[3].name) && PatternZk.test(words) === false) {
-                            StationLine = this.PathMainAlignment;
-                        } else if (PatternZongTi.test(path[2].name) && PatternGongLuPingMian.test(path[3].name) && PatternZk.test(words)) {
-                            for (let i = 0; i < this.PathZkAlignment.length; i++) {
-                                if ((this.PathZkAlignment[i].startStation <= this.currentPathStartStation[0]) && (this.PathZkAlignment[i].endStation >= this.currentPathEndStation[0])) {
-                                    StationLine = this.PathZkAlignment[i].id;
-                                } else if (i === (this.PathZkAlignment.length - 1) && !StationLine) {
-                                    StationLine = this.PathMainAlignment;
-                                }
+                    let pathmap = path.map(item => item.name);
+                    if (PatternZongTi.test(pathmap.join('')) && PatternGongLuPingMian.test(pathmap.join('')) && PatternZk.test(words) === false) {
+                        StationLine = this.PathMainAlignment;
+                    } else if (PatternZongTi.test(pathmap.join('')) && PatternGongLuPingMian.test(pathmap.join('')) && PatternZk.test(words)) {
+                        for (let i = 0; i < this.PathZkAlignment.length; i++) {
+                            if ((this.PathZkAlignment[i].startStation <= this.currentPathStartStation[0]) && (this.PathZkAlignment[i].endStation >= this.currentPathEndStation[0])) {
+                                StationLine = this.PathZkAlignment[i].id;
+                            } else if (i === (this.PathZkAlignment.length - 1) && !StationLine) {
+                                StationLine = this.PathMainAlignment;
                             }
-                        } else if (PatternLuJi.test(path[2].name) && PatternRuanJiHuanTian.test(path[3].name)) {
-                            StationLine = this.PathMainAlignment;
-                        } else if (PatternLuJi.test(path[2].name) && PatternDangTuQiang.test(path[3].name) && PatternZk.test(words)) {
-                            for (let i = 0; i < this.PathZkAlignment.length; i++) {
-                                if ((this.PathZkAlignment[i].startStation <= this.currentPathStartStation[0]) && (this.PathZkAlignment[i].endStation >= this.currentPathEndStation[0])) {
-                                    StationLine = this.PathZkAlignment[i].id;
-                                }
-                            }
-                        } else if (PatternLuJi.test(path[2].name) && PatternDangTuQiang.test(path[3].name) && PatternZk.test(words) === false) {
-                            StationLine = this.PathMainAlignment;
                         }
-                    } else if (path.length === 6) {
-                        if (PatternJiaoCha.test(path[2].name) && Pattern5DangQiang.test(path[5].name) && PatternAk.test(words) === false && PatternBk.test(words) === false && PatternZk.test(words) === false && PatternCk.test(words) === false) {
-                            StationLine = this.PathMainAlignment;
-                        } else if (PatternJiaoCha.test(path[2].name) && Pattern5DangQiang.test(path[5].name) && PatternMuChuan.test(path[3].name) && PatternAk.test(words)) {
-                            StationLine = this.PathAkAlignment;
-                        } else if (PatternJiaoCha.test(path[2].name) && PatternMuChuanFuWu.test(path[3].name) && Pattern5DangTuQiang.test(path[5].name) && PatternBk.test(words)) {
-                            StationLine = this.PathBkAlignment;
-                        } else if (PatternJiaoCha.test(path[2].name) && (Pattern5DangTuQiang.test(path[5].name) || Pattern5DangQiang.test(path[5].name)) && PatternZk.test(words)) {
-                            for (let i = 0; i < this.PathZkAlignment.length; i++) {
-                                if ((this.PathZkAlignment[i].startStation <= this.currentPathStartStation[0]) && (this.PathZkAlignment[i].endStation >= this.currentPathEndStation[0])) {
-                                    StationLine = this.PathZkAlignment[i].id;
-                                }
+                    } else if (PatternLuJi.test(pathmap.join('')) && PatternRuanJiHuanTian.test(pathmap.join(''))) {
+                        StationLine = this.PathMainAlignment;
+                    } else if (PatternLuJi.test(pathmap.join('')) && PatternDangTuQiang.test(pathmap.join('')) && PatternZk.test(words)) {
+                        for (let i = 0; i < this.PathZkAlignment.length; i++) {
+                            if ((this.PathZkAlignment[i].startStation <= this.currentPathStartStation[0]) && (this.PathZkAlignment[i].endStation >= this.currentPathEndStation[0])) {
+                                StationLine = this.PathZkAlignment[i].id;
                             }
-                        } else if (PatternJiaoCha.test(path[2].name) && Pattern5DangTuQiang.test(path[5].name) && PatternAk.test(words) === false && PatternBk.test(words) === false && PatternZk.test(words) === false && PatternCk.test(words) === false) {
-                            StationLine = this.PathMainAlignment;
-                        } else if (PatternJiaoCha.test(path[2].name) && PatternMuChuanNanHuTong.test(path[3].name) && Pattern5DangQiang.test(path[5].name) && PatternCk.test(words)) {
-                            StationLine = this.PathCkAlignment;
-                        } else if (PatternJiaoCha.test(path[2].name) && PatternMuChuanNanHuTong.test(path[3].name) && Pattern5RuanJiHuanTian.test(path[5].name) && PatternLk.test(words)) {
-                            StationLine = this.PathLkAlignment;
                         }
+                    } else if (PatternLuJi.test(pathmap.join('')) && PatternDangTuQiang.test(pathmap.join('')) && PatternZk.test(words) === false) {
+                        StationLine = this.PathMainAlignment;
+                    } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern5DangQiang.test(pathmap.join('')) && PatternAk.test(words) === false && PatternBk.test(words) === false && PatternZk.test(words) === false && PatternCk.test(words) === false) {
+                        StationLine = this.PathMainAlignment;
+                    } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern5DangQiang.test(pathmap.join('')) && PatternMuChuan.test(pathmap.join('')) && PatternAk.test(words)) {
+                        StationLine = this.PathAkAlignment;
+                    } else if (PatternJiaoCha.test(pathmap.join('')) && PatternMuChuanFuWu.test(pathmap.join('')) && Pattern5DangTuQiang.test(pathmap.join('')) && PatternBk.test(words)) {
+                        StationLine = this.PathBkAlignment;
+                    } else if (PatternJiaoCha.test(pathmap.join('')) && (Pattern5DangTuQiang.test(pathmap.join('')) || Pattern5DangQiang.test(pathmap.join(''))) && PatternZk.test(words)) {
+                        for (let i = 0; i < this.PathZkAlignment.length; i++) {
+                            if ((this.PathZkAlignment[i].startStation <= this.currentPathStartStation[0]) && (this.PathZkAlignment[i].endStation >= this.currentPathEndStation[0])) {
+                                StationLine = this.PathZkAlignment[i].id;
+                            }
+                        }
+                    } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern5DangTuQiang.test(pathmap.join('')) && PatternAk.test(words) === false && PatternBk.test(words) === false && PatternZk.test(words) === false && PatternCk.test(words) === false) {
+                        StationLine = this.PathMainAlignment;
+                    } else if (PatternJiaoCha.test(pathmap.join('')) && PatternMuChuanNanHuTong.test(pathmap.join('')) && Pattern5DangQiang.test(pathmap.join('')) && PatternCk.test(words)) {
+                        StationLine = this.PathCkAlignment;
+                    } else if (PatternJiaoCha.test(pathmap.join('') && PatternMuChuanNanHuTong.test(pathmap.join('')) && Pattern5RuanJiHuanTian.test(pathmap.join('')) && PatternLk.test(words))) {
+                        StationLine = this.PathLkAlignment;
                     }
                     return StationLine;
                 });
@@ -757,7 +727,8 @@ export default {
                 let Pattern6LuJiLuMianPaiShui = new RegExp(Path6Name.LuJiLuMianPaiShui);
                 let Pattern6DouPoLuDi = new RegExp(Path6Name.DouPoLuDi);
                 let Pattern6RuanJiHuanTian = new RegExp(Path6Name.RuanJiHuanTian);
-                if (path.length >= 2 && PatternHanDong.test(path[2].name)) {
+                let pathmap = path.map(item => item.name);
+                if (PatternHanDong.test(pathmap.join(''))) {
                     if (CulvertSite.length > 0) {
                         for (let i = 0; i < CulvertSite.length; i++) {
                             if (Math.abs(parseFloat(numb) - CulvertSite[i].station) < 1) {
@@ -765,7 +736,7 @@ export default {
                             }
                         }
                     }
-                } else if (path.length >= 4 && PatternTianQiao.test(path[2].name)) {
+                } else if (PatternTianQiao.test(pathmap.join(''))) {
                     if (OverbridgeSite.length > 0) {
                         for (let i = 0; i < OverbridgeSite.length; i++) {
                             if ((parseFloat(path[3].name.replace(/[^0-9]/ig, '').substr(4, 5)) === OverbridgeSite[i].station) || (parseFloat(path[3].name.replace(/[^0-9]/ig, '').substr(4, 6)) === OverbridgeSite[i].station) || (parseFloat(path[3].name.replace(/[^0-9]/ig, '').substr(5, 6)) === OverbridgeSite[i].station)) {
@@ -773,7 +744,7 @@ export default {
                             }
                         }
                     }
-                } else if (path.length >= 4 && PatternQiaoLiang.test(path[2].name)) {
+                } else if (PatternQiaoLiang.test(pathmap.join(''))) {
                     if (BridgeSite.length > 0) {
                         for (let i = 0; i < BridgeSite.length; i++) {
                             if (path[3].name.match(reg).join('') === BridgeSite[i].bridgeCnName.match(reg).join('')) {
@@ -844,94 +815,91 @@ export default {
                     let Pattern6DouPoLuDi = new RegExp(Path6Name.DouPoLuDi);
                     let Pattern6RuanJiHuanTian = new RegExp(Path6Name.RuanJiHuanTian);
                     let path = this.$store.state['graphy']['explore']['path'];
-                    if (path.length >= 4 && path.length < 6) {
-                        if ((PatternZongTi.test(path[2].name) && PatternGongLuPingMian.test(path[3].name)) || (PatternLuJi.test(path[2].name) && PatternRuanJiHuanTian.test(path[3].name))) {
-                            let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
-                            if (numb.length === 13) {
-                                if (numb.substr(5, 1) === '1') {
-                                    return parseFloat(numb.substr(5, 6));
-                                } else return parseFloat(numb.substr(6, 6));
-                            } else if (numb.length === 14) {
-                                if (numb.substr(0, 1) === numb.substr(7, 1) && numb.substr(1, 1) === numb.substr(8, 1)) {
-                                    return parseFloat(numb.substr(7, 6));
-                                } else {
-                                    return parseFloat(numb.substr(6, 6));
-                                }
-                            } else if (numb.length === 12) {
-                                if (numb.substr(0, 1) !== '1' && numb.substr(5, 1) !== '1') {
-                                    return parseFloat(numb.substr(5, 5));
-                                } else if (numb.substr(0, 1) !== '1' && numb.substr(5, 1) === '1') {
-                                    return parseFloat(numb.substr(5, 6));
-                                } else {
-                                    return parseFloat(numb.substr(6, 6));
-                                }
-                            } else if (numb.length === 11) {
-                                return parseFloat(numb.substr(5, 5));
-                            } else if (numb.length === 10) {
-                                return parseFloat(numb.substr(5, 5));
-                            } else if (numb.length === 15) {
-                                return parseFloat(numb.substr(6, 6));
-                            } else if (numb.length === 19) {
-                                return parseFloat(numb.substr(9, 6));
-                            } else if (numb.length === 16) {
+                    let pathmap = path.map(item => item.name);
+                    if ((PatternZongTi.test(pathmap.join('')) && PatternGongLuPingMian.test(pathmap.join(''))) || (PatternLuJi.test(pathmap.join('')) && PatternRuanJiHuanTian.test(pathmap.join('')))) {
+                        let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                        if (numb.length === 13) {
+                            if (numb.substr(5, 1) === '1') {
+                                return parseFloat(numb.substr(5, 6));
+                            } else return parseFloat(numb.substr(6, 6));
+                        } else if (numb.length === 14) {
+                            if (numb.substr(0, 1) === numb.substr(7, 1) && numb.substr(1, 1) === numb.substr(8, 1)) {
+                                return parseFloat(numb.substr(7, 6));
+                            } else {
                                 return parseFloat(numb.substr(6, 6));
                             }
-                        } else if (PatternLuJi.test(path[2].name) && PatternDangTuQiang.test(path[3].name)) {
-                            let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
-                            if (path.length >= 4) {
-                                if (numb.length === 12) {
-                                    return parseFloat(numb.substr(6, 6));
-                                } else if (numb.length === 13 && numb.substr(6, 1) === '1') {
-                                    return parseFloat(numb.substr(6, 6));
-                                } else if (numb.length === 13 && numb.substr(6, 1) !== '1') {
-                                    return parseFloat(numb.substr(7, 6));
-                                } else if (numb.length === 14 && numb.substr(7, 1) === '1' && numb.substr(8, 1) === '1' && numb.substr(9, 1) !== '1') {
-                                    return parseFloat(numb.substr(7, 6));
-                                } else if (numb.length === 14 && numb.substr(6, 1) === '1') {
-                                    return parseFloat(numb.substr(6, 6));
-                                } else if (numb.length === 14 && numb.substr(6, 1) !== '1') {
-                                    return parseFloat(numb.substr(8, 6));
-                                } else if (numb.length === 15 && numb.substr(6, 1) === '1') {
-                                    return parseFloat(numb.substr(6, 6));
-                                } else if (numb.length === 15 && numb.substr(6, 1) !== '1' && numb.substr(7, 1) !== '1' && numb.substr(8, 1) !== '1') {
-                                    return parseFloat(numb.substr(9, 6));
-                                } else if (numb.length === 15 && numb.substr(6, 1) !== '1') {
-                                    return parseFloat(numb.substr(8, 6));
-                                } else if (numb.length === 18) {
-                                    return parseFloat(numb.substr(9, 6));
-                                }
+                        } else if (numb.length === 12) {
+                            if (numb.substr(0, 1) !== '1' && numb.substr(5, 1) !== '1') {
+                                return parseFloat(numb.substr(5, 5));
+                            } else if (numb.substr(0, 1) !== '1' && numb.substr(5, 1) === '1') {
+                                return parseFloat(numb.substr(5, 6));
+                            } else {
+                                return parseFloat(numb.substr(6, 6));
                             }
+                        } else if (numb.length === 11) {
+                            return parseFloat(numb.substr(5, 5));
+                        } else if (numb.length === 10) {
+                            return parseFloat(numb.substr(5, 5));
+                        } else if (numb.length === 15) {
+                            return parseFloat(numb.substr(6, 6));
+                        } else if (numb.length === 19) {
+                            return parseFloat(numb.substr(9, 6));
+                        } else if (numb.length === 16) {
+                            return parseFloat(numb.substr(6, 6));
                         }
-                    } else if (path.length >= 6) {
-                        if (PatternJiaoCha.test(path[2].name) && Pattern5DangQiang.test(path[5].name)) {
-                            let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                    } else if (PatternLuJi.test(pathmap.join('')) && PatternDangTuQiang.test(pathmap.join(''))) {
+                        let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                        if (path.length >= 4) {
                             if (numb.length === 12) {
                                 return parseFloat(numb.substr(6, 6));
-                            } else if (numb.length === 11) {
-                                return parseFloat(numb.substr(7, 4));
-                            } else if (numb.length === 15 && numb.substr(0, 1) === numb.substr(6, 1) && numb.substr(1, 1) === numb.substr(7, 1) && numb.substr(2, 1) === numb.substr(8, 1)) {
+                            } else if (numb.length === 13 && numb.substr(6, 1) === '1') {
                                 return parseFloat(numb.substr(6, 6));
-                            } else if (numb.length === 15) {
+                            } else if (numb.length === 13 && numb.substr(6, 1) !== '1') {
+                                return parseFloat(numb.substr(7, 6));
+                            } else if (numb.length === 14 && numb.substr(7, 1) === '1' && numb.substr(8, 1) === '1' && numb.substr(9, 1) !== '1') {
+                                return parseFloat(numb.substr(7, 6));
+                            } else if (numb.length === 14 && numb.substr(6, 1) === '1') {
+                                return parseFloat(numb.substr(6, 6));
+                            } else if (numb.length === 14 && numb.substr(6, 1) !== '1') {
+                                return parseFloat(numb.substr(8, 6));
+                            } else if (numb.length === 15 && numb.substr(6, 1) === '1') {
+                                return parseFloat(numb.substr(6, 6));
+                            } else if (numb.length === 15 && numb.substr(6, 1) !== '1' && numb.substr(7, 1) !== '1' && numb.substr(8, 1) !== '1') {
+                                return parseFloat(numb.substr(9, 6));
+                            } else if (numb.length === 15 && numb.substr(6, 1) !== '1') {
+                                return parseFloat(numb.substr(8, 6));
+                            } else if (numb.length === 18) {
                                 return parseFloat(numb.substr(9, 6));
                             }
-                        } else if (PatternJiaoCha.test(path[2].name) && Pattern5DangTuQiang.test(path[5].name)) {
-                            let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
-                            if (numb.length === 14) {
-                                return parseFloat(numb.substr(6, 6));
-                            } else if (numb.length === 15) {
-                                return parseFloat(numb.substr(6, 6));
-                            } else if (numb.length === 10) {
-                                return parseFloat(numb.substr(4, 3));
-                            } else if (numb.length === 8) {
-                                return parseFloat(numb.substr(4, 4));
-                            } else if (numb.length === 7) {
-                                return parseFloat(numb.substr(4, 3));
-                            }
-                        } else if (PatternJiaoCha.test(path[2].name) && Pattern5RuanJiHuanTian.test(path[5].name)) {
-                            let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
-                            if (numb.length === 8) {
-                                return parseFloat(numb.substr(4, 4));
-                            }
+                        }
+                    } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern5DangQiang.test(pathmap.join(''))) {
+                        let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                        if (numb.length === 12) {
+                            return parseFloat(numb.substr(6, 6));
+                        } else if (numb.length === 11) {
+                            return parseFloat(numb.substr(7, 4));
+                        } else if (numb.length === 15 && numb.substr(0, 1) === numb.substr(6, 1) && numb.substr(1, 1) === numb.substr(7, 1) && numb.substr(2, 1) === numb.substr(8, 1)) {
+                            return parseFloat(numb.substr(6, 6));
+                        } else if (numb.length === 15) {
+                            return parseFloat(numb.substr(9, 6));
+                        }
+                    } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern5DangTuQiang.test(pathmap.join(''))) {
+                        let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                        if (numb.length === 14) {
+                            return parseFloat(numb.substr(6, 6));
+                        } else if (numb.length === 15) {
+                            return parseFloat(numb.substr(6, 6));
+                        } else if (numb.length === 10) {
+                            return parseFloat(numb.substr(4, 3));
+                        } else if (numb.length === 8) {
+                            return parseFloat(numb.substr(4, 4));
+                        } else if (numb.length === 7) {
+                            return parseFloat(numb.substr(4, 3));
+                        }
+                    } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern5RuanJiHuanTian.test(pathmap.join(''))) {
+                        let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                        if (numb.length === 8) {
+                            return parseFloat(numb.substr(4, 4));
                         }
                     }
                 });
@@ -943,7 +911,8 @@ export default {
             let PatternHanDong = new RegExp(Path2Name.HanDong);
             let PatternQiaoLiang = new RegExp(Path2Name.QiaoLiang);
             let PatternTianQiao = new RegExp(Path2Name.TianQiao);
-            if (PatternHanDong.test(path[2].name) || PatternTianQiao.test(path[2].name) || PatternQiaoLiang.test(path[2].name)) {
+            let pathmap = path.map(item => item.name);
+            if (PatternHanDong.test(pathmap.join('')) || PatternTianQiao.test(pathmap.join('')) || PatternQiaoLiang.test(pathmap.join(''))) {
                 currentSiteType = '';
             }
             return currentSiteType;
