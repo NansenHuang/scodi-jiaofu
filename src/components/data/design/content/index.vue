@@ -739,7 +739,7 @@ export default {
                 } else if (PatternTianQiao.test(pathmap.join(''))) {
                     if (OverbridgeSite.length > 0) {
                         for (let i = 0; i < OverbridgeSite.length; i++) {
-                            if ((parseFloat(path[3].name.replace(/[^0-9]/ig, '').substr(4, 5)) === OverbridgeSite[i].station) || (parseFloat(path[3].name.replace(/[^0-9]/ig, '').substr(4, 6)) === OverbridgeSite[i].station) || (parseFloat(path[3].name.replace(/[^0-9]/ig, '').substr(5, 6)) === OverbridgeSite[i].station)) {
+                            if ((parseFloat(path[path.length - 1].name.replace(/[^0-9]/ig, '').substr(4, 5)) === OverbridgeSite[i].station) || (parseFloat(path[path.length - 1].name.replace(/[^0-9]/ig, '').substr(4, 6)) === OverbridgeSite[i].station) || (parseFloat(path[path.length - 1].name.replace(/[^0-9]/ig, '').substr(5, 6)) === OverbridgeSite[i].station)) {
                                 SiteStationId = OverbridgeSite[i].id;
                             }
                         }
@@ -747,7 +747,7 @@ export default {
                 } else if (PatternQiaoLiang.test(pathmap.join(''))) {
                     if (BridgeSite.length > 0) {
                         for (let i = 0; i < BridgeSite.length; i++) {
-                            if (path[3].name.match(reg).join('') === BridgeSite[i].bridgeCnName.match(reg).join('')) {
+                            if (path[path.length - 1].name.match(reg).join('') === BridgeSite[i].bridgeCnName.match(reg).join('')) {
                                 SiteStationId = BridgeSite[i].id;
                             }
                         }
