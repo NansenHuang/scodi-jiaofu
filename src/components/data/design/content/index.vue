@@ -1011,13 +1011,17 @@ export default {
         },
         handleBind (val, val2) {
             let path = this.$store.state['graphy']['explore']['path'];
+            let PatternTianQiao = new RegExp(Path2Name.TianQiao);
+            let PatternHanDong = new RegExp(Path2Name.HanDong);
+            let PatternZongTi = new RegExp(Path2Name.ZongTi);
+            let pathmap = path.map(item => item.name);
             console.log('new data:', val, val2);
             if (val.siteType && val.siteType !== '') {
                 this.objectData[val2] = val;
                 console.log('newdatasite', val, val2);
             } else if (val.alignmentCnName) {
                 this.objectData[val2] = val;
-            } else if (val.type && (path[2].name !== Path2Name.TianQiao && path[2].name !== Path2Name.ZongTi && path[2].name !== Path2Name.HanDong)) {
+            } else if (val.type && (PatternTianQiao.test(pathmap.join('')) === false && PatternZongTi.test(pathmap.join('')) === false && PatternHanDong.test(pathmap.join('')) === false)) {
                 this.objectData[val2] = val;
             } else if (!val.siteType) {
                 this.objectData[val2] = [];
