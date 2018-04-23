@@ -6,8 +6,8 @@ const Path3Name = {
     RuanJiHuanTian: '软基换填',
     GongLuPingMian: '公路平面',
     PaiShuiMangGou: '排水盲沟',
+    MuChuanNanHuTong: '沐川南互通',
     MuChuanFuWu: '沐川服务',
-    MUChuanNanHuTong: '沐川南互通'
 };
 
 export default Path3Name;

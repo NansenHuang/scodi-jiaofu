@@ -453,7 +453,7 @@ export default {
                 let Pattern6DouPoLuDi = new RegExp(Path6Name.DouPoLuDi);
                 let Pattern6RuanJiHuanTian = new RegExp(Path6Name.RuanJiHuanTian);
                 let pathmap = path.map(item => item.name);
-                if ((PatternZongTi.test(pathmap.join('')) && PatternGongLuPingMian.test(pathmap.join(''))) || (PatternLuJi.test(pathmap.join('')) && PatternRuanJiHuanTian.test(pathmap.join('')))) {
+                if ((PatternZongTi.test(pathmap.join('')) && PatternGongLuPingMian.test(pathmap.join(''))) || (PatternLuJi.test(pathmap.join('')) && PatternRuanJiHuanTian.test(pathmap.join('')) && !PatternJiaoCha.test(pathmap.join('')))) {
                     let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
                     if (numb.length === 13) {
                         if (numb.substr(5, 1) === '1') {
@@ -479,6 +479,8 @@ export default {
                         return parseFloat(numb.substr(0, 6));
                     } else if (numb.length === 16) {
                         return parseFloat(numb.substr(0, 6));
+                    } else if (numb.length === 8) {
+                        return parseFloat(numb.substr(0, 4));
                     }
                 } else if (PatternLuJi.test(pathmap.join('')) && PatternDangTuQiang.test(pathmap.join(''))) {
                     let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
@@ -627,7 +629,7 @@ export default {
                     let PatternRuanJiHuanTian = new RegExp(Path3Name.RuanJiHuanTian);
                     let PatternGongLuPingMian = new RegExp(Path3Name.GongLuPingMian);
                     let PatternPaiShuiMangGou = new RegExp(Path3Name.PaiShuiMangGou);
-                    let PatternMuChuanNanHuTong = new RegExp(Path3Name.MUChuanNanHuTong);
+                    let PatternMuChuanNanHuTong = new RegExp(Path3Name.MuChuanNanHuTong);
                     let PatternLuJiLuMianPaiShui = new RegExp(Path4Name.LuJiLuMianPaiShui);
                     let PatternDouPoLuDi = new RegExp(Path4Name.DouPoLuDi);
                     let Pattern5DangQiang = new RegExp(Path5Name.DangQiang);
@@ -648,7 +650,7 @@ export default {
                                 StationLine = this.PathMainAlignment;
                             }
                         }
-                    } else if (PatternLuJi.test(pathmap.join('')) && PatternRuanJiHuanTian.test(pathmap.join(''))) {
+                    } else if (PatternLuJi.test(pathmap.join('')) && PatternRuanJiHuanTian.test(pathmap.join('')) && !PatternLk.test(words)) {
                         StationLine = this.PathMainAlignment;
                     } else if (PatternLuJi.test(pathmap.join('')) && PatternDangTuQiang.test(pathmap.join('')) && PatternZk.test(words)) {
                         for (let i = 0; i < this.PathZkAlignment.length; i++) {
@@ -674,7 +676,7 @@ export default {
                         StationLine = this.PathMainAlignment;
                     } else if (PatternJiaoCha.test(pathmap.join('')) && PatternMuChuanNanHuTong.test(pathmap.join('')) && Pattern5DangQiang.test(pathmap.join('')) && PatternCk.test(words)) {
                         StationLine = this.PathCkAlignment;
-                    } else if (PatternJiaoCha.test(pathmap.join('') && PatternMuChuanNanHuTong.test(pathmap.join('')) && Pattern5RuanJiHuanTian.test(pathmap.join('')) && PatternLk.test(words))) {
+                    } else if (PatternJiaoCha.test(pathmap.join('')) && PatternMuChuanNanHuTong.test(pathmap.join('')) && Pattern5RuanJiHuanTian.test(pathmap.join('')) && PatternLk.test(words)) {
                         StationLine = this.PathLkAlignment;
                     }
                     return StationLine;
@@ -699,7 +701,10 @@ export default {
             return dataToBind.map(item => {
                 let dataItem = this.currentFolderData.find(i => i.id === item.id);
                 let reg = /[\u4e00-\u9fa5]/g;
+                let PatternEK = new RegExp('EK');
+                let words = dataItem['Alias'];
                 let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                let b = dataItem['Alias'].replace(/[^a-z]+/ig, '');
                 let path = this.$store.state['graphy']['explore']['path'];
                 let CulvertSite = this.$store.state['highway']['structure']['culvert'];
                 let OverbridgeSite = this.$store.state['highway']['structure']['overbridge'];
@@ -717,7 +722,7 @@ export default {
                 let PatternRuanJiHuanTian = new RegExp(Path3Name.RuanJiHuanTian);
                 let PatternGongLuPingMian = new RegExp(Path3Name.GongLuPingMian);
                 let PatternPaiShuiMangGou = new RegExp(Path3Name.PaiShuiMangGou);
-                let PatternMuChuanNanHuTong = new RegExp(Path3Name.MUChuanNanHuTong);
+                let PatternMuChuanNanHuTong = new RegExp(Path3Name.MuChuanNanHuTong);
                 let PatternLuJiLuMianPaiShui = new RegExp(Path4Name.LuJiLuMianPaiShui);
                 let PatternDouPoLuDi = new RegExp(Path4Name.DouPoLuDi);
                 let Pattern5DangQiang = new RegExp(Path5Name.DangQiang);
@@ -731,7 +736,7 @@ export default {
                 if (PatternHanDong.test(pathmap.join(''))) {
                     if (CulvertSite.length > 0) {
                         for (let i = 0; i < CulvertSite.length; i++) {
-                            if (Math.abs(parseFloat(numb) - CulvertSite[i].station) < 1) {
+                            if ((Math.abs(parseFloat(numb) - CulvertSite[i].station) < 1)) {
                                 SiteStationId = CulvertSite[i].id;
                             }
                         }
@@ -804,7 +809,7 @@ export default {
                     let PatternRuanJiHuanTian = new RegExp(Path3Name.RuanJiHuanTian);
                     let PatternGongLuPingMian = new RegExp(Path3Name.GongLuPingMian);
                     let PatternPaiShuiMangGou = new RegExp(Path3Name.PaiShuiMangGou);
-                    let PatternMuChuanNanHuTong = new RegExp(Path3Name.MUChuanNanHuTong);
+                    let PatternMuChuanNanHuTong = new RegExp(Path3Name.MuChuanNanHuTong);
                     let PatternLuJiLuMianPaiShui = new RegExp(Path4Name.LuJiLuMianPaiShui);
                     let PatternDouPoLuDi = new RegExp(Path4Name.DouPoLuDi);
                     let Pattern5DangQiang = new RegExp(Path5Name.DangQiang);
@@ -816,7 +821,7 @@ export default {
                     let Pattern6RuanJiHuanTian = new RegExp(Path6Name.RuanJiHuanTian);
                     let path = this.$store.state['graphy']['explore']['path'];
                     let pathmap = path.map(item => item.name);
-                    if ((PatternZongTi.test(pathmap.join('')) && PatternGongLuPingMian.test(pathmap.join(''))) || (PatternLuJi.test(pathmap.join('')) && PatternRuanJiHuanTian.test(pathmap.join('')))) {
+                    if ((PatternZongTi.test(pathmap.join('')) && PatternGongLuPingMian.test(pathmap.join(''))) || (PatternLuJi.test(pathmap.join('')) && PatternRuanJiHuanTian.test(pathmap.join('')) && !PatternJiaoCha.test(pathmap.join('')))) {
                         let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
                         if (numb.length === 13) {
                             if (numb.substr(5, 1) === '1') {
@@ -846,6 +851,8 @@ export default {
                             return parseFloat(numb.substr(9, 6));
                         } else if (numb.length === 16) {
                             return parseFloat(numb.substr(6, 6));
+                        } else if (numb.length === 8) {
+                            return parseFloat(numb.substr(4, 4));
                         }
                     } else if (PatternLuJi.test(pathmap.join('')) && PatternDangTuQiang.test(pathmap.join(''))) {
                         let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
