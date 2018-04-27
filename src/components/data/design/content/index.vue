@@ -106,6 +106,7 @@ import AddBind from './add-bind';
 import AddBinds from './add-binds';
 import LayoutType from 'src/config/layout-type';
 import TypeValue from 'src/config/type';
+import {NumRegExp, NumRegExpRJ, NumRegExpJC, NumRegExpJCDTQ} from 'src/config/NumRegExp';
 import Path2Name from 'src/config/Path2Name';
 import Path3Name from 'src/config/Path3Name';
 import Path4Name from 'src/config/Path4Name';
@@ -452,78 +453,39 @@ export default {
                 let Pattern6LuJiLuMianPaiShui = new RegExp(Path6Name.LuJiLuMianPaiShui);
                 let Pattern6DouPoLuDi = new RegExp(Path6Name.DouPoLuDi);
                 let Pattern6RuanJiHuanTian = new RegExp(Path6Name.RuanJiHuanTian);
+                let PatternJCDTQ = new RegExp('-');
                 let pathmap = path.map(item => item.name);
-                if ((PatternZongTi.test(pathmap.join('')) && PatternGongLuPingMian.test(pathmap.join(''))) || (PatternLuJi.test(pathmap.join('')) && PatternRuanJiHuanTian.test(pathmap.join('')) && !PatternJiaoCha.test(pathmap.join('')))) {
+                if (PatternLuJi.test(pathmap.join('')) && PatternRuanJiHuanTian.test(pathmap.join('')) && !PatternJiaoCha.test(pathmap.join(''))) {
                     let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
-                    if (numb.length === 13) {
-                        if (numb.substr(5, 1) === '1') {
-                            return parseFloat(numb.substr(0, 5));
-                        } else return parseFloat(numb.substr(0, 6));
-                    } else if (numb.length === 14) {
-                        return parseFloat(numb.substr(0, 6));
-                    } else if (numb.length === 12) {
-                        if (numb.substr(0, 1) !== '1') {
-                            return parseFloat(numb.substr(0, 5));
-                        } else if (numb.substr(0, 1) !== '1' && numb.substr(5, 1) === '1') {
-                            return parseFloat(numb.substr(0, 5));
-                        } else {
-                            return parseFloat(numb.substr(0, 6));
-                        }
-                    } else if (numb.length === 11) {
-                        return parseFloat(numb.substr(0, 5));
-                    } else if (numb.length === 10) {
-                        return parseFloat(numb.substr(0, 5));
-                    } else if (numb.length === 15) {
-                        return parseFloat(numb.substr(0, 6));
-                    } else if (numb.length === 19) {
-                        return parseFloat(numb.substr(0, 6));
-                    } else if (numb.length === 16) {
-                        return parseFloat(numb.substr(0, 6));
-                    } else if (numb.length === 8) {
-                        return parseFloat(numb.substr(0, 4));
-                    }
-                } else if (PatternLuJi.test(pathmap.join('')) && PatternDangTuQiang.test(pathmap.join(''))) {
+                    let NumbAlias = dataItem['Alias'];
+                    let NumbExec = NumRegExpRJ.exec(NumbAlias);
+                    return (RegExp.$1);
+                } else if (PatternZongTi.test(pathmap.join('')) && PatternGongLuPingMian.test(pathmap.join(''))) {
                     let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
-                    if (numb.length === 12) {
-                        return parseFloat(numb.substr(0, 6));
-                    } else if (numb.length === 13 && numb.substr(6, 1) === '1') {
-                        return parseFloat(numb.substr(0, 6));
-                    } else if (numb.length === 13 && numb.substr(6, 1) !== '1') {
-                        return parseFloat(numb.substr(0, 6));
-                    } else if (numb.length === 14 && numb.substr(6, 1) === '1') {
-                        return parseFloat(numb.substr(0, 6));
-                    } else if (numb.length === 14 && numb.substr(6, 1) !== '1') {
-                        return parseFloat(numb.substr(0, 6));
-                    } else if (numb.length === 15) {
-                        return parseFloat(numb.substr(0, 6));
-                    } else if (numb.length === 18) {
-                        return parseFloat(numb.substr(0, 6));
-                    }
+                    let NumbAlias = dataItem['Alias'];
+                    let NumbExec = NumRegExp.exec(NumbAlias);
+                    return (RegExp.$1 + RegExp.$2);
+                } else if (PatternLuJi.test(pathmap.join('')) && PatternDangTuQiang.test(pathmap.join('')) && !PatternJiaoCha.test(pathmap.join(''))) {
+                    let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                    let NumbAlias = dataItem['Alias'];
+                    let NumbExec = NumRegExp.exec(NumbAlias);
+                    return (RegExp.$1 + RegExp.$2);
                 } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern5DangQiang.test(pathmap.join(''))) {
                     let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
-                    if (numb.length === 12) {
-                        return parseFloat(numb.substr(0, 6));
-                    } else if (numb.length === 11) {
-                        return parseFloat(numb.substr(0, 4));
-                    } else if (numb.length === 14) {
-                        return parseFloat(numb.substr(0, 6));
-                    } else if (numb.length === 15 && numb.substr(0, 1) === numb.substr(6, 1) && numb.substr(1, 1) === numb.substr(7, 1) && numb.substr(2, 1) === numb.substr(8, 1)) {
-                        return parseFloat(numb.substr(0, 6));
-                    } else if (numb.length === 15) {
-                        return parseFloat(numb.substr(0, 6));
-                    }
+                    let NumbAlias = dataItem['Alias'];
+                    let NumbExec = NumRegExpJC.exec(NumbAlias);
+                    return (RegExp.$1 + RegExp.$2);
                 } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern5DangTuQiang.test(pathmap.join(''))) {
-                    let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
-                    if (numb.length === 14) {
-                        return parseFloat(numb.substr(0, 6));
-                    } else if (numb.length === 15) {
-                        return parseFloat(numb.substr(0, 6));
-                    } else if (numb.length === 10) {
-                        return parseFloat(numb.substr(0, 4));
-                    } else if (numb.length === 8) {
-                        return parseFloat(numb.substr(0, 4));
-                    } else if (numb.length === 7) {
-                        return parseFloat(numb.substr(0, 4));
+                    if (PatternJCDTQ.test(dataItem['Alias'])) {
+                        let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                        let NumbAlias = dataItem['Alias'];
+                        let NumbExec = NumRegExpJCDTQ.exec(NumbAlias);
+                        return (RegExp.$1 + RegExp.$2);
+                    } else {
+                        let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                        let NumbAlias = dataItem['Alias'];
+                        let NumbExec = NumRegExpJC.exec(NumbAlias);
+                        return (RegExp.$1 + RegExp.$2);
                     }
                 } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern5RuanJiHuanTian.test(pathmap.join(''))) {
                     let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
@@ -658,7 +620,7 @@ export default {
                                 StationLine = this.PathZkAlignment[i].id;
                             }
                         }
-                    } else if (PatternLuJi.test(pathmap.join('')) && PatternDangTuQiang.test(pathmap.join('')) && PatternZk.test(words) === false) {
+                    } else if (PatternLuJi.test(pathmap.join('')) && PatternDangTuQiang.test(pathmap.join('')) && PatternZk.test(words) === false && !PatternJiaoCha.test(pathmap.join(''))) {
                         StationLine = this.PathMainAlignment;
                     } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern5DangQiang.test(pathmap.join('')) && PatternAk.test(words) === false && PatternBk.test(words) === false && PatternZk.test(words) === false && PatternCk.test(words) === false) {
                         StationLine = this.PathMainAlignment;
@@ -819,89 +781,41 @@ export default {
                     let Pattern6LuJiLuMianPaiShui = new RegExp(Path6Name.LuJiLuMianPaiShui);
                     let Pattern6DouPoLuDi = new RegExp(Path6Name.DouPoLuDi);
                     let Pattern6RuanJiHuanTian = new RegExp(Path6Name.RuanJiHuanTian);
+                    let PatternJCDTQ = new RegExp('-');
                     let path = this.$store.state['graphy']['explore']['path'];
                     let pathmap = path.map(item => item.name);
-                    if ((PatternZongTi.test(pathmap.join('')) && PatternGongLuPingMian.test(pathmap.join(''))) || (PatternLuJi.test(pathmap.join('')) && PatternRuanJiHuanTian.test(pathmap.join('')) && !PatternJiaoCha.test(pathmap.join('')))) {
+                    if (PatternLuJi.test(pathmap.join('')) && PatternRuanJiHuanTian.test(pathmap.join('')) && !PatternJiaoCha.test(pathmap.join(''))) {
                         let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
-                        if (numb.length === 13) {
-                            if (numb.substr(5, 1) === '1') {
-                                return parseFloat(numb.substr(5, 6));
-                            } else return parseFloat(numb.substr(6, 6));
-                        } else if (numb.length === 14) {
-                            if (numb.substr(0, 1) === numb.substr(7, 1) && numb.substr(1, 1) === numb.substr(8, 1)) {
-                                return parseFloat(numb.substr(7, 6));
-                            } else {
-                                return parseFloat(numb.substr(6, 6));
-                            }
-                        } else if (numb.length === 12) {
-                            if (numb.substr(0, 1) !== '1' && numb.substr(5, 1) !== '1') {
-                                return parseFloat(numb.substr(5, 5));
-                            } else if (numb.substr(0, 1) !== '1' && numb.substr(5, 1) === '1') {
-                                return parseFloat(numb.substr(5, 6));
-                            } else {
-                                return parseFloat(numb.substr(6, 6));
-                            }
-                        } else if (numb.length === 11) {
-                            return parseFloat(numb.substr(5, 5));
-                        } else if (numb.length === 10) {
-                            return parseFloat(numb.substr(5, 5));
-                        } else if (numb.length === 15) {
-                            return parseFloat(numb.substr(6, 6));
-                        } else if (numb.length === 19) {
-                            return parseFloat(numb.substr(9, 6));
-                        } else if (numb.length === 16) {
-                            return parseFloat(numb.substr(6, 6));
-                        } else if (numb.length === 8) {
-                            return parseFloat(numb.substr(4, 4));
-                        }
-                    } else if (PatternLuJi.test(pathmap.join('')) && PatternDangTuQiang.test(pathmap.join(''))) {
+                        let NumbAlias = dataItem['Alias'];
+                        let NumbExec = NumRegExpRJ.exec(NumbAlias);
+                        return RegExp.$2;
+                    } else if (PatternZongTi.test(pathmap.join('')) && PatternGongLuPingMian.test(pathmap.join(''))) {
                         let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
-                        if (path.length >= 4) {
-                            if (numb.length === 12) {
-                                return parseFloat(numb.substr(6, 6));
-                            } else if (numb.length === 13 && numb.substr(6, 1) === '1') {
-                                return parseFloat(numb.substr(6, 6));
-                            } else if (numb.length === 13 && numb.substr(6, 1) !== '1') {
-                                return parseFloat(numb.substr(7, 6));
-                            } else if (numb.length === 14 && numb.substr(7, 1) === '1' && numb.substr(8, 1) === '1' && numb.substr(9, 1) !== '1') {
-                                return parseFloat(numb.substr(7, 6));
-                            } else if (numb.length === 14 && numb.substr(6, 1) === '1') {
-                                return parseFloat(numb.substr(6, 6));
-                            } else if (numb.length === 14 && numb.substr(6, 1) !== '1') {
-                                return parseFloat(numb.substr(8, 6));
-                            } else if (numb.length === 15 && numb.substr(6, 1) === '1') {
-                                return parseFloat(numb.substr(6, 6));
-                            } else if (numb.length === 15 && numb.substr(6, 1) !== '1' && numb.substr(7, 1) !== '1' && numb.substr(8, 1) !== '1') {
-                                return parseFloat(numb.substr(9, 6));
-                            } else if (numb.length === 15 && numb.substr(6, 1) !== '1') {
-                                return parseFloat(numb.substr(8, 6));
-                            } else if (numb.length === 18) {
-                                return parseFloat(numb.substr(9, 6));
-                            }
-                        }
+                        let NumbAlias = dataItem['Alias'];
+                        let NumbExec = NumRegExp.exec(NumbAlias);
+                        return (RegExp.$4 + RegExp.$5);
+                    } else if (PatternLuJi.test(pathmap.join('')) && PatternDangTuQiang.test(pathmap.join('')) && !PatternJiaoCha.test(pathmap.join(''))) {
+                        let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                        let NumbAlias = dataItem['Alias'];
+                        let NumbExec = NumRegExp.exec(NumbAlias);
+                        return (RegExp.$4 + RegExp.$5);
                     } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern5DangQiang.test(pathmap.join(''))) {
                         let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
-                        if (numb.length === 12) {
-                            return parseFloat(numb.substr(6, 6));
-                        } else if (numb.length === 11) {
-                            return parseFloat(numb.substr(7, 4));
-                        } else if (numb.length === 15 && numb.substr(0, 1) === numb.substr(6, 1) && numb.substr(1, 1) === numb.substr(7, 1) && numb.substr(2, 1) === numb.substr(8, 1)) {
-                            return parseFloat(numb.substr(6, 6));
-                        } else if (numb.length === 15) {
-                            return parseFloat(numb.substr(9, 6));
-                        }
+                        let NumbAlias = dataItem['Alias'];
+                        let NumbExec = NumRegExpJC.exec(NumbAlias);
+                        return (RegExp.$4 + RegExp.$5);
                     } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern5DangTuQiang.test(pathmap.join(''))) {
-                        let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
-                        if (numb.length === 14) {
-                            return parseFloat(numb.substr(6, 6));
-                        } else if (numb.length === 15) {
-                            return parseFloat(numb.substr(6, 6));
-                        } else if (numb.length === 10) {
-                            return parseFloat(numb.substr(4, 3));
-                        } else if (numb.length === 8) {
-                            return parseFloat(numb.substr(4, 4));
-                        } else if (numb.length === 7) {
-                            return parseFloat(numb.substr(4, 3));
+                        if (PatternJCDTQ.test(dataItem['Alias'])) {
+                            let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                            let NumbAlias = dataItem['Alias'];
+                            let NumbExec = NumRegExpJCDTQ.exec(NumbAlias);
+                            console.log('NumbExec', NumbExec);
+                            return (RegExp.$4 + RegExp.$5);
+                        } else {
+                            let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
+                            let NumbAlias = dataItem['Alias'];
+                            let NumbExec = NumRegExpJC.exec(NumbAlias);
+                            return (RegExp.$4 + RegExp.$5);
                         }
                     } else if (PatternJiaoCha.test(pathmap.join('')) && Pattern5RuanJiHuanTian.test(pathmap.join(''))) {
                         let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
