@@ -464,6 +464,7 @@ export default {
                     let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
                     let NumbAlias = dataItem['Alias'];
                     let NumbExec = NumRegExp.exec(NumbAlias);
+                    console.log('numbexec', NumbExec);
                     return (RegExp.$1 + RegExp.$2);
                 } else if (PatternLuJi.test(pathmap.join('')) && PatternDangTuQiang.test(pathmap.join('')) && !PatternJiaoCha.test(pathmap.join(''))) {
                     let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
@@ -942,7 +943,7 @@ export default {
                 console.log('newdatasite', val, val2);
             } else if (val.alignmentCnName) {
                 this.objectData[val2] = val;
-            } else if (val.type && (PatternTianQiao.test(pathmap.join('')) === false && PatternZongTi.test(pathmap.join('')) === false && PatternHanDong.test(pathmap.join('')) === false)) {
+            } else if (val.type && !PatternTianQiao.test(pathmap.join('')) && !PatternZongTi.test(pathmap.join('')) && !PatternHanDong.test(pathmap.join(''))) {
                 this.objectData[val2] = val;
             } else if (!val.siteType) {
                 this.objectData[val2] = [];
