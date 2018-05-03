@@ -83,7 +83,7 @@
                   :nameabc="currentDataToBind[index(item,currentBindData)].name"
                   :update="false"
                   :active="displayBindPanel"
-                  :currentData = "{sectionID: currentPathsection,alignment:{alignmentID:currentAlignmentID[index(item,currentBindData)],startStation: currentPathStartStation[index(item,currentBindData)] ,endStation: currentPathEndStation[index(item,currentBindData)]},type:{type: currentPathType,modelType:currentPathtypeModel[index(item,currentBindData)]},site:{siteID:currentSiteID[index(item,currentBindData)],siteType: currentSiteType}}"
+                  :currentData = "{sectionID: currentPathsection,alignment:{alignmentID:currentAlignmentID[index(item,currentBindData)],startStation: currentPathStartStation[index(item,currentBindData)],endStation: currentPathEndStation[index(item,currentBindData)]},type:{type: currentPathType,modelType:currentPathtypeModel[index(item,currentBindData)]},site:{siteID:currentSiteID[index(item,currentBindData)],siteType: currentSiteType}}"
                   @close="displayBindPanel=false"
                   @save="handleBind"></add-bind>
           </div>
@@ -112,6 +112,7 @@ import Path3Name from 'src/config/Path3Name';
 import Path4Name from 'src/config/Path4Name';
 import Path5Name from 'src/config/Path5Name';
 import Path6Name from 'src/config/Path6Name';
+import PathAlignmentName from 'src/config/PathAlignmentName';
 import TypeModel from 'src/config/model-type';
 import Utils from 'src/libs/util';
 import StationUtil from 'src/libs/station';
@@ -464,7 +465,6 @@ export default {
                     let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
                     let NumbAlias = dataItem['Alias'];
                     let NumbExec = NumRegExp.exec(NumbAlias);
-                    console.log('numbexec', NumbExec);
                     return (RegExp.$1 + RegExp.$2);
                 } else if (PatternLuJi.test(pathmap.join('')) && PatternDangTuQiang.test(pathmap.join('')) && !PatternJiaoCha.test(pathmap.join(''))) {
                     let numb = dataItem['Alias'].replace(/[^0-9]/ig, '');
@@ -499,7 +499,7 @@ export default {
         PathMainAlignment: function () {
             if (this.$store.state['highway']['basic']['alignment'].length > 0) {
                 for (let i = 0; i < this.$store.state['highway']['basic']['alignment'].length; i++) {
-                    if (this.$store.state['highway']['basic']['alignment'][i].alignmentCnName === '主线') {
+                    if (this.$store.state['highway']['basic']['alignment'][i].alignmentCnName === PathAlignmentName.ZhuXian) {
                         return this.$store.state['highway']['basic']['alignment'][i].id;
                     }
                 }
@@ -508,7 +508,7 @@ export default {
         PathAkAlignment: function () {
             if (this.$store.state['highway']['basic']['alignment'].length > 0) {
                 for (let i = 0; i < this.$store.state['highway']['basic']['alignment'].length; i++) {
-                    if (this.$store.state['highway']['basic']['alignment'][i].alignmentCnName === '沐川枢纽A匝道') {
+                    if (this.$store.state['highway']['basic']['alignment'][i].alignmentCnName === PathAlignmentName.MuChuanShuNiuA) {
                         return this.$store.state['highway']['basic']['alignment'][i].id;
                     }
                 }
@@ -517,7 +517,7 @@ export default {
         PathBkAlignment: function () {
             if (this.$store.state['highway']['basic']['alignment'].length > 0) {
                 for (let i = 0; i < this.$store.state['highway']['basic']['alignment'].length; i++) {
-                    if (this.$store.state['highway']['basic']['alignment'][i].alignmentCnName === '沐川服务区B匝道') {
+                    if (this.$store.state['highway']['basic']['alignment'][i].alignmentCnName === PathAlignmentName.MuChuanFuWuB) {
                         return this.$store.state['highway']['basic']['alignment'][i].id;
                     }
                 }
@@ -526,7 +526,7 @@ export default {
         PathCkAlignment: function () {
             if (this.$store.state['highway']['basic']['alignment'].length > 0) {
                 for (let i = 0; i < this.$store.state['highway']['basic']['alignment'].length; i++) {
-                    if (this.$store.state['highway']['basic']['alignment'][i].alignmentCnName === '沐川南互通C匝道') {
+                    if (this.$store.state['highway']['basic']['alignment'][i].alignmentCnName === PathAlignmentName.MuChuanNanHuTongC) {
                         return this.$store.state['highway']['basic']['alignment'][i].id;
                     }
                 }
@@ -535,7 +535,7 @@ export default {
         PathLkAlignment: function () {
             if (this.$store.state['highway']['basic']['alignment'].length > 0) {
                 for (let i = 0; i < this.$store.state['highway']['basic']['alignment'].length; i++) {
-                    if (this.$store.state['highway']['basic']['alignment'][i].alignmentCnName === '沐川南互通连接线') {
+                    if (this.$store.state['highway']['basic']['alignment'][i].alignmentCnName === PathAlignmentName.MuChuanNanHuTongLJ) {
                         return this.$store.state['highway']['basic']['alignment'][i].id;
                     }
                 }
@@ -687,6 +687,7 @@ export default {
                 let PatternPaiShuiMangGou = new RegExp(Path3Name.PaiShuiMangGou);
                 let PatternMuChuanNanHuTong = new RegExp(Path3Name.MuChuanNanHuTong);
                 let PatternLuJiLuMianPaiShui = new RegExp(Path4Name.LuJiLuMianPaiShui);
+                let PatternJiuJingHuTong = new RegExp(Path4Name.JiuJingHuTong);
                 let PatternDouPoLuDi = new RegExp(Path4Name.DouPoLuDi);
                 let Pattern5DangQiang = new RegExp(Path5Name.DangQiang);
                 let Pattern5DangTuQiang = new RegExp(Path5Name.DangTuQiang);
@@ -696,10 +697,18 @@ export default {
                 let Pattern6DouPoLuDi = new RegExp(Path6Name.DouPoLuDi);
                 let Pattern6RuanJiHuanTian = new RegExp(Path6Name.RuanJiHuanTian);
                 let pathmap = path.map(item => item.name);
-                if (PatternHanDong.test(pathmap.join(''))) {
+                if (PatternHanDong.test(pathmap.join('')) && PatternJiuJingHuTong.test(pathmap.join(''))) {
                     if (CulvertSite.length > 0) {
                         for (let i = 0; i < CulvertSite.length; i++) {
-                            if ((Math.abs(parseFloat(numb) - CulvertSite[i].station) < 1)) {
+                            if ((Math.abs(parseFloat(numb) - CulvertSite[i].station) < 1) && PatternJiuJingHuTong.test(CulvertSite[i].alignmentCnName)) {
+                                SiteStationId = CulvertSite[i].id;
+                            }
+                        }
+                    }
+                } else if (PatternHanDong.test(pathmap.join('')) && !PatternJiuJingHuTong.test(pathmap.join(''))) {
+                    if (CulvertSite.length > 0) {
+                        for (let i = 0; i < CulvertSite.length; i++) {
+                            if (Math.abs(parseFloat(numb) - CulvertSite[i].station) < 1) {
                                 SiteStationId = CulvertSite[i].id;
                             }
                         }
