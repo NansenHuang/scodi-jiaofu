@@ -3,8 +3,9 @@
 
 <template>
     <div>
-        <Select style="position: relative" ref="select" v-if="dataSource && dataSource.length" v-model="selected" clearable @on-change="selectChange" :multiple="multiple">
+        <Select style="position: relative;display: block;" ref="select" v-if="dataSource && dataSource.length" v-model="selected" clearable @on-change="selectChange" :multiple="multiple">
             <Option
+                style="position: inherit;z-index: 1;display: flex;justify-content: flex-start;background-position:center;"
                 v-for="item in dataSource"
                 :label="item['label']"
                 :value="item['value']"
