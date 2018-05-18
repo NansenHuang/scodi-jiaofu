@@ -3,14 +3,13 @@
 
 <template>
     <div>
-        <Select style="position: relative;display: block;" ref="select" v-if="dataSource && dataSource.length" v-model="selected" clearable @on-change="selectChange" :multiple="multiple">
-            <Option
-                style="position: inherit;z-index: 1;display: flex;justify-content: flex-start;background-position:center;"
+        <Select style="position: relative;" ref="select" v-if="dataSource && dataSource.length" v-model="selected" clearable @on-change="selectChange" :multiple="multiple">
+            <div style="position: relative;"><Option
                 v-for="item in dataSource"
                 :label="item['label']"
                 :value="item['value']"
                 :key="item['value']"
-                ></Option>
+            ></Option></div>
         </Select>
         <Select ref="select" disabled v-else></Select>
     </div>

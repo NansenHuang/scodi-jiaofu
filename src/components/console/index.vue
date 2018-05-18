@@ -226,7 +226,7 @@ export default {
                         author: item.Data.creator,
                     };
                 });
-            };
+            }
         },
         saveNewProject: async function (name, creator, desc) {
             this.hideNewProject();
